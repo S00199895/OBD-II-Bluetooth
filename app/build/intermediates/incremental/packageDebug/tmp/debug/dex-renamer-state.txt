@@ -1,9 +1,9 @@
-#Wed Nov 09 15:30:54 GMT 2022
-base.2=C\:\\Users\\mark_\\OneDrive\\Desktop\\obd2-bluetooth-master\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\13\\classes.dex
+#Sun Nov 20 17:48:30 GMT 2022
+base.2=C\:\\Users\\noelc\\Desktop\\COLLEGE\\MAD\\OBD-II-Bluetooth\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\13\\classes.dex
 path.2=13/classes.dex
-base.1=C\:\\Users\\mark_\\OneDrive\\Desktop\\obd2-bluetooth-master\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.1=C\:\\Users\\noelc\\Desktop\\COLLEGE\\MAD\\OBD-II-Bluetooth\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 path.1=0/classes.dex
-base.0=C\:\\Users\\mark_\\OneDrive\\Desktop\\obd2-bluetooth-master\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.0=C\:\\Users\\noelc\\Desktop\\COLLEGE\\MAD\\OBD-II-Bluetooth\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
