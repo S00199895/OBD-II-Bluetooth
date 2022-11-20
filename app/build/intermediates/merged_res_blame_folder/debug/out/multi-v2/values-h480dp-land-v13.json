@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-27:/values-h480dp-land-v13/values-h480dp-land-v13.xml",
+            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-30:/values-h480dp-land-v13/values-h480dp-land-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\459731560744495d36c7572f4eaf1462\\transformed\\material-1.7.0\\res\\values-h480dp-land-v13\\values-h480dp-land-v13.xml",
+                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\888ee2e8fcc41cb2c09b6c71362471b0\\transformed\\material-1.7.0\\res\\values-h480dp-land-v13\\values-h480dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",

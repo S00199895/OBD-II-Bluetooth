@@ -2,6 +2,7 @@ package edu.markc.bluetooth;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -31,11 +32,17 @@ import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
 import com.github.pires.obd.commands.protocol.TimeoutCommand;
 import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
 import com.github.pires.obd.enums.ObdProtocols;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,18 +51,40 @@ public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
     private static final UUID CONNUUID = UUID.fromString("ea3836df-b860-4f33-b338-4e032c124870");
     TextView tv1;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv1 = findViewById(R.id.tV1);
-
+        db = FirebaseFirestore.getInstance();
         BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         if (bluetoothAdapter == null) {
             // Device doesn't support Bluetooth
         }
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "Ada");
+        user.put("last", "Lovelace");
+        user.put("born", 1815);
+
+        // Add a new document with a generated ID
+        db.collection("data")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
 
         if (!bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -164,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
             catch(Exception e){
 
             }
+
+
 
 
         }

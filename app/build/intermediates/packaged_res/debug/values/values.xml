@@ -8,6 +8,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="white">#FFFFFFFF</color>
     <string name="app_name">bluetooth</string>
+    <string name="default_web_client_id" translatable="false">628564529324-760cjdih0q365dn5n8b906cg0gnci5bi.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">628564529324</string>
+    <string name="google_api_key" translatable="false">AIzaSyDWudArxcsDsN7QndezuB6_NIm4SslJ19s</string>
+    <string name="google_app_id" translatable="false">1:628564529324:android:6b15cf548a34f7e4b1cf09</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDWudArxcsDsN7QndezuB6_NIm4SslJ19s</string>
+    <string name="google_storage_bucket" translatable="false">obd-ii-e3139.appspot.com</string>
+    <string name="project_id" translatable="false">obd-ii-e3139</string>
     <style name="Theme.Bluetooth" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         
         <item name="colorPrimary">@color/purple_500</item>

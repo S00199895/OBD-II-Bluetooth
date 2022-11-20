@@ -31,75 +31,129 @@
 19-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:9:5-76
 19-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:9:22-73
 20
-21    <application
-21-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:10:5-33:19
-22        android:allowBackup="true"
-22-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:11:9-35
-23        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-23-->[androidx.core:core:1.8.0] C:\Users\noelc\.gradle\caches\transforms-3\87a796fe63836d99a2198ac6a6284cb3\transformed\core-1.8.0\AndroidManifest.xml:24:18-86
-24        android:dataExtractionRules="@xml/data_extraction_rules"
-24-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:12:9-65
-25        android:debuggable="true"
-26        android:extractNativeLibs="false"
-27        android:fullBackupContent="@xml/backup_rules"
-27-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:13:9-54
-28        android:icon="@mipmap/ic_launcher"
-28-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:14:9-43
-29        android:label="@string/app_name"
-29-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:15:9-41
-30        android:roundIcon="@mipmap/ic_launcher_round"
-30-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:16:9-54
-31        android:supportsRtl="true"
-31-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:17:9-35
-32        android:testOnly="true"
-33        android:theme="@style/Theme.Bluetooth" >
-33-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:18:9-47
-34        <activity
-34-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:20:9-32:20
-35            android:name="edu.markc.bluetooth.MainActivity"
-35-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:21:13-41
-36            android:exported="true" >
-36-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:22:13-36
-37            <intent-filter>
-37-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:23:13-27:29
-38                <action android:name="android.intent.action.MAIN" />
-38-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:24:17-69
-38-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:24:25-66
-39
-40                <category android:name="android.intent.category.LAUNCHER" />
-40-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:26:17-77
-40-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:26:27-74
-41            </intent-filter>
-42
-43            <meta-data
-43-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:29:13-31:36
-44                android:name="android.app.lib_name"
-44-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:30:17-52
-45                android:value="" />
-45-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:31:17-33
-46        </activity>
+21    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+22    <!-- <uses-sdk android:minSdkVersion="14" /> -->
+23    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+23-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:13:5-79
+23-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:13:22-76
+24    <uses-permission android:name="android.permission.INTERNET" />
+24-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:14:5-67
+24-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:14:22-64
+25
+26    <application
+26-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:10:5-33:19
+27        android:allowBackup="true"
+27-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:11:9-35
+28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+28-->[androidx.core:core:1.8.0] C:\Users\noelc\.gradle\caches\transforms-3\102215101d21fdb02f0f27bbfd4ebd5d\transformed\core-1.8.0\AndroidManifest.xml:24:18-86
+29        android:dataExtractionRules="@xml/data_extraction_rules"
+29-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:12:9-65
+30        android:debuggable="true"
+31        android:extractNativeLibs="false"
+32        android:fullBackupContent="@xml/backup_rules"
+32-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:13:9-54
+33        android:icon="@mipmap/ic_launcher"
+33-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:14:9-43
+34        android:label="@string/app_name"
+34-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:15:9-41
+35        android:roundIcon="@mipmap/ic_launcher_round"
+35-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:16:9-54
+36        android:supportsRtl="true"
+36-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:17:9-35
+37        android:testOnly="true"
+38        android:theme="@style/Theme.Bluetooth" >
+38-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:18:9-47
+39        <activity
+39-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:20:9-32:20
+40            android:name="edu.markc.bluetooth.MainActivity"
+40-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:21:13-41
+41            android:exported="true" >
+41-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:22:13-36
+42            <intent-filter>
+42-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:23:13-27:29
+43                <action android:name="android.intent.action.MAIN" />
+43-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:24:17-69
+43-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:24:25-66
+44
+45                <category android:name="android.intent.category.LAUNCHER" />
+45-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:26:17-77
+45-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:26:27-74
+46            </intent-filter>
 47
-48        <provider
-48-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\c03fa7bc00a04a375204b573f0966d9f\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-49            android:name="androidx.startup.InitializationProvider"
-49-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\c03fa7bc00a04a375204b573f0966d9f\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
-50            android:authorities="edu.markc.bluetooth.androidx-startup"
-50-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\c03fa7bc00a04a375204b573f0966d9f\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
-51            android:exported="false" >
-51-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\c03fa7bc00a04a375204b573f0966d9f\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
-52            <meta-data
-52-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\c03fa7bc00a04a375204b573f0966d9f\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-53                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-53-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\c03fa7bc00a04a375204b573f0966d9f\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
-54                android:value="androidx.startup" />
-54-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\c03fa7bc00a04a375204b573f0966d9f\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
-55            <meta-data
-55-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\0ce9e5f033589fdf0ab757f82f7808ec\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
-56                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-56-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\0ce9e5f033589fdf0ab757f82f7808ec\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
-57                android:value="androidx.startup" />
-57-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\0ce9e5f033589fdf0ab757f82f7808ec\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
-58        </provider>
-59    </application>
-60
-61</manifest>
+48            <meta-data
+48-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:29:13-31:36
+49                android:name="android.app.lib_name"
+49-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:30:17-52
+50                android:value="" />
+50-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:31:17-33
+51        </activity>
+52
+53        <service
+53-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:17:9-23:19
+54            android:name="com.google.firebase.components.ComponentDiscoveryService"
+54-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:18:13-84
+55            android:directBootAware="true"
+55-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:35:13-43
+56            android:exported="false" >
+56-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:19:13-37
+57            <meta-data
+57-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:20:13-22:85
+58                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+58-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:21:17-111
+59                android:value="com.google.firebase.components.ComponentRegistrar" />
+59-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:22:17-82
+60        </service>
+61
+62        <activity
+62-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+63            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+63-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+64            android:exported="false"
+64-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+65            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+65-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+66
+67        <provider
+67-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:26:9-31:39
+68            android:name="com.google.firebase.provider.FirebaseInitProvider"
+68-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:27:13-77
+69            android:authorities="edu.markc.bluetooth.firebaseinitprovider"
+69-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:28:13-72
+70            android:directBootAware="true"
+70-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:29:13-43
+71            android:exported="false"
+71-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:30:13-37
+72            android:initOrder="100" />
+72-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:31:13-36
+73
+74        <meta-data
+74-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\b284489ed66026c2cdd1d7c33585e62e\transformed\play-services-basement-18.0.0\AndroidManifest.xml:21:9-23:69
+75            android:name="com.google.android.gms.version"
+75-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\b284489ed66026c2cdd1d7c33585e62e\transformed\play-services-basement-18.0.0\AndroidManifest.xml:22:13-58
+76            android:value="@integer/google_play_services_version" />
+76-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\b284489ed66026c2cdd1d7c33585e62e\transformed\play-services-basement-18.0.0\AndroidManifest.xml:23:13-66
+77
+78        <provider
+78-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+79            android:name="androidx.startup.InitializationProvider"
+79-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+80            android:authorities="edu.markc.bluetooth.androidx-startup"
+80-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+81            android:exported="false" >
+81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+82            <meta-data
+82-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+83                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+84                android:value="androidx.startup" />
+84-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+85            <meta-data
+85-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\4f04b5d013d4e9a91b26580011dee398\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+86                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+86-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\4f04b5d013d4e9a91b26580011dee398\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+87                android:value="androidx.startup" />
+87-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\4f04b5d013d4e9a91b26580011dee398\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+88        </provider>
+89    </application>
+90
+91</manifest>

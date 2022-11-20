@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-27:/values-v25/values-v25.xml",
+            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-30:/values-v25/values-v25.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\034f511a629c0fda711794a09fef4382\\transformed\\appcompat-1.5.1\\res\\values-v25\\values-v25.xml",
+                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\3884b320dccfe5fe24360e981acf9b57\\transformed\\appcompat-1.5.1\\res\\values-v25\\values-v25.xml",
                     "from": {
                         "startLines": "2,3,4,6",
                         "startColumns": "4,4,4,4",
