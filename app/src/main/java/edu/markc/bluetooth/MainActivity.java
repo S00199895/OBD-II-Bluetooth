@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.pires.obd.commands.SpeedCommand;
 import com.github.pires.obd.commands.engine.RPMCommand;
 import com.github.pires.obd.commands.protocol.EchoOffCommand;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static final UUID CONNUUID = UUID.fromString("ea3836df-b860-4f33-b338-4e032c124870");
     TextView tv1;
     FirebaseFirestore db;
+    BarChart bc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

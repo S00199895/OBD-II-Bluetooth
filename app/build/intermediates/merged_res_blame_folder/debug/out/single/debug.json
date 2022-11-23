@@ -1,70 +1,70 @@
 [
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/drawable_ic_launcher_background.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/xml_data_extraction_rules.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/xml/data_extraction_rules.xml"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/xml_backup_rules.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/xml/backup_rules.xml"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/layout_activity_main.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/layout/activity_main.xml"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/layout_activity_main.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/layout/activity_main.xml"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/drawable-v24/ic_launcher_foreground.xml"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/drawable-v24_ic_launcher_foreground.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/drawable-v24/ic_launcher_foreground.xml"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/xml_data_extraction_rules.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/drawable_ic_launcher_background.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/drawable/ic_launcher_background.xml"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/xml_backup_rules.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/xml/backup_rules.xml"
+        "merged": "edu.markc.bluetooth.app-merged_res-6:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-8:/mipmap-anydpi-v26/ic_launcher.xml"
     }
 ]
