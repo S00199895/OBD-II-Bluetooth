@@ -24,6 +24,11 @@ import android.widget.Toast;
 
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.pires.obd.commands.SpeedCommand;
 import com.github.pires.obd.commands.engine.RPMCommand;
 import com.github.pires.obd.commands.protocol.EchoOffCommand;
@@ -42,6 +47,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -53,90 +59,15 @@ public class MainActivity extends AppCompatActivity {
     private static final UUID CONNUUID = UUID.fromString("ea3836df-b860-4f33-b338-4e032c124870");
     TextView tv1;
     FirebaseFirestore db;
-    BarChart bc;
+    LineChart mChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv1 = findViewById(R.id.tV1);
-        db = FirebaseFirestore.getInstance();
-        BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
-        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-        if (bluetoothAdapter == null) {
-            // Device doesn't support Bluetooth
-        }
 
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
-
-        // Add a new document with a generated ID
-        db.collection("data")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-
-        if (!bluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
-                return;
-            }
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-
-
-        }
-
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        BluetoothDevice bose = bluetoothAdapter.getRemoteDevice("10:21:3E:48:A4:5B");
-        String boseName = bose.getName();
-
-        ParcelUuid[] uuidsR = null;
-
-        try{
-        Method getUuidsMethod = BluetoothAdapter.class.getDeclaredMethod("getUuids", null);
-
-        ParcelUuid[] uuids = (ParcelUuid[]) getUuidsMethod.invoke(bluetoothAdapter, null);
-        uuidsR = uuids;
-    }
-        catch (Exception e)
-        {
-
-        }
-        for (ParcelUuid uuid: uuidsR) {
-            Log.d(TAG, "UUID: " + uuid.getUuid().toString());
-        }
-        BluetoothSocket btSocket = null;
-
-        try {
-            btSocket = bose.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-            btSocket.connect();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-        System.out.print(btSocket);
+        BluetoothSocket btSocket = connectToOBD();
 
          if (btSocket.isConnected()) {
              Toast.makeText(MainActivity.this,
@@ -166,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                      @Override
                      public void run() {
 
-                         RPMCommand spd = new RPMCommand();
+                         /*RPMCommand spd = new RPMCommand();
                          try {
                              spd.run(finalInputStream, finalOutputStream);
                          } catch (IOException e) {
@@ -176,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
                          }
                          String result = spd.getResult();
                          String sub = result.substring(8);
-                         int rpm = Integer.parseInt(sub, 16)/4;
+                         int rpm = Integer.parseInt(sub, 16)/4;*/
                          //work
                          //int rn = ThreadLocalRandom.current().nextInt(0, 10);
-
+                         int rpm = getLiveRPM(finalInputStream, finalOutputStream);
                          tv1.setText(String.valueOf(rpm));
                          //work
                          handler.postDelayed(this, delay);
@@ -200,4 +131,128 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-}}
+}
+
+    private void addToFirestore() {
+        db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "Ada");
+        user.put("last", "Lovelace");
+        user.put("born", 1815);
+
+        // Add a new document with a generated ID
+        db.collection("data")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
+
+    private void makeLineChart() {
+        mChart = (LineChart) findViewById(R.id.lineChart);
+
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
+
+        ArrayList<Entry> yValues = new ArrayList<>();
+
+        yValues.add(new Entry(0, 60f));
+        yValues.add(new Entry(1, 50f));
+        yValues.add(new Entry(2, 20f));
+        yValues.add(new Entry(3, 70f));
+        yValues.add(new Entry(4, 100f));
+
+        LineDataSet set1 = new LineDataSet(yValues, "Data");
+        set1.setFillAlpha(110);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1);
+
+        LineData data = new LineData(dataSets);
+        mChart.setData(data);
+    }
+
+    private BluetoothSocket connectToOBD()
+    {
+        BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
+        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+        if (bluetoothAdapter == null) {
+            // Device doesn't support Bluetooth
+        }
+
+        if (!bluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+
+            }
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+
+
+        }
+
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        BluetoothDevice obd = bluetoothAdapter.getRemoteDevice("10:21:3E:48:A4:5B");
+        String obdName = obd.getName();
+
+        ParcelUuid[] uuidsR = null;
+
+        try{
+            Method getUuidsMethod = BluetoothAdapter.class.getDeclaredMethod("getUuids", null);
+
+            ParcelUuid[] uuids = (ParcelUuid[]) getUuidsMethod.invoke(bluetoothAdapter, null);
+            uuidsR = uuids;
+        }
+        catch (Exception e)
+        {
+
+        }
+        for (ParcelUuid uuid: uuidsR) {
+            Log.d(TAG, "UUID: " + uuid.getUuid().toString());
+        }
+        BluetoothSocket btSocket = null;
+
+        try {
+            btSocket = obd.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+            btSocket.connect();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        return btSocket;
+    }
+
+    private int getLiveRPM(InputStream finalInputStream, OutputStream finalOutputStream) {
+        RPMCommand spd = new RPMCommand();
+        try {
+            spd.run(finalInputStream, finalOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String result = spd.getResult();
+        String sub = result.substring(8);
+        int rpm = Integer.parseInt(sub, 16)/4;
+
+        return  rpm;
+    }
+}
