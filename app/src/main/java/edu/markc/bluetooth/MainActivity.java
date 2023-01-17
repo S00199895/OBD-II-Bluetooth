@@ -43,7 +43,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,9 +58,29 @@ public class MainActivity extends AppCompatActivity {
     TextView tv1;
     FirebaseFirestore db;
     LineChart mChart;
+    private  static  LocalDate localdate;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_PRIVILEGED
+    };
+    private static String[] PERMISSIONS_LOCATION = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_PRIVILEGED
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        checkPermissions();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv1 = findViewById(R.id.tV1);
@@ -118,12 +140,13 @@ public class MainActivity extends AppCompatActivity {
                              try {
                                  Map<String, Object> thisDoc = new HashMap<>();
                                  LocalDateTime date = LocalDateTime.now();
-
+                                 localdate = LocalDate.now();
                                  int rpm = getLiveRPM(finalInputStream, finalOutputStream);
 
                                  thisDoc.put("type", "RPM");
                                  thisDoc.put("value", rpm);
                                  thisDoc.put("datetime", date.toString());
+
 
                                  rpmList.add(thisDoc);
                                  tv1.setText(String.valueOf(rpm));
@@ -133,11 +156,13 @@ public class MainActivity extends AppCompatActivity {
                              catch (NullPointerException e)
                              {
                                  addToFirestore(rpmList);
+                                 read();
                              }
                          }
                          else {
                         //     ArrayList<Map<String, Object>> formattedValues = formatResults(rpmList);
                              addToFirestore(rpmList);
+                             read();
                          }
                      }
                  }, delay);
@@ -156,12 +181,38 @@ public class MainActivity extends AppCompatActivity {
         }
 }
 
+    private void checkPermissions(){
+        int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT);
+        int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
+        if (permission1 != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_STORAGE,
+                    1
+            );
+        } else if (permission2 != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_LOCATION,
+                    1
+            );
+        }
+    }
+
     private ArrayList<Map<String, Object>> read() {
         //read and query where type is rpm
         ArrayList<Map<String, Object>> readMaps = new ArrayList<>();
 
         db = FirebaseFirestore.getInstance();
-       db.collection("data").whereEqualTo("type", "RPM").orderBy("datetime", Query.Direction.ASCENDING)
+        /*
+        *  db.collection("data")
+                    .document(String.valueOf(LocalDate.now()))
+                    .collection(String.valueOf(oneDoc.get("type")oneDoc.get("type")))
+                    .add(oneDoc)/*.add(oneDoc)
+        * */
+       db.collection("data").document(String.valueOf(LocalDate.now())).collection("RPM")
+               .whereEqualTo("type", "RPM").orderBy("datetime", Query.Direction.ASCENDING)
                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                    @Override
                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -217,38 +268,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void addToFirestore(ArrayList<Map<String, Object>> objsToPush) {
         db = FirebaseFirestore.getInstance();
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         for (Map<String, Object> oneDoc : objsToPush) {
-            db.collection("data").add(oneDoc);
+
+            db.collection("data")
+                    .document(String.valueOf(LocalDate.now()))
+                    .collection(String.valueOf(oneDoc.get("type")/*oneDoc.get("type")*/))
+                    .add(oneDoc)/*.add(oneDoc)*/;
+
         }
-
-//        Map<String, Object> dateResults = new HashMap<>();
-//        dateResults.put("type", "RPM");
-//        dateResults.put("value", 1000);
-//        dateResults.put("date", "2022-11-30");
-        //db.collection("data").add(dateResults);
-
-//
-//        ArrayList<Map<String, Object>> datawewant = new ArrayList<>();
-//        db.collection("data")
-//                .whereEqualTo("date", "2022-11-30").whereEqualTo("type", "RPM").get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                                datawewant.add(document.getData());
-//                            }
-//                        } else {
-//                            Log.d(TAG, "Error getting documents: ", task.getException());
-//                        }
-//                    }
-//                });
-//
-//        int val = (Integer)datawewant.get(0).get("value");
-//        System.out.println((String.valueOf(val)));
-
 
     }
 
