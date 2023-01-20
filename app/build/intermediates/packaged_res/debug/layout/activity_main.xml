@@ -14,10 +14,10 @@
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.024" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
@@ -26,7 +26,73 @@
         android:layout_margin="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.424">
+
+
+    </com.github.mikephil.charting.charts.LineChart>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="402dp"
+        android:layout_height="78dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.972">
+
+        <!--adding a radio button -->
+        <RadioButton
+            android:id="@+id/dayRB"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="false"
+            android:padding="2dp"
+            android:text="Day"
+            android:textAlignment="center"
+            android:textSize="14sp" />
+
+        <!--adding a radio button -->
+        <RadioButton
+            android:id="@+id/weekRB"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="false"
+            android:padding="2dp"
+
+            android:text="Week"
+            android:textAlignment="center"
+            android:textSize="14sp" />
+
+        <!--adding a radio button -->
+        <RadioButton
+            android:id="@+id/MonthRB"
+            android:layout_width="201dp"
+            android:layout_height="59dp"
+            android:layout_gravity="center"
+            android:checked="false"
+
+            android:padding="2dp"
+
+            android:text="Month"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            tools:layout_editor_absoluteX="200dp"
+            tools:layout_editor_absoluteY="658dp" />
+    </RadioGroup>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

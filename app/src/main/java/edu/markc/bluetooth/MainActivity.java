@@ -18,11 +18,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.Log;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -33,20 +37,28 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
     TextView tv1;
     FirebaseFirestore db;
     LineChart mChart;
+    RadioGroup rG;
+    RadioButton selected;
+
+    RadioButton day;
+    RadioButton week;
+    RadioButton month;
+
     private  static  LocalDate localdate;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -78,28 +97,52 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.BLUETOOTH_PRIVILEGED
     };
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkPermissions();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv1 = findViewById(R.id.tV1);
+        rG = (RadioGroup) findViewById(R.id.radioGroup);
+
+        day = (RadioButton) findViewById(R.id.dayRB);        week = (RadioButton) findViewById(R.id.weekRB);
+        month = (RadioButton) findViewById(R.id.MonthRB);
+
+        day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                read();
+            }
+        });
+        week.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                read();
+            }
+        });
+        month.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                read();
+            }
+        });
+
         ArrayList<Map<String, Object>> reads = read();
         BluetoothSocket btSocket = connectToOBD();
-       // ArrayList<Integer> testrpm = new ArrayList<>();
+//        ArrayList<Integer> testrpm = new ArrayList<>();
 //        testrpm.add(20);
 //        testrpm.add(30);
 //        testrpm.add(40);
 //        testrpm.add(60);
 //        testrpm.add(20);testrpm.add(20);
-
+//
 //       ArrayList<Map<String, Object>> objsToPush = formatResults(testrpm);
 //
 //        addToFirestore(objsToPush);
 
-      //  ArrayList<Map<String, Object>> wantedReadings = read();
-
-
+       // ArrayList<Map<String, Object>> wantedReadings = read();
          if (btSocket.isConnected()) {
              Toast.makeText(MainActivity.this,
                      "Connected to " + btSocket, Toast.LENGTH_LONG).show();
@@ -131,23 +174,18 @@ public class MainActivity extends AppCompatActivity {
                  handler.postDelayed(new Runnable() {
                      @Override
                      public void run() {
-                         //need to check if obd connected
-                         //else
 
                          //work
                          if (btSocket.isConnected()) {
-                           //  getRunTime(finalInputStream, finalOutputStream);
                              try {
                                  Map<String, Object> thisDoc = new HashMap<>();
-                                 LocalDateTime date = LocalDateTime.now();
+
                                  localdate = LocalDate.now();
                                  int rpm = getLiveRPM(finalInputStream, finalOutputStream);
 
                                  thisDoc.put("type", "RPM");
                                  thisDoc.put("value", rpm);
-                                 thisDoc.put("datetime", date.toString());
-
-
+                                 thisDoc.put("datetime", Timestamp.now() );
                                  rpmList.add(thisDoc);
                                  tv1.setText(String.valueOf(rpm));
                                  //work
@@ -160,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
                              }
                          }
                          else {
-                        //     ArrayList<Map<String, Object>> formattedValues = formatResults(rpmList);
                              addToFirestore(rpmList);
                              read();
                          }
@@ -173,14 +210,7 @@ public class MainActivity extends AppCompatActivity {
             }
             catch(Exception e){
 
-            }
-
-
-
-
-        }
-}
-
+            } }}
     private void checkPermissions(){
         int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT);
         int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
@@ -202,46 +232,154 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Map<String, Object>> read() {
         //read and query where type is rpm
-        ArrayList<Map<String, Object>> readMaps = new ArrayList<>();
+         ArrayList<Map<String, Object>>[] readMaps = new ArrayList[]{new ArrayList<>()};
 
         db = FirebaseFirestore.getInstance();
-        /*
-        *  db.collection("data")
-                    .document(String.valueOf(LocalDate.now()))
-                    .collection(String.valueOf(oneDoc.get("type")oneDoc.get("type")))
-                    .add(oneDoc)/*.add(oneDoc)
-        * */
-       db.collection("data").document(String.valueOf(LocalDate.now())).collection("RPM")
-               .whereEqualTo("type", "RPM").orderBy("datetime", Query.Direction.ASCENDING)
-               .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                   @Override
-                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                       if (task.isSuccessful())
-                       {
-                           for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                               System.out.println(doc.getData());
-                               readMaps.add(doc.getData());
 
-                           }
-                           makeLineChart(readMaps);
+        String interval = checkRadio();
+        //interval = "Week";
+        if (interval.contains("Day")) {
 
-                       } else {
-                           Log.d(TAG, "get failed with ", task.getException());
-                       }
-                       }
+            db.collection("data").document(String.valueOf(LocalDate.now())).collection("RPM")
+                    .whereEqualTo("type", "RPM").orderBy("datetime", Query.Direction.ASCENDING)
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                                System.out.println(doc.getData());
+                                readMaps[0].add(doc.getData());
+                            }
+                            makeLineChart(readMaps[0]);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            System.out.println("printing "+e.toString());
+                        }
+                    });
+        }
+        else if (interval.contains("Week") )
+        {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            LocalDateTime lastWeek = LocalDateTime.now().minusWeeks(1);
+            ZoneId zid = ZoneId.of("UTC");
+            ZonedDateTime zonedDateTime = lastWeek.atZone(zid);
+            Instant i = zonedDateTime.toInstant();
+            date = Date.from(i);
+            db.collection("data").whereGreaterThanOrEqualTo("datedoc", date)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    System.out.println("printing the " + document);
+                                }
+                            }
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            ArrayList<Map<String, Object>> weekMaps = new ArrayList<Map<String, Object>>();
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                //gets the 2023-01-20 document
+                                System.out.println("printing the " + document);
 
-               }).addOnFailureListener(new OnFailureListener() {
-                   @Override
-                   public void onFailure(@NonNull Exception e) {
-                       e.printStackTrace();
-                   }
-               });
+                                //then get rpm colelction within
+                                document.getReference().collection("RPM").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        System.out.println(queryDocumentSnapshots);
+                                        //queryDocumentSnapshots.getDocuments();
+                                        for (DocumentSnapshot d : queryDocumentSnapshots.getDocuments())
+                                        {
+                                            String test = d.getData().toString();
+                                            weekMaps.add(d.getData());
+                                        }
+                                        readMaps[0] = weekMaps;
+                                        makeLineChart(readMaps[0]);
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        String et = e.toString();
+                                    }
+                                });
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            String t = e.toString();
+                        }
+                    });
+        }
+        else if (interval.contains("Month"))
+        {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            LocalDateTime lastWeek = LocalDateTime.now().minusMonths(1);
+            ZoneId zid = ZoneId.of("UTC");
+            ZonedDateTime zonedDateTime = lastWeek.atZone(zid);
+            Instant i = zonedDateTime.toInstant();
+            date = Date.from(i);
+//change to ascending
+            //19012023
+            db.collection("data").whereGreaterThanOrEqualTo("datedoc", date)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    System.out.println("printing the " + document);
+                                    //apparently this works
+                                }
+                            }
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            ArrayList<Map<String, Object>> weekMaps = new ArrayList<Map<String, Object>>();
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                //gets the 2023-01-20 document
+                                System.out.println("printing the " + document);
+
+                                //then get rpm colelction within
+                                document.getReference().collection("RPM").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        System.out.println(queryDocumentSnapshots);
+                                        //queryDocumentSnapshots.getDocuments();
+                                        for (DocumentSnapshot d : queryDocumentSnapshots.getDocuments())
+                                        {
+                                            String test = d.getData().toString();
+                                            weekMaps.add(d.getData());
+                                        }
+                                        readMaps[0] = weekMaps;
+                                        makeLineChart(readMaps[0]);
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        String et = e.toString();
+                                    }
+                                });
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            String t = e.toString();
+                        }
+                    });
+        }
 
 
 
-        return readMaps;
+        return readMaps[0];
     }
-
     private ArrayList<Map<String, Object>> formatResults(ArrayList<Integer> rpmList) {
         //foreach
         //put into a json object array
@@ -263,50 +401,42 @@ public class MainActivity extends AppCompatActivity {
         return arrayOfValues;
         //addToFirestore(arrayOfValues, 1, date, "rpm");
     }
-
-
-
-    private void addToFirestore(ArrayList<Map<String, Object>> objsToPush) {
+ private void addToFirestore(ArrayList<Map<String, Object>> objsToPush) {
         db = FirebaseFirestore.getInstance();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         for (Map<String, Object> oneDoc : objsToPush) {
 
             db.collection("data")
                     .document(String.valueOf(LocalDate.now()))
-                    .collection(String.valueOf(oneDoc.get("type")/*oneDoc.get("type")*/))
-                    .add(oneDoc)/*.add(oneDoc)*/;
-
+                    .collection(String.valueOf(oneDoc.get("type")))
+                    .add(oneDoc);
         }
+        Date dt = new Date();
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("datedoc", dt);
 
-    }
-
-    private void addToFirestore() {
-        db = FirebaseFirestore.getInstance();
-
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
-
-        // Add a new document with a generated ID
         db.collection("data")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                .document(String.valueOf(LocalDate.now())).set(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Document update successful!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
+                        Log.w(TAG, "Error updating document", e);
                     }
                 });
     }
 
+
     private void makeLineChart(ArrayList<Map<String, Object>> chartData) {
 
+        //check button selected
+        checkRadio();
+        
         System.out.println("chart valeus");
         System.out.println(chartData);
         //give this chart times for order and dates
@@ -314,6 +444,19 @@ public class MainActivity extends AppCompatActivity {
         //display chart
         ArrayList<Entry> yValues = new ArrayList<>();
 
+        //sort
+        chartData.sort(new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                Timestamp t1 = (Timestamp) o1.get("datetime");
+                Timestamp t2 = (Timestamp) o2.get("datetime");
+
+                Date d1 = t1.toDate();
+                Date d2 = t2.toDate();
+
+                return d1.compareTo(d2);
+            }
+        });
 
         int i = 0;
         for(Map<String, Object> oneDoc : chartData)
@@ -325,8 +468,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("yvalues");
         System.out.println(yValues);
 
-
+        Description d = new Description();
+        d.setText("RPM of this " + checkRadio());
         mChart = (LineChart) findViewById(R.id.lineChart);
+        mChart.setDescription(d);
+
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
@@ -342,7 +488,19 @@ public class MainActivity extends AppCompatActivity {
         mChart.setData(data);
     }
 
-    private BluetoothSocket connectToOBD()
+    private String checkRadio() {
+        int selectedID = rG.getCheckedRadioButtonId();
+        selected = (RadioButton) findViewById(selectedID);
+
+        if (selectedID == -1) {
+            Toast.makeText(MainActivity.this, "Please select a time period", Toast.LENGTH_SHORT).show();
+        }
+        if (selected != null)
+            return selected.getText().toString();
+        return "";
+    }
+
+        private BluetoothSocket connectToOBD()
     {
         BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
@@ -353,20 +511,9 @@ public class MainActivity extends AppCompatActivity {
         if (!bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
             }
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-
-
         }
-
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         BluetoothDevice obd = bluetoothAdapter.getRemoteDevice("10:21:3E:48:A4:5B");
         String obdName = obd.getName();
@@ -381,7 +528,6 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (Exception e)
         {
-
         }
         for (ParcelUuid uuid: uuidsR) {
             Log.d(TAG, "UUID: " + uuid.getUuid().toString());
@@ -429,6 +575,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String result = rTime.getFormattedResult();
-        Log.d(TAG, "getRunTime: " + result);
+        Log.d(TAG, "getRunTime: " + resu0lt);
     }
 }

@@ -2682,6 +2682,7 @@ int id BOTTOM_START 0x7f080002
 int id CTRL 0x7f080003
 int id FUNCTION 0x7f080004
 int id META 0x7f080005
+int id MonthRB 0x7f0801e4
 int id NO_DEBUG 0x7f080006
 int id SHIFT 0x7f080007
 int id SHOW_ALL 0x7f080008
@@ -2817,6 +2818,7 @@ int id customPanel 0x7f080089
 int id cut 0x7f08008a
 int id dark 0x7f08008b
 int id date_picker_actions 0x7f08008c
+int id dayRB 0x7f0801e5
 int id decelerate 0x7f08008d
 int id decelerateAndComplete 0x7f08008e
 int id decor_content_parent 0x7f08008f
@@ -3019,6 +3021,7 @@ int id pressed 0x7f080153
 int id progress_circular 0x7f080154
 int id progress_horizontal 0x7f080155
 int id radio 0x7f080156
+int id radioGroup 0x7f0801e6
 int id ratio 0x7f080157
 int id rectangles 0x7f080158
 int id reverseSawtooth 0x7f080159
@@ -3150,6 +3153,7 @@ int id view_tree_saved_state_registry_owner 0x7f0801d6
 int id view_tree_view_model_store_owner 0x7f0801d7
 int id visible 0x7f0801d8
 int id visible_removing_fragment_view_tag 0x7f0801d9
+int id weekRB 0x7f0801e7
 int id west 0x7f0801da
 int id wide 0x7f0801db
 int id withText 0x7f0801dc

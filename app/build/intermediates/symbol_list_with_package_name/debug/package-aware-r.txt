@@ -2683,6 +2683,7 @@ id BOTTOM_START
 id CTRL
 id FUNCTION
 id META
+id MonthRB
 id NO_DEBUG
 id SHIFT
 id SHOW_ALL
@@ -2818,6 +2819,7 @@ id customPanel
 id cut
 id dark
 id date_picker_actions
+id dayRB
 id decelerate
 id decelerateAndComplete
 id decor_content_parent
@@ -3020,6 +3022,7 @@ id pressed
 id progress_circular
 id progress_horizontal
 id radio
+id radioGroup
 id ratio
 id rectangles
 id reverseSawtooth
@@ -3151,6 +3154,7 @@ id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
 id visible
 id visible_removing_fragment_view_tag
+id weekRB
 id west
 id wide
 id withText

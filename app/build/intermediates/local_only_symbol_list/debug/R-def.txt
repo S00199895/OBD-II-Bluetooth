@@ -9,8 +9,12 @@ color teal_700
 color white
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+id MonthRB
+id dayRB
 id lineChart
+id radioGroup
 id tV1
+id weekRB
 layout activity_main
 mipmap ic_launcher
 mipmap ic_launcher_round
