@@ -1,5 +1,6 @@
 R_DEF: Internal format may change without notice
 local
+array readings_array
 color black
 color purple_200
 color purple_500
@@ -13,7 +14,9 @@ id MonthRB
 id dayRB
 id lineChart
 id radioGroup
-id tV1
+id spinner
+id tVRPM
+id tVSpeed
 id weekRB
 layout activity_main
 mipmap ic_launcher

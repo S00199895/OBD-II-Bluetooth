@@ -7,29 +7,42 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/tV1"
-        android:layout_width="138dp"
-        android:layout_height="74dp"
-        android:text="Replace"
+        android:id="@+id/tVRPM"
+        android:layout_width="111dp"
+        android:layout_height="50dp"
+        android:text="RPM"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.943"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.008" />
+
+    <TextView
+        android:id="@+id/tVSpeed"
+        android:layout_width="111dp"
+        android:layout_height="50dp"
+        android:text="Speed"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.098" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
-        android:layout_width="338dp"
-        android:layout_height="519dp"
+        android:layout_width="365dp"
+        android:layout_height="485dp"
         android:layout_margin="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.424">
+        app:layout_constraintVertical_bias="0.548">
 
 
     </com.github.mikephil.charting.charts.LineChart>
@@ -92,7 +105,16 @@
             tools:layout_editor_absoluteY="658dp" />
     </RadioGroup>
 
-
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="246dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.096"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

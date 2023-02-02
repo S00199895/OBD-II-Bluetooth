@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="readings_array">
+            <item>RPM</item>
+            <item>Speed</item>
+        </string-array>
     <color name="black">#FF000000</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">bluetooth</string>
+
+        <string-array name="readings_array">
+            <item>RPM</item>
+            <item>Speed</item>
+        </string-array>
 </resources>

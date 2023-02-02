@@ -15,12 +15,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.ParcelUuid;
+import android.os.SystemClock;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.pires.obd.commands.SpeedCommand;
 import com.github.pires.obd.commands.engine.RPMCommand;
 import com.github.pires.obd.commands.protocol.AvailablePidsCommand_21_40;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,15 +67,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
     private static final UUID CONNUUID = UUID.fromString("ea3836df-b860-4f33-b338-4e032c124870");
-    TextView tv1;
+    TextView tVRPM;
+    TextView tVSpeed;
     FirebaseFirestore db;
     LineChart mChart;
     RadioGroup rG;
     RadioButton selected;
+    Spinner selectSpinner;
 
     RadioButton day;
     RadioButton week;
@@ -104,32 +112,39 @@ public class MainActivity extends AppCompatActivity {
         checkPermissions();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv1 = findViewById(R.id.tV1);
+        tVRPM = findViewById(R.id.tVRPM);
+        tVSpeed = findViewById(R.id.tVSpeed);
         rG = (RadioGroup) findViewById(R.id.radioGroup);
 
-        day = (RadioButton) findViewById(R.id.dayRB);        week = (RadioButton) findViewById(R.id.weekRB);
+        selectSpinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.readings_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        selectSpinner.setAdapter(adapter);
+
+        day = (RadioButton) findViewById(R.id.dayRB);
+        week = (RadioButton) findViewById(R.id.weekRB);
         month = (RadioButton) findViewById(R.id.MonthRB);
 
         day.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                read();
+                read(selectSpinner.getSelectedItem().toString());
             }
         });
         week.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                read();
+                read(selectSpinner.getSelectedItem().toString());
             }
         });
         month.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                read();
+                read(selectSpinner.getSelectedItem().toString());
             }
         });
-
-        ArrayList<Map<String, Object>> reads = read();
+        ArrayList<Map<String, Object>> reads = read(selectSpinner.getSelectedItem().toString());
         BluetoothSocket btSocket = connectToOBD();
 //        ArrayList<Integer> testrpm = new ArrayList<>();
 //        testrpm.add(20);
@@ -162,47 +177,129 @@ public class MainActivity extends AppCompatActivity {
                  e.printStackTrace();
              }
              try {
-                 final Handler handler = new Handler();
+                // final Handler handler = new Handler();
 
-                 final int delay = 5000;
+               //  final int delay = 5000;
 
                  InputStream finalInputStream = inputStream;
                  OutputStream finalOutputStream = outputStream;
 
                  ArrayList<Map<String, Object>> rpmList = new ArrayList<>();
 
-                 handler.postDelayed(new Runnable() {
+                 ArrayList<Map<String, Object>> speedList = new ArrayList<>();
+
+                Executor executor = Executors.newFixedThreadPool(2);
+                 //handler.postDelayed
+                 //rpm thread
+                 executor.execute(new Runnable() {
                      @Override
                      public void run() {
+                        // String s = selectSpinner.getSelectedItem().toString();
 
-                         //work
-                         if (btSocket.isConnected()) {
+                       //  if (s.contains("RPM")) {
+                             //work
+
                              try {
-                                 Map<String, Object> thisDoc = new HashMap<>();
+                                 while (btSocket.isConnected()) {
+                                     Map<String, Object> thisDoc = new HashMap<>();
 
-                                 localdate = LocalDate.now();
-                                 int rpm = getLiveRPM(finalInputStream, finalOutputStream);
+                                     localdate = LocalDate.now();
+                                     //here
+                                     //make it check that RPM is the one seelcted from the dropdown - new method
 
-                                 thisDoc.put("type", "RPM");
-                                 thisDoc.put("value", rpm);
-                                 thisDoc.put("datetime", Timestamp.now() );
-                                 rpmList.add(thisDoc);
-                                 tv1.setText(String.valueOf(rpm));
-                                 //work
-                                 handler.postDelayed(this, delay);
-                             }
-                             catch (NullPointerException e)
-                             {
-                                 addToFirestore(rpmList);
-                                 read();
-                             }
+                                     int rpm = getLiveRPM(finalInputStream, finalOutputStream);
+
+                                     //this line needs to be general for variables
+                                     thisDoc.put("type", "RPM");
+                                     thisDoc.put("value", rpm);
+                                     thisDoc.put("datetime", Timestamp.now());
+                                     rpmList.add(thisDoc);
+                                     tVRPM.setText(String.valueOf(rpm));
+
+                                     try {
+                                         Thread.sleep(5000);
+                                     } catch (InterruptedException e) {
+                                         e.printStackTrace();
+                                     }
+                                     //work
+                                     // handler.postDelayed(this, delay);
+                                     }
+                                 } catch (NullPointerException e) {
+                                      addToFirestore(rpmList);
+                                      read(selectSpinner.getSelectedItem().toString());
+                                 }
+                                 //try catch for delay
+
+                             /*else {*/
+                            // addToFirestore(rpmList);
+                           //  read(selectSpinner.getSelectedItem().toString());
                          }
-                         else {
-                             addToFirestore(rpmList);
-                             read();
+                   //  }
+                     //}
+
+
+                 });
+                 executor.execute(new Runnable() {
+                     //speed thread
+                     @Override
+                     public void run() {
+                         //String s = selectSpinner.getSelectedItem().toString();
+
+                         /*if (s.contains("Speed"))
+                         {*/
+                             //realistically all will be running at once
+                             //multi-threading
+                             //change to speed
+
+                             //speed add firestore emthod
+                             //work
+
+                                 try {
+                                     while (btSocket.isConnected()) {
+                                         Map<String, Object> thisDoc = new HashMap<>();
+
+                                         localdate = LocalDate.now();
+                                         //here
+                                         //make it check that RPM is the one seelcted from the dropdown - new method
+
+                                         int speed = getLiveSpeed(finalInputStream, finalOutputStream);//getLiveRPM(finalInputStream, finalOutputStream);
+
+                                         //this line needs to be general for variables
+                                         thisDoc.put("type", "Speed");
+                                         thisDoc.put("value", speed);
+                                         thisDoc.put("datetime", Timestamp.now());
+                                         speedList.add(thisDoc);
+                                         tVSpeed.setText(String.valueOf(speed));
+                                         try {
+                                             Thread.sleep(5000);
+                                         } catch (InterruptedException e) {
+                                             e.printStackTrace();
+                                         }
+                                         //work
+                                         //  handler.postDelayed(this, delay);
+                                     }
+                                 } catch (NullPointerException e) {
+                                     //different method?
+                                     //check within method extract type variable
+                                     addToFirestore(speedList);
+                                     read(selectSpinner.getSelectedItem().toString());
+                                 }
+                            //try and modularise it
+                         //make part using getLiveX a method use variables
+                         //get each thread to run variatiosn of it
+
+                         //amke more methods
+                         //different classes?
+                         //firestore class?
+                         //speed
+                         //rpm classes?
+
+                                // addToFirestore(rpmList);
+                              //   read(selectSpinner.getSelectedItem().toString());
+
                          }
-                     }
-                 }, delay);
+                     //}
+                 });
 
                /* ObdRawCommand custom = new ObdRawCommand("00"); //command can be any ELM command like "atz" or "0130"
                 custom.run(inputStream, outputStream); //inputs - input stream, outputs - output stream
@@ -211,6 +308,46 @@ public class MainActivity extends AppCompatActivity {
             catch(Exception e){
 
             } }}
+
+    private int getLiveSpeed(InputStream finalInputStream, OutputStream finalOutputStream) {
+        SpeedCommand spd = new SpeedCommand();
+        try {
+            spd.run(finalInputStream, finalOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String result = spd.getResult();
+        String sub = result.substring(8);
+        return Integer.parseInt(sub, 16);
+    }
+
+
+
+    //mecessary for refreshing graph
+    public void simulateTap(View view) {
+        long downTime = SystemClock.uptimeMillis();
+        long eventTime = SystemClock.uptimeMillis() + 100;
+
+        float x = view.getWidth() / 2.0f;
+        float y = view.getHeight() / 2.0f;
+
+        int metaState = 0;
+        MotionEvent motionEvent = MotionEvent.obtain(
+                downTime,
+                eventTime,
+                MotionEvent.ACTION_UP,
+                x,
+                y,
+                metaState
+        );
+
+        view.dispatchTouchEvent(motionEvent);
+    }
+
+
+
     private void checkPermissions(){
         int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT);
         int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
@@ -230,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<Map<String, Object>> read() {
+    private ArrayList<Map<String, Object>> read(String type) {
         //read and query where type is rpm
          ArrayList<Map<String, Object>>[] readMaps = new ArrayList[]{new ArrayList<>()};
 
@@ -240,8 +377,10 @@ public class MainActivity extends AppCompatActivity {
         //interval = "Week";
         if (interval.contains("Day")) {
 
-            db.collection("data").document(String.valueOf(LocalDate.now())).collection("RPM")
-                    .whereEqualTo("type", "RPM").orderBy("datetime", Query.Direction.ASCENDING)
+            //change these RPMs to a variable
+            //has to be a parameter
+            db.collection("data").document(String.valueOf(LocalDate.now())).collection(type)
+                    .whereEqualTo("type", type).orderBy("datetime", Query.Direction.ASCENDING)
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -286,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("printing the " + document);
 
                                 //then get rpm colelction within
-                                document.getReference().collection("RPM").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                document.getReference().collection(type).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                         System.out.println(queryDocumentSnapshots);
@@ -346,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("printing the " + document);
 
                                 //then get rpm colelction within
-                                document.getReference().collection("RPM").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                document.getReference().collection(type).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                         System.out.println(queryDocumentSnapshots);
@@ -469,7 +608,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(yValues);
 
         Description d = new Description();
-        d.setText("RPM of this " + checkRadio());
+        d.setText(selectSpinner.getSelectedItem().toString() + " of this " + checkRadio());
         mChart = (LineChart) findViewById(R.id.lineChart);
         mChart.setDescription(d);
 
@@ -486,6 +625,7 @@ public class MainActivity extends AppCompatActivity {
 
         LineData data = new LineData(dataSets);
         mChart.setData(data);
+        simulateTap(mChart);
     }
 
     private String checkRadio() {
@@ -575,6 +715,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String result = rTime.getFormattedResult();
-        Log.d(TAG, "getRunTime: " + resu0lt);
+        Log.d(TAG, "getRunTime: " + result);
     }
 }
