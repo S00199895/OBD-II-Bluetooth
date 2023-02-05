@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -85,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
     RadioButton week;
     RadioButton month;
 
+    Button btn;
+    Button btnStats;
+
     private  static  LocalDate localdate;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -112,10 +116,31 @@ public class MainActivity extends AppCompatActivity {
         checkPermissions();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
         rG = (RadioGroup) findViewById(R.id.radioGroup);
 
+        btn = (Button) findViewById(R.id.buttonre);
+        btnStats = (Button) findViewById(R.id.btnStats);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, JobsActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnStats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, StatsActivity.class);
+                //good idea to pass the current spinner value in future
+                startActivity(i);
+            }
+        });
         selectSpinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.readings_array, android.R.layout.simple_spinner_item);
@@ -540,6 +565,7 @@ public class MainActivity extends AppCompatActivity {
         return arrayOfValues;
         //addToFirestore(arrayOfValues, 1, date, "rpm");
     }
+
  private void addToFirestore(ArrayList<Map<String, Object>> objsToPush) {
         db = FirebaseFirestore.getInstance();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

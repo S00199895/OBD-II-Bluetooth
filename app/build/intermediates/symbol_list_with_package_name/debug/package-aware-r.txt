@@ -2750,6 +2750,7 @@ id action_text
 id actions
 id activity_chooser_view_content
 id add
+id addNoteBtn
 id adjust_height
 id adjust_width
 id alertTitle
@@ -2779,7 +2780,10 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btnSave
+id btnStats
 id buttonPanel
+id buttonre
 id cache_measures
 id callMeasure
 id cancel_button
@@ -2849,6 +2853,8 @@ id dragRight
 id dragStart
 id dragUp
 id dropdown_menu
+id eTContent
+id eTTitle
 id easeIn
 id easeInOut
 id easeOut
@@ -2906,12 +2912,14 @@ id immediateStop
 id included
 id indeterminate
 id info
+id infoSection
 id invisible
 id inward
 id italic
 id item_touch_helper_previous_elevation
 id jumpToEnd
 id jumpToStart
+id lVNotes
 id labeled
 id layout
 id left
@@ -2996,6 +3004,8 @@ id noState
 id none
 id normal
 id north
+id noteDate
+id noteTitle
 id notification_background
 id notification_main_column
 id notification_main_column_container
@@ -3074,6 +3084,7 @@ id south
 id spacer
 id special_effects_controller_view_tag
 id spinner
+id spinnerReading
 id spline
 id split_action_bar
 id spread
@@ -3095,6 +3106,7 @@ id stretch
 id submenuarrow
 id submit_area
 id supportScrollUp
+id tV
 id tVRPM
 id tVSpeed
 id tabMode
@@ -3291,7 +3303,10 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_edit_job
+layout activity_jobs
 layout activity_main
+layout activity_stats
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -3308,6 +3323,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout job_layout
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title

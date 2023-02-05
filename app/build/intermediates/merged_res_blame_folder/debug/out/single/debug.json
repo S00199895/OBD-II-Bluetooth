@@ -8,16 +8,28 @@
         "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-34:\\xml\\backup_rules.xml"
     },
     {
+        "merged": "edu.markc.bluetooth.app-merged_res-32:/layout_activity_stats.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-34:/layout/activity_stats.xml"
+    },
+    {
+        "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\layout_activity_jobs.xml.flat",
+        "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-34:\\layout\\activity_jobs.xml"
+    },
+    {
         "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-34:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\layout_activity_stats.xml.flat",
+        "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-34:\\layout\\activity_stats.xml"
     },
     {
         "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\xml_data_extraction_rules.xml.flat",
         "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-34:\\xml\\data_extraction_rules.xml"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-32:/layout_activity_main.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-34:/layout/activity_main.xml"
+        "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\layout_job_layout.xml.flat",
+        "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-34:\\layout\\job_layout.xml"
     },
     {
         "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
@@ -50,6 +62,10 @@
     {
         "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\mipmap-xhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-34:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\layout_activity_edit_job.xml.flat",
+        "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-34:\\layout\\activity_edit_job.xml"
     },
     {
         "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-32:\\layout_activity_main.xml.flat",

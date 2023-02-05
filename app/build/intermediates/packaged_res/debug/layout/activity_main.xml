@@ -116,5 +116,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
 
+    <Button
+        android:id="@+id/buttonre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To notes"
+        app:layout_constraintBottom_toTopOf="@+id/lineChart"
+        app:layout_constraintEnd_toStartOf="@+id/tVSpeed"
+        app:layout_constraintHorizontal_bias="0.835"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.407" />
+
+    <Button
+        android:id="@+id/btnStats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="to stats"
+        app:layout_constraintBottom_toTopOf="@+id/lineChart"
+        app:layout_constraintEnd_toStartOf="@+id/tVSpeed"
+        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.481" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
