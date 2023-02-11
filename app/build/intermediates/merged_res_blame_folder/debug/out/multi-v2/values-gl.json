@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-30:/values-gl/values-gl.xml",
+            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-31:/values-gl/values-gl.xml",
             "map": [
                 {
                     "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\888ee2e8fcc41cb2c09b6c71362471b0\\transformed\\material-1.7.0\\res\\values-gl\\values-gl.xml",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\b284489ed66026c2cdd1d7c33585e62e\\transformed\\play-services-basement-18.0.0\\res\\values-gl\\values.xml",
+                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\8362b4ef4f861fa75926f58a6ee6d70d\\transformed\\jetified-play-services-basement-18.0.0\\res\\values-gl\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -40,7 +40,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\26b3666345201c303a3333024bb53271\\transformed\\play-services-base-18.0.1\\res\\values-gl\\values.xml",
+                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\af70d03cddd8f74e660d4209bf266ed2\\transformed\\jetified-play-services-base-18.0.1\\res\\values-gl\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",

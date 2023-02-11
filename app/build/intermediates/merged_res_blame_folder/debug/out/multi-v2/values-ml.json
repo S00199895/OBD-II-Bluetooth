@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-30:/values-ml/values-ml.xml",
+            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-31:/values-ml/values-ml.xml",
             "map": [
                 {
                     "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\3884b320dccfe5fe24360e981acf9b57\\transformed\\appcompat-1.5.1\\res\\values-ml\\values-ml.xml",
@@ -21,24 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\26b3666345201c303a3333024bb53271\\transformed\\play-services-base-18.0.1\\res\\values-ml\\values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
-                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "193,308,483,618,735,895,1016,1117,1219,1397,1509,1679,1811,1956,2113,2173,2238",
-                        "endColumns": "114,174,134,116,159,120,100,101,177,111,169,131,144,156,59,64,87",
-                        "endOffsets": "307,482,617,734,894,1015,1116,1218,1396,1508,1678,1810,1955,2112,2172,2237,2325"
-                    },
-                    "to": {
-                        "startLines": "37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "3453,3572,3751,3890,4011,4175,4300,4405,4671,4853,4969,5143,5279,5428,5589,5653,5722",
-                        "endColumns": "118,178,138,120,163,124,104,105,181,115,173,135,148,160,63,68,91",
-                        "endOffsets": "3567,3746,3885,4006,4170,4295,4400,4506,4848,4964,5138,5274,5423,5584,5648,5717,5809"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\b284489ed66026c2cdd1d7c33585e62e\\transformed\\play-services-basement-18.0.0\\res\\values-ml\\values.xml",
+                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\8362b4ef4f861fa75926f58a6ee6d70d\\transformed\\jetified-play-services-basement-18.0.0\\res\\values-ml\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -88,6 +71,23 @@
                         "startOffsets": "10224",
                         "endColumns": "100",
                         "endOffsets": "10320"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\af70d03cddd8f74e660d4209bf266ed2\\transformed\\jetified-play-services-base-18.0.1\\res\\values-ml\\values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "193,308,483,618,735,895,1016,1117,1219,1397,1509,1679,1811,1956,2113,2173,2238",
+                        "endColumns": "114,174,134,116,159,120,100,101,177,111,169,131,144,156,59,64,87",
+                        "endOffsets": "307,482,617,734,894,1015,1116,1218,1396,1508,1678,1810,1955,2112,2172,2237,2325"
+                    },
+                    "to": {
+                        "startLines": "37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "3453,3572,3751,3890,4011,4175,4300,4405,4671,4853,4969,5143,5279,5428,5589,5653,5722",
+                        "endColumns": "118,178,138,120,163,124,104,105,181,115,173,135,148,160,63,68,91",
+                        "endOffsets": "3567,3746,3885,4006,4170,4295,4400,4506,4848,4964,5138,5274,5423,5584,5648,5717,5809"
                     }
                 }
             ]

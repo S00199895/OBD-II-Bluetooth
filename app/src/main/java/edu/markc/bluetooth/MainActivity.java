@@ -11,7 +11,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -62,6 +64,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,6 +73,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import br.ufrn.imd.obd.commands.ObdCommandGroup;
+import br.ufrn.imd.obd.commands.control.TroubleCodesCommand;
+import br.ufrn.imd.obd.utils.TroubleCodeDescription;
 
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
@@ -117,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
 
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
@@ -208,6 +217,8 @@ public class MainActivity extends AppCompatActivity {
 
                  InputStream finalInputStream = inputStream;
                  OutputStream finalOutputStream = outputStream;
+
+                 getfaults(finalInputStream, finalOutputStream);
 
                  ArrayList<Map<String, Object>> rpmList = new ArrayList<>();
 
@@ -331,8 +342,47 @@ public class MainActivity extends AppCompatActivity {
                 String result = custom.getResult(); // your variable with result*/
             }
             catch(Exception e){
-
+e.printStackTrace();
             } }}
+
+    private void getfaults(InputStream finalInputStream, OutputStream finalOutputStream) {
+        ObdCommandGroup commands = new ObdCommandGroup();
+
+        commands.add(new TroubleCodesCommand());
+        //commands.add(new TroubleCode);
+        try {
+            commands.run(finalInputStream, finalOutputStream);
+            String r = commands.toString();
+
+            ArrayList<String> dtcs = getDTCs(r);
+
+        }
+        catch (IOException | InterruptedException e)
+        {
+
+        }
+    }
+
+    private ArrayList<String> getDTCs(String r) {
+        ArrayList<String> dtcs = new ArrayList<>();
+        TroubleCodeDescription troubleCodeDescription = TroubleCodeDescription.getInstance(MainActivity.this);
+
+        String[] parts = r.split("\\[|,|\\]");
+        //get index 1 up to Length - 1
+
+        parts = Arrays.copyOfRange(parts, 1, parts.length-1);
+
+        for (String d:parts) {
+            //d is the dtc
+            String dtc = d /*+ ": "*/;
+            String t = troubleCodeDescription.getTroubleCodeDescription(d);
+
+            dtc += ": "+ t;
+            dtcs.add(dtc);
+        }
+
+        return dtcs;
+    }
 
     private int getLiveSpeed(InputStream finalInputStream, OutputStream finalOutputStream) {
         SpeedCommand spd = new SpeedCommand();
