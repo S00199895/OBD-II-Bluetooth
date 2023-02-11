@@ -17,6 +17,11 @@ public class Note implements Serializable {
         timestamp = myDateObj.format(myFormatObj);
     }
 
+    public Note(String t, String c) {
+        this.title = t;
+        this.content = c;
+    }
+
     @Override
     public String toString() {
         return "Note{" +
