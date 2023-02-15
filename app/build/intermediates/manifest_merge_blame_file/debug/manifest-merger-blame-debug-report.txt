@@ -34,8 +34,8 @@
 20-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:14:5-68
 20-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:14:22-65
 21    <uses-permission android:name="android.permission.INTERNET" />
-21-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:14:5-67
-21-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:14:22-64
+21-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\fae7fe59080476c58b73ce2e45a6bc88\transformed\jetified-firebase-firestore-24.0.2\AndroidManifest.xml:14:5-67
+21-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\fae7fe59080476c58b73ce2e45a6bc88\transformed\jetified-firebase-firestore-24.0.2\AndroidManifest.xml:14:22-64
 22
 23    <application
 23-->C:\Users\noelc\Desktop\COLLEGE\MAD\OBD-II-Bluetooth\app\src\main\AndroidManifest.xml:16:5-60:19
@@ -125,70 +125,70 @@
 69        </activity>
 70
 71        <service
-71-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:17:9-23:19
+71-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\fae7fe59080476c58b73ce2e45a6bc88\transformed\jetified-firebase-firestore-24.0.2\AndroidManifest.xml:17:9-23:19
 72            android:name="com.google.firebase.components.ComponentDiscoveryService"
-72-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:18:13-84
+72-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\fae7fe59080476c58b73ce2e45a6bc88\transformed\jetified-firebase-firestore-24.0.2\AndroidManifest.xml:18:13-84
 73            android:directBootAware="true"
-73-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:35:13-43
+73-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\28914d68e1ed0229883f8ac39fbfabf6\transformed\jetified-firebase-common-20.1.0\AndroidManifest.xml:35:13-43
 74            android:exported="false" >
-74-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:19:13-37
+74-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\fae7fe59080476c58b73ce2e45a6bc88\transformed\jetified-firebase-firestore-24.0.2\AndroidManifest.xml:19:13-37
 75            <meta-data
-75-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:20:13-22:85
+75-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\fae7fe59080476c58b73ce2e45a6bc88\transformed\jetified-firebase-firestore-24.0.2\AndroidManifest.xml:20:13-22:85
 76                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
-76-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:21:17-111
+76-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\fae7fe59080476c58b73ce2e45a6bc88\transformed\jetified-firebase-firestore-24.0.2\AndroidManifest.xml:21:17-111
 77                android:value="com.google.firebase.components.ComponentRegistrar" />
-77-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\26d10c3ab94e7cd28aff049c67e9fe4a\transformed\firebase-firestore-24.0.2\AndroidManifest.xml:22:17-82
+77-->[com.google.firebase:firebase-firestore:24.0.2] C:\Users\noelc\.gradle\caches\transforms-3\fae7fe59080476c58b73ce2e45a6bc88\transformed\jetified-firebase-firestore-24.0.2\AndroidManifest.xml:22:17-82
 78        </service>
 79
 80        <activity
-80-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+80-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\af70d03cddd8f74e660d4209bf266ed2\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
 81            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-81-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+81-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\af70d03cddd8f74e660d4209bf266ed2\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
 82            android:exported="false"
-82-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+82-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\af70d03cddd8f74e660d4209bf266ed2\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:22:19-43
 83            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-83-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+83-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\noelc\.gradle\caches\transforms-3\af70d03cddd8f74e660d4209bf266ed2\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
 84
 85        <provider
-85-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:26:9-31:39
+85-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\28914d68e1ed0229883f8ac39fbfabf6\transformed\jetified-firebase-common-20.1.0\AndroidManifest.xml:26:9-31:39
 86            android:name="com.google.firebase.provider.FirebaseInitProvider"
-86-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:27:13-77
+86-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\28914d68e1ed0229883f8ac39fbfabf6\transformed\jetified-firebase-common-20.1.0\AndroidManifest.xml:27:13-77
 87            android:authorities="edu.markc.bluetooth.firebaseinitprovider"
-87-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:28:13-72
+87-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\28914d68e1ed0229883f8ac39fbfabf6\transformed\jetified-firebase-common-20.1.0\AndroidManifest.xml:28:13-72
 88            android:directBootAware="true"
-88-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:29:13-43
+88-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\28914d68e1ed0229883f8ac39fbfabf6\transformed\jetified-firebase-common-20.1.0\AndroidManifest.xml:29:13-43
 89            android:exported="false"
-89-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:30:13-37
+89-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\28914d68e1ed0229883f8ac39fbfabf6\transformed\jetified-firebase-common-20.1.0\AndroidManifest.xml:30:13-37
 90            android:initOrder="100" />
-90-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\e59c4a1d6af1099f4d18fe6433eff849\transformed\firebase-common-20.1.0\AndroidManifest.xml:31:13-36
+90-->[com.google.firebase:firebase-common:20.1.0] C:\Users\noelc\.gradle\caches\transforms-3\28914d68e1ed0229883f8ac39fbfabf6\transformed\jetified-firebase-common-20.1.0\AndroidManifest.xml:31:13-36
 91
 92        <meta-data
-92-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\b284489ed66026c2cdd1d7c33585e62e\transformed\play-services-basement-18.0.0\AndroidManifest.xml:21:9-23:69
+92-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\8362b4ef4f861fa75926f58a6ee6d70d\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:21:9-23:69
 93            android:name="com.google.android.gms.version"
-93-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\b284489ed66026c2cdd1d7c33585e62e\transformed\play-services-basement-18.0.0\AndroidManifest.xml:22:13-58
+93-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\8362b4ef4f861fa75926f58a6ee6d70d\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:22:13-58
 94            android:value="@integer/google_play_services_version" />
-94-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\b284489ed66026c2cdd1d7c33585e62e\transformed\play-services-basement-18.0.0\AndroidManifest.xml:23:13-66
+94-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\noelc\.gradle\caches\transforms-3\8362b4ef4f861fa75926f58a6ee6d70d\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:23:13-66
 95
 96        <provider
-96-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+96-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\043ebb08fd1605c8d26eee8895b0fedf\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
 97            android:name="androidx.startup.InitializationProvider"
-97-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+97-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\043ebb08fd1605c8d26eee8895b0fedf\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
 98            android:authorities="edu.markc.bluetooth.androidx-startup"
-98-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+98-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\043ebb08fd1605c8d26eee8895b0fedf\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
 99            android:exported="false" >
-99-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+99-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\043ebb08fd1605c8d26eee8895b0fedf\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
 100            <meta-data
-100-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+100-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\043ebb08fd1605c8d26eee8895b0fedf\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
 101                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-101-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+101-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\043ebb08fd1605c8d26eee8895b0fedf\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
 102                android:value="androidx.startup" />
-102-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+102-->[androidx.emoji2:emoji2:1.2.0] C:\Users\noelc\.gradle\caches\transforms-3\043ebb08fd1605c8d26eee8895b0fedf\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
 103            <meta-data
-103-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\4f04b5d013d4e9a91b26580011dee398\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+103-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\89ff0e55e6ae9f2bfe5511814da6c859\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
 104                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-104-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\4f04b5d013d4e9a91b26580011dee398\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+104-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\89ff0e55e6ae9f2bfe5511814da6c859\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
 105                android:value="androidx.startup" />
-105-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\4f04b5d013d4e9a91b26580011dee398\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+105-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\89ff0e55e6ae9f2bfe5511814da6c859\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
 106        </provider>
 107    </application>
 108

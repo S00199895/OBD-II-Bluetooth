@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         checkPermissions();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        FirestoreService.read("RPM", "Month");
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
