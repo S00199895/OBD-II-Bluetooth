@@ -1,94 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StatsActivity">
+    android:fillViewport="true">
 
-    <Spinner
-        android:id="@+id/spinnerReading"
-        android:layout_width="292dp"
-        android:layout_height="46dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
-        android:layout_width="365dp"
-        android:layout_height="485dp"
-        android:layout_margin="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.347"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.548">
-
-
-    </com.github.mikephil.charting.charts.LineChart>
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="402dp"
-        android:layout_height="78dp"
-        android:layout_centerInParent="true"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:orientation="vertical">
 
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.972">
-
-        <!--adding a radio button -->
-        <RadioButton
-            android:id="@+id/dayRB"
-            android:layout_width="100dp"
+        <Spinner
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/spinnerReading"
+            android:layout_margin="30dp"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="402dp"
+            android:layout_height="78dp"
+            android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:checked="false"
-            android:padding="2dp"
-            android:text="Day"
-            android:textAlignment="center"
-            android:textSize="14sp" />
+            android:gravity="center"
 
-        <!--adding a radio button -->
-        <RadioButton
-            android:id="@+id/weekRB"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="false"
-            android:padding="2dp"
+            android:orientation="horizontal">
 
-            android:text="Week"
-            android:textAlignment="center"
-            android:textSize="14sp" />
 
-        <!--adding a radio button -->
-        <RadioButton
-            android:id="@+id/MonthRB"
-            android:layout_width="201dp"
-            android:layout_height="59dp"
-            android:layout_gravity="center"
-            android:checked="false"
+            <!--adding a radio button -->
+            <RadioButton
+                android:id="@+id/dayRB"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="false"
+                android:padding="2dp"
+                android:text="Day"
+                android:textAlignment="center"
+                android:textSize="14sp" />
 
-            android:padding="2dp"
+            <!--adding a radio button -->
+            <RadioButton
+                android:id="@+id/weekRB"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="false"
+                android:padding="2dp"
 
-            android:text="Month"
-            android:textAlignment="center"
-            android:textSize="14sp"
-            tools:layout_editor_absoluteX="200dp"
-            tools:layout_editor_absoluteY="658dp" />
-    </RadioGroup>
+                android:text="Week"
+                android:textAlignment="center"
+                android:textSize="14sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <!--adding a radio button -->
+            <RadioButton
+                android:id="@+id/MonthRB"
+                android:layout_width="201dp"
+                android:layout_height="59dp"
+                android:layout_gravity="center"
+                android:checked="false"
+
+                android:padding="2dp"
+
+                android:text="Month"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                tools:layout_editor_absoluteX="200dp"
+                tools:layout_editor_absoluteY="658dp" />
+        </RadioGroup>
+        
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_width="400dp"
+            android:layout_height="500dp"/>
+
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:text="Text View 1"
+                android:gravity="left"/>
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:text="Text View 2"
+                android:layout_marginBottom="20dp"/>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:layout_width="400dp"
+            android:layout_height="500dp"/>
+    </LinearLayout>
+</ScrollView>

@@ -29,6 +29,7 @@ id spinnerReading
 id tV
 id tVRPM
 id tVSpeed
+id textView
 id weekRB
 layout activity_edit_job
 layout activity_jobs
