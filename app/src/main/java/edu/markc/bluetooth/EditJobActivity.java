@@ -12,12 +12,17 @@ import android.widget.EditText;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class EditJobActivity extends AppCompatActivity implements Serializable {
 
     EditText title;
     EditText content;
     Button save;
+    String fault;
+    String jobName;
+    ArrayList<Note> allNotes = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +31,7 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
         content =  (EditText) findViewById(R.id.eTContent);
         save = (Button) findViewById(R.id.btnSave);
         Intent edit = getIntent();
-        ArrayList<Note> allNotes = new ArrayList<>();
+        ArrayList<String> allFaults = new ArrayList<>();
 
      //   SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
      //   SharedPreferences.Editor editor = sharedPref.edit();
@@ -35,6 +40,13 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
         {
             Note edited = new Note();
             allNotes = (ArrayList<Note>) edit.getSerializableExtra("allNotes");
+            fault = edit.getStringExtra("thisFault");
+            jobName = edit.getStringExtra("thisJob");
+            allFaults = (ArrayList<String>) edit.getSerializableExtra("faults");
+
+            /*  i.putExtra("thisFault", fault);
+                        i.putExtra("allNotes", notesArray);
+                        i.putExtra("faults", faults);*/
 
             if (Integer.valueOf(edit.getIntExtra("editNoteIndex", -5)) != -5)
             {
@@ -48,8 +60,21 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
             content.setText(edited.content);
         }
 
+        if (fault != null)
+        {
+            content.setText(fault);
+
+            if (jobName != null)
+            {
+                title.setText(jobName);
+            }
+        }
+
+
+
 
         ArrayList<Note> finalAllNotes = allNotes;
+        ArrayList<String> finalAllFaults = allFaults;
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,11 +87,47 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
                     n.content = content.getText().toString();
                 }
                 finalAllNotes.add(n);
+                allNotes = duplicatejobs(allNotes, fault);
+                //finalAllNotes = duplicatejobs(finalAllNotes);
                 Intent i = new Intent(EditJobActivity.this, JobsActivity.class);
                 i.putExtra("allNotes", finalAllNotes);
+                i.putExtra("faults", finalAllFaults);
                 startActivity(i);
                // finishActivity(0);
             }
         });
+    }
+
+    private ArrayList<Note> duplicatejobs(ArrayList<Note> notesArray, String fault) {
+
+        ArrayList<String> titles = new ArrayList<String>(notesArray.stream().map(p -> p.title).collect(Collectors.toList()));
+        ArrayList<String> test = new ArrayList<>();
+        boolean duplicate = false;
+        String title = "";
+        for (String t : titles)
+        {
+            if(test.contains(t))
+            {
+                duplicate = true;
+                title = t;
+                break;
+            }
+            else {
+                test.add(t);
+            }
+        }
+
+        if (duplicate == true)
+        {/*
+            for (Note n: notesArray
+            ) {
+                if (n.title.contains(title) && !n.content.contains(fault))
+                {*/
+            String finalTitle = title;
+            notesArray.removeIf(n -> n.title.contains(finalTitle) && !n.content.contains(fault));
+                }
+
+
+        return  notesArray;
     }
 }

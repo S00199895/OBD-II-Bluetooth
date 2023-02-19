@@ -44,17 +44,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.reflect.TypeToken;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -78,7 +82,7 @@ import br.ufrn.imd.obd.commands.ObdCommandGroup;
 import br.ufrn.imd.obd.commands.control.TroubleCodesCommand;
 import br.ufrn.imd.obd.utils.TroubleCodeDescription;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
     private final static int REQUEST_ENABLE_BT = 1;
     private static final UUID CONNUUID = UUID.fromString("ea3836df-b860-4f33-b338-4e032c124870");
     TextView tVRPM;
@@ -92,9 +96,12 @@ public class MainActivity extends AppCompatActivity {
     RadioButton day;
     RadioButton week;
     RadioButton month;
+    Gson g = new Gson();
 
     Button btn;
     Button btnStats;
+
+    ArrayList<String> faults = new ArrayList<>();
 
     private  static  LocalDate localdate;
     private static String[] PERMISSIONS_STORAGE = {
@@ -138,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, JobsActivity.class);
+                //putextra the faults
+                i.putExtra("faults", faults);
                 startActivity(i);
             }
         });
@@ -218,8 +227,8 @@ public class MainActivity extends AppCompatActivity {
                  InputStream finalInputStream = inputStream;
                  OutputStream finalOutputStream = outputStream;
 
-                 getfaults(finalInputStream, finalOutputStream);
-
+                 faults= getfaults(finalInputStream, finalOutputStream);
+                 writePrefs(sharedPref, editor, faults);
                  ArrayList<Map<String, Object>> rpmList = new ArrayList<>();
 
                  ArrayList<Map<String, Object>> speedList = new ArrayList<>();
@@ -345,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
 e.printStackTrace();
             } }}
 
-    private void getfaults(InputStream finalInputStream, OutputStream finalOutputStream) {
+    private ArrayList<String> getfaults(InputStream finalInputStream, OutputStream finalOutputStream) {
         ObdCommandGroup commands = new ObdCommandGroup();
 
         commands.add(new TroubleCodesCommand());
@@ -354,13 +363,16 @@ e.printStackTrace();
             commands.run(finalInputStream, finalOutputStream);
             String r = commands.toString();
 
+
             ArrayList<String> dtcs = getDTCs(r);
+            return  dtcs;
 
         }
         catch (IOException | InterruptedException e)
         {
 
         }
+        return null;
     }
 
     private ArrayList<String> getDTCs(String r) {
@@ -398,7 +410,20 @@ e.printStackTrace();
         return Integer.parseInt(sub, 16);
     }
 
+    public ArrayList<Note> readPrefs(SharedPreferences sharedPref) {
+        String jsonNotes = sharedPref.getString("notes", null);
+        if (jsonNotes == null) {
+            return new ArrayList<>();
+        }
+        Type type = new TypeToken<ArrayList<Note>>(){}.getType();
+        return g.fromJson(jsonNotes, type);
+    }
 
+    public void writePrefs(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<String> notes) {
+        String jsonNotes = g.toJson(notes);
+        editor.putString("faults", jsonNotes);
+        editor.apply();
+    }
 
     //mecessary for refreshing graph
     public void simulateTap(View view) {

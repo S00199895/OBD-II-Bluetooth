@@ -19,6 +19,7 @@ id dayRB
 id eTContent
 id eTTitle
 id infoSection
+id lVFaults
 id lVNotes
 id lineChart
 id noteDate
@@ -29,7 +30,6 @@ id spinnerReading
 id tV
 id tVRPM
 id tVSpeed
-id textView
 id weekRB
 layout activity_edit_job
 layout activity_jobs

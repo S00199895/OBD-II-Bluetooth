@@ -11,6 +11,7 @@ MERGED from [com.google.android.material:material:1.7.0] C:\Users\noelc\.gradle\
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\noelc\.gradle\caches\transforms-3\44c24a0ba9562c7bda90cd6278db8032\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat-resources:1.5.1] C:\Users\noelc\.gradle\caches\transforms-3\d26762dc232564461981f79e56200063\transformed\jetified-appcompat-resources-1.5.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.5.1] C:\Users\noelc\.gradle\caches\transforms-3\3884b320dccfe5fe24360e981acf9b57\transformed\appcompat-1.5.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.gridlayout:gridlayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\7837aef662943aed835821980f207c3f\transformed\gridlayout-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\noelc\.gradle\caches\transforms-3\1409e8bfbbdfa101639e2bdefb6b7fb6\transformed\jetified-MPAndroidChart-v3.1.0\AndroidManifest.xml:2:1-20:12
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\fbea62eda655c1ae306a6835208aaf9c\transformed\jetified-viewpager2-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta02] C:\Users\noelc\.gradle\caches\transforms-3\853600d5213073d37075ae8fad87a533\transformed\jetified-firebase-appcheck-interop-16.0.0-beta02\AndroidManifest.xml:15:1-26:12
@@ -23,6 +24,7 @@ MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\noel
 MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\noelc\.gradle\caches\transforms-3\732ee410234ca2ffc9e7b3c733aee392\transformed\fragment-1.3.6\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.5.1] C:\Users\noelc\.gradle\caches\transforms-3\d04939b06233671e2d3ca24746e1d7f3\transformed\jetified-activity-1.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\dc88f7ed33b6cc8a4a809eebc99fc905\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\75c3b9f389bf6032aa2e40ae7f71222f\transformed\legacy-support-core-ui-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\ef2058f2e5fbc8d2d63e8d4cfe16bfc7\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\e79ca66a4afd52265f4e528f072969be\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] C:\Users\noelc\.gradle\caches\transforms-3\469909d8fd8c906576831ed638faf856\transformed\lifecycle-viewmodel-2.5.1\AndroidManifest.xml:17:1-24:12
@@ -37,7 +39,10 @@ MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\noe
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\noelc\.gradle\caches\transforms-3\1d88cd8126b95e1cc30cd29430fa0f4f\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\aebbdcbb1e77b5493cc8fdf9e5f08a92\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\noelc\.gradle\caches\transforms-3\14621a386b20c825bf62b01149912eba\transformed\recyclerview-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\665a86583a96ed42e78758df35651be8\transformed\slidingpanelayout-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.customview:customview:1.1.0] C:\Users\noelc\.gradle\caches\transforms-3\f104cb46a78b417ca92063296e700444\transformed\customview-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\7ad276d75965b7616fe048e574997192\transformed\swiperefreshlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\8101f9665516d7b293272e7a6ca2fb82\transformed\asynclayoutinflater-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core:1.8.0] C:\Users\noelc\.gradle\caches\transforms-3\102215101d21fdb02f0f27bbfd4ebd5d\transformed\core-1.8.0\AndroidManifest.xml:17:1-26:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\bf2607e7fa493a5739fbe491ca7b619a\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\noelc\.gradle\caches\transforms-3\89ff0e55e6ae9f2bfe5511814da6c859\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:17:1-37:12
@@ -214,6 +219,8 @@ MERGED from [androidx.appcompat:appcompat-resources:1.5.1] C:\Users\noelc\.gradl
 MERGED from [androidx.appcompat:appcompat-resources:1.5.1] C:\Users\noelc\.gradle\caches\transforms-3\d26762dc232564461981f79e56200063\transformed\jetified-appcompat-resources-1.5.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.5.1] C:\Users\noelc\.gradle\caches\transforms-3\3884b320dccfe5fe24360e981acf9b57\transformed\appcompat-1.5.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.5.1] C:\Users\noelc\.gradle\caches\transforms-3\3884b320dccfe5fe24360e981acf9b57\transformed\appcompat-1.5.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.gridlayout:gridlayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\7837aef662943aed835821980f207c3f\transformed\gridlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.gridlayout:gridlayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\7837aef662943aed835821980f207c3f\transformed\gridlayout-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\noelc\.gradle\caches\transforms-3\1409e8bfbbdfa101639e2bdefb6b7fb6\transformed\jetified-MPAndroidChart-v3.1.0\AndroidManifest.xml:16:5-18:41
 MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\noelc\.gradle\caches\transforms-3\1409e8bfbbdfa101639e2bdefb6b7fb6\transformed\jetified-MPAndroidChart-v3.1.0\AndroidManifest.xml:16:5-18:41
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\fbea62eda655c1ae306a6835208aaf9c\transformed\jetified-viewpager2-1.0.0\AndroidManifest.xml:20:5-22:41
@@ -238,6 +245,8 @@ MERGED from [androidx.activity:activity:1.5.1] C:\Users\noelc\.gradle\caches\tra
 MERGED from [androidx.activity:activity:1.5.1] C:\Users\noelc\.gradle\caches\transforms-3\d04939b06233671e2d3ca24746e1d7f3\transformed\jetified-activity-1.5.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\dc88f7ed33b6cc8a4a809eebc99fc905\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\dc88f7ed33b6cc8a4a809eebc99fc905\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\75c3b9f389bf6032aa2e40ae7f71222f\transformed\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\75c3b9f389bf6032aa2e40ae7f71222f\transformed\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\ef2058f2e5fbc8d2d63e8d4cfe16bfc7\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\ef2058f2e5fbc8d2d63e8d4cfe16bfc7\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\e79ca66a4afd52265f4e528f072969be\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
@@ -266,8 +275,14 @@ MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\noelc\.gradle\caches\t
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\aebbdcbb1e77b5493cc8fdf9e5f08a92\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\noelc\.gradle\caches\transforms-3\14621a386b20c825bf62b01149912eba\transformed\recyclerview-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\noelc\.gradle\caches\transforms-3\14621a386b20c825bf62b01149912eba\transformed\recyclerview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\665a86583a96ed42e78758df35651be8\transformed\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\665a86583a96ed42e78758df35651be8\transformed\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.customview:customview:1.1.0] C:\Users\noelc\.gradle\caches\transforms-3\f104cb46a78b417ca92063296e700444\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.customview:customview:1.1.0] C:\Users\noelc\.gradle\caches\transforms-3\f104cb46a78b417ca92063296e700444\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\7ad276d75965b7616fe048e574997192\transformed\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\7ad276d75965b7616fe048e574997192\transformed\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\8101f9665516d7b293272e7a6ca2fb82\transformed\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\8101f9665516d7b293272e7a6ca2fb82\transformed\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core:1.8.0] C:\Users\noelc\.gradle\caches\transforms-3\102215101d21fdb02f0f27bbfd4ebd5d\transformed\core-1.8.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.8.0] C:\Users\noelc\.gradle\caches\transforms-3\102215101d21fdb02f0f27bbfd4ebd5d\transformed\core-1.8.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\noelc\.gradle\caches\transforms-3\bf2607e7fa493a5739fbe491ca7b619a\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44

@@ -10,6 +10,8 @@
         android:id="@+id/infoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="38dp"
         android:orientation="vertical">
 
         <TextView
@@ -20,17 +22,17 @@
             android:paddingLeft="50dp"
             android:text="Title"
             android:textSize="18sp" />
+
         <TextView
             android:id="@+id/noteDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:paddingRight="150dp"
             android:text="Date"
             android:textAlignment="viewEnd"
-            android:paddingRight="150dp"
             android:textSize="16sp" />
     </LinearLayout>
-
 
 
 </RelativeLayout>
