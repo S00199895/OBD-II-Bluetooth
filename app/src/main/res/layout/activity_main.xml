@@ -34,15 +34,15 @@
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
-        android:layout_width="365dp"
-        android:layout_height="485dp"
+        android:layout_width="362dp"
+        android:layout_height="428dp"
         android:layout_margin="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.347"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.548">
+        app:layout_constraintVertical_bias="0.587">
 
 
     </com.github.mikephil.charting.charts.LineChart>
@@ -127,6 +127,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner"
         app:layout_constraintVertical_bias="0.407" />
+
+    <Button
+        android:id="@+id/btnEmuStopReading"
+        android:layout_width="88dp"
+        android:layout_height="34dp"
+        android:text="Stop"
+        app:layout_constraintBottom_toTopOf="@+id/lineChart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.699"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.956" />
 
     <Button
         android:id="@+id/btnStats"

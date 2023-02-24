@@ -12,6 +12,7 @@ drawable ic_launcher_background
 drawable ic_launcher_foreground
 id MonthRB
 id addNoteBtn
+id btnEmuStopReading
 id btnSave
 id btnStats
 id buttonre

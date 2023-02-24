@@ -2796,6 +2796,7 @@ int id bounce 0x7f090064
 int id bounceBoth 0x7f090065
 int id bounceEnd 0x7f090066
 int id bounceStart 0x7f090067
+int id btnEmuStopReading 0x7f0901fb
 int id btnSave 0x7f090068
 int id btnStats 0x7f090069
 int id buttonPanel 0x7f09006a

@@ -1,11 +1,8 @@
 package edu.markc.bluetooth;
-
 import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -17,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
 import android.util.Log;
@@ -29,17 +27,12 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.pires.obd.commands.SpeedCommand;
-import com.github.pires.obd.commands.engine.RPMCommand;
-import com.github.pires.obd.commands.protocol.AvailablePidsCommand_21_40;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,7 +45,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -68,7 +60,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,11 +69,11 @@ import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import br.ufrn.imd.obd.commands.ObdCommandGroup;
-import br.ufrn.imd.obd.commands.control.TroubleCodesCommand;
-import br.ufrn.imd.obd.utils.TroubleCodeDescription;
-
 public class MainActivity extends AppCompatActivity implements Serializable {
+    //emu var
+    static boolean emu = true;
+    static boolean stop = false;
+
     private final static int REQUEST_ENABLE_BT = 1;
     private static final UUID CONNUUID = UUID.fromString("ea3836df-b860-4f33-b338-4e032c124870");
     TextView tVRPM;
@@ -93,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     RadioButton selected;
     Spinner selectSpinner;
 
+
     RadioButton day;
     RadioButton week;
     RadioButton month;
@@ -100,39 +92,25 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     Button btn;
     Button btnStats;
-
+    Button btnEmu;
     ArrayList<String> faults = new ArrayList<>();
+    EmuService emuService;
 
     private  static  LocalDate localdate;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
-            Manifest.permission.BLUETOOTH_SCAN,
-            Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.BLUETOOTH_PRIVILEGED
-    };
-    private static String[] PERMISSIONS_LOCATION = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
-            Manifest.permission.BLUETOOTH_SCAN,
-            Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.BLUETOOTH_PRIVILEGED
-    };
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        checkPermissions();
+        BluetoothService.checkPermissions(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirestoreService.read("RPM", "Month");
+      //  FirestoreService.read("RPM", "Month");
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
+
+        if (emu == true)
+        {
+            emuService = new EmuService(MainActivity.this);
+        }
 
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
@@ -140,7 +118,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         btn = (Button) findViewById(R.id.buttonre);
         btnStats = (Button) findViewById(R.id.btnStats);
+        btnEmu = (Button) findViewById(R.id.btnEmuStopReading);
 
+        btnEmu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stop = true;
+            }
+        });
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,19 +174,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         });
         ArrayList<Map<String, Object>> reads = read(selectSpinner.getSelectedItem().toString());
         BluetoothSocket btSocket = connectToOBD();
-//        ArrayList<Integer> testrpm = new ArrayList<>();
-//        testrpm.add(20);
-//        testrpm.add(30);
-//        testrpm.add(40);
-//        testrpm.add(60);
-//        testrpm.add(20);testrpm.add(20);
-//
-//       ArrayList<Map<String, Object>> objsToPush = formatResults(testrpm);
-//
-//        addToFirestore(objsToPush);
 
-       // ArrayList<Map<String, Object>> wantedReadings = read();
-         if (btSocket.isConnected()) {
+         if (btSocket.isConnected() || emu == true) {
              Toast.makeText(MainActivity.this,
                      "Connected to " + btSocket, Toast.LENGTH_LONG).show();
 
@@ -220,9 +194,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                  e.printStackTrace();
              }
              try {
-                // final Handler handler = new Handler();
-
-               //  final int delay = 5000;
 
                  InputStream finalInputStream = inputStream;
                  OutputStream finalOutputStream = outputStream;
@@ -234,31 +205,32 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                  ArrayList<Map<String, Object>> speedList = new ArrayList<>();
 
                 Executor executor = Executors.newFixedThreadPool(2);
-                 //handler.postDelayed
                  //rpm thread
                  executor.execute(new Runnable() {
                      @Override
                      public void run() {
-                        // String s = selectSpinner.getSelectedItem().toString();
-
-                       //  if (s.contains("RPM")) {
                              //work
+                        //may try mock btsocket
+                         //how?
 
                              try {
-                                 while (btSocket.isConnected()) {
+                                 while (btSocket.isConnected() || emu == true) {
                                      Map<String, Object> thisDoc = new HashMap<>();
 
                                      localdate = LocalDate.now();
-                                     //here
-                                     //make it check that RPM is the one seelcted from the dropdown - new method
 
                                      int rpm = getLiveRPM(finalInputStream, finalOutputStream);
+                                     if (stop == true)
+                                     {throw new NullPointerException();}
 
                                      //this line needs to be general for variables
-                                     thisDoc.put("type", "RPM");
-                                     thisDoc.put("value", rpm);
-                                     thisDoc.put("datetime", Timestamp.now());
-                                     rpmList.add(thisDoc);
+                                     Timestamp now = Timestamp.now();
+
+                                         thisDoc.put("type", "RPM");
+                                         thisDoc.put("value", rpm);
+                                         thisDoc.put("datetime", now);
+                                         rpmList.add(thisDoc);
+
                                      tVRPM.setText(String.valueOf(rpm));
 
                                      try {
@@ -266,148 +238,76 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                      } catch (InterruptedException e) {
                                          e.printStackTrace();
                                      }
-                                     //work
-                                     // handler.postDelayed(this, delay);
                                      }
                                  } catch (NullPointerException e) {
                                       addToFirestore(rpmList);
                                       read(selectSpinner.getSelectedItem().toString());
                                  }
-                                 //try catch for delay
-
-                             /*else {*/
-                            // addToFirestore(rpmList);
-                           //  read(selectSpinner.getSelectedItem().toString());
                          }
-                   //  }
-                     //}
-
-
                  });
                  executor.execute(new Runnable() {
                      //speed thread
                      @Override
                      public void run() {
-                         //String s = selectSpinner.getSelectedItem().toString();
-
-                         /*if (s.contains("Speed"))
-                         {*/
-                             //realistically all will be running at once
-                             //multi-threading
-                             //change to speed
-
-                             //speed add firestore emthod
-                             //work
-
                                  try {
-                                     while (btSocket.isConnected()) {
+                                     while (btSocket.isConnected() || emu == true) {
                                          Map<String, Object> thisDoc = new HashMap<>();
 
                                          localdate = LocalDate.now();
-                                         //here
-                                         //make it check that RPM is the one seelcted from the dropdown - new method
 
-                                         int speed = getLiveSpeed(finalInputStream, finalOutputStream);//getLiveRPM(finalInputStream, finalOutputStream);
-
+                                         int speed = getLiveSpeed(finalInputStream, finalOutputStream);
+                                         if (stop == true)
+                                         {throw new NullPointerException();}
                                          //this line needs to be general for variables
-                                         thisDoc.put("type", "Speed");
-                                         thisDoc.put("value", speed);
-                                         thisDoc.put("datetime", Timestamp.now());
-                                         speedList.add(thisDoc);
+                                         if (speed != 0) {
+                                             thisDoc.put("type", "Speed");
+                                             thisDoc.put("value", speed);
+                                             thisDoc.put("datetime", Timestamp.now());
+                                             speedList.add(thisDoc);
+                                         }
                                          tVSpeed.setText(String.valueOf(speed));
                                          try {
                                              Thread.sleep(5000);
                                          } catch (InterruptedException e) {
                                              e.printStackTrace();
                                          }
-                                         //work
-                                         //  handler.postDelayed(this, delay);
                                      }
                                  } catch (NullPointerException e) {
-                                     //different method?
-                                     //check within method extract type variable
                                      addToFirestore(speedList);
                                      read(selectSpinner.getSelectedItem().toString());
                                  }
-                            //try and modularise it
-                         //make part using getLiveX a method use variables
-                         //get each thread to run variatiosn of it
-
-                         //amke more methods
-                         //different classes?
-                         //firestore class?
-                         //speed
-                         //rpm classes?
-
-                                // addToFirestore(rpmList);
-                              //   read(selectSpinner.getSelectedItem().toString());
-
                          }
-                     //}
                  });
-
-               /* ObdRawCommand custom = new ObdRawCommand("00"); //command can be any ELM command like "atz" or "0130"
-                custom.run(inputStream, outputStream); //inputs - input stream, outputs - output stream
-                String result = custom.getResult(); // your variable with result*/
             }
             catch(Exception e){
 e.printStackTrace();
             } }}
 
+
+
     private ArrayList<String> getfaults(InputStream finalInputStream, OutputStream finalOutputStream) {
-        ObdCommandGroup commands = new ObdCommandGroup();
-
-        commands.add(new TroubleCodesCommand());
-        //commands.add(new TroubleCode);
-        try {
-            commands.run(finalInputStream, finalOutputStream);
-            String r = commands.toString();
-
-
-            ArrayList<String> dtcs = getDTCs(r);
-            return  dtcs;
-
-        }
-        catch (IOException | InterruptedException e)
+        if (emu == false)
         {
-
+            return OBDService.getfaults(finalInputStream, finalOutputStream, MainActivity.this);
         }
-        return null;
-    }
-
-    private ArrayList<String> getDTCs(String r) {
-        ArrayList<String> dtcs = new ArrayList<>();
-        TroubleCodeDescription troubleCodeDescription = TroubleCodeDescription.getInstance(MainActivity.this);
-
-        String[] parts = r.split("\\[|,|\\]");
-        //get index 1 up to Length - 1
-
-        parts = Arrays.copyOfRange(parts, 1, parts.length-1);
-
-        for (String d:parts) {
-            //d is the dtc
-            String dtc = d /*+ ": "*/;
-            String t = troubleCodeDescription.getTroubleCodeDescription(d);
-
-            dtc += ": "+ t;
-            dtcs.add(dtc);
+        else
+        {
+            //EMU
+            return EmuService.getFaults();
         }
 
-        return dtcs;
     }
 
     private int getLiveSpeed(InputStream finalInputStream, OutputStream finalOutputStream) {
-        SpeedCommand spd = new SpeedCommand();
-        try {
-            spd.run(finalInputStream, finalOutputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (emu == false)
+        {
+            return OBDService.getLiveSpeed(finalInputStream, finalOutputStream);
         }
-        String result = spd.getResult();
-        String sub = result.substring(8);
-        return Integer.parseInt(sub, 16);
+        else
+        {
+            //EMU
+            return EmuService.getSpeed();
+        }
     }
 
     public ArrayList<Note> readPrefs(SharedPreferences sharedPref) {
@@ -445,28 +345,6 @@ e.printStackTrace();
 
         view.dispatchTouchEvent(motionEvent);
     }
-
-
-
-    private void checkPermissions(){
-        int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT);
-        int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
-        if (permission1 != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    this,
-                    PERMISSIONS_STORAGE,
-                    1
-            );
-        } else if (permission2 != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(
-                    this,
-                    PERMISSIONS_LOCATION,
-                    1
-            );
-        }
-    }
-
     private ArrayList<Map<String, Object>> read(String type) {
         //read and query where type is rpm
          ArrayList<Map<String, Object>>[] readMaps = new ArrayList[]{new ArrayList<>()};
@@ -476,9 +354,6 @@ e.printStackTrace();
         String interval = checkRadio();
         //interval = "Week";
         if (interval.contains("Day")) {
-
-            //change these RPMs to a variable
-            //has to be a parameter
             db.collection("data").document(String.valueOf(LocalDate.now())).collection(type)
                     .whereEqualTo("type", type).orderBy("datetime", Query.Direction.ASCENDING)
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -563,8 +438,6 @@ e.printStackTrace();
             ZonedDateTime zonedDateTime = lastWeek.atZone(zid);
             Instant i = zonedDateTime.toInstant();
             date = Date.from(i);
-//change to ascending
-            //19012023
             db.collection("data").whereGreaterThanOrEqualTo("datedoc", date)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -614,63 +487,62 @@ e.printStackTrace();
                         }
                     });
         }
-
-
-
         return readMaps[0];
-    }
-    private ArrayList<Map<String, Object>> formatResults(ArrayList<Integer> rpmList) {
-        //foreach
-        //put into a json object array
-        //include date
-        //type
-        //new interface?
-        ArrayList<Map<String, Object>> arrayOfValues = new ArrayList<>();
-        for (int value: rpmList)
-        {
-            //for firestore
-            Map<String, Object> obj = new HashMap<>();
-
-                obj.put("type", "RPM");
-                obj.put("value", value);
-               // obj.put("date", date.toString());
-
-            arrayOfValues.add(obj);
-        }
-        return arrayOfValues;
-        //addToFirestore(arrayOfValues, 1, date, "rpm");
     }
 
  private void addToFirestore(ArrayList<Map<String, Object>> objsToPush) {
-        db = FirebaseFirestore.getInstance();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        for (Map<String, Object> oneDoc : objsToPush) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+     StackTraceElement callingMethod = stackTrace[2]; // Index 0 is getStackTrace, index 1 is myMethod, index 2 is the caller
+     int lineNumber = callingMethod.getLineNumber();
+     System.out.println("myMethod was called from line " + lineNumber);
 
-            db.collection("data")
-                    .document(String.valueOf(LocalDate.now()))
-                    .collection(String.valueOf(oneDoc.get("type")))
-                    .add(oneDoc);
+     //ArrayList<Map<String, Object>> unique = removeDuplicates(objsToPush);
+   //  objsToPush = unique;
+     db = FirebaseFirestore.getInstance();
+     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+     for (Map<String, Object> oneDoc : objsToPush) {
+
+         db.collection("data")
+                 .document(String.valueOf(LocalDate.now()))
+                 .collection(String.valueOf(oneDoc.get("type")))
+                 .add(oneDoc);
+     }
+     Date dt = new Date();
+     Map<String, Object> updates = new HashMap<>();
+     updates.put("datedoc", dt);
+
+     db.collection("data")
+             .document(String.valueOf(LocalDate.now())).set(updates)
+             .addOnSuccessListener(new OnSuccessListener<Void>() {
+                 @Override
+                 public void onSuccess(Void aVoid) {
+                     Log.d(TAG, "Document update successful!");
+                 }
+             })
+             .addOnFailureListener(new OnFailureListener() {
+                 @Override
+                 public void onFailure(@NonNull Exception e) {
+                     Log.w(TAG, "Error updating document", e);
+                 }
+             });
+ }
+
+    private ArrayList<Map<String, Object>> removeDuplicates(ArrayList<Map<String, Object>> objsToPush) {
+        ArrayList<Map<String, Object>> unique = new ArrayList<>();
+        for (Map<String, Object> doc:objsToPush) {
+            Timestamp thisTimestamp = (Timestamp) doc.get("datetime");
+
+            if (unique.stream().anyMatch(o -> o.get("datetime") == thisTimestamp))
+            {
+
+            }
+            else
+            {
+                unique.add(doc);
+            }
         }
-        Date dt = new Date();
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("datedoc", dt);
-
-        db.collection("data")
-                .document(String.valueOf(LocalDate.now())).set(updates)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Document update successful!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
-                    }
-                });
+        return unique;
     }
-
 
     private void makeLineChart(ArrayList<Map<String, Object>> chartData) {
 
@@ -734,7 +606,11 @@ e.printStackTrace();
         selected = (RadioButton) findViewById(selectedID);
 
         if (selectedID == -1) {
-            Toast.makeText(MainActivity.this, "Please select a time period", Toast.LENGTH_SHORT).show();
+
+            MainActivity.super.runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, "Please select a time period", Toast.LENGTH_SHORT).show();
+
+            });
         }
         if (selected != null)
             return selected.getText().toString();
@@ -788,34 +664,16 @@ e.printStackTrace();
     }
 
     private int getLiveRPM(InputStream finalInputStream, OutputStream finalOutputStream) {
-        RPMCommand spd = new RPMCommand();
-        try {
-            spd.run(finalInputStream, finalOutputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        if (emu == false)
+        {
+            return OBDService.getLiveRPM(finalInputStream, finalOutputStream);
         }
-        String result = spd.getResult();
-        String sub = result.substring(8);
-        int rpm = Integer.parseInt(sub, 16)/4;
-
-        return  rpm;
-    }
-
-    private void getRunTime(InputStream finalInputStream, OutputStream finalOutputStream) {
-        AvailablePidsCommand_21_40 rTime = new AvailablePidsCommand_21_40();
-
-        try {
-            rTime.run(finalInputStream, finalOutputStream);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        else
+        {
+            //EMU
+            emuService.updateFuel(MainActivity.this);
+            return EmuService.getRPM();
         }
-
-        String result = rTime.getFormattedResult();
-        Log.d(TAG, "getRunTime: " + result);
     }
 }
