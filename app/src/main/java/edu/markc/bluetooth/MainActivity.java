@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
@@ -73,11 +74,13 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     //emu var
     static boolean emu = true;
     static boolean stop = false;
+    static int fuelLevel = -1;
 
     private final static int REQUEST_ENABLE_BT = 1;
     private static final UUID CONNUUID = UUID.fromString("ea3836df-b860-4f33-b338-4e032c124870");
     TextView tVRPM;
     TextView tVSpeed;
+    TextView tvfuel;
     FirebaseFirestore db;
     LineChart mChart;
     RadioGroup rG;
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     Button btnStats;
     Button btnEmu;
     ArrayList<String> faults = new ArrayList<>();
-    EmuService emuService;
+    //EmuService emuService;
 
     private  static  LocalDate localdate;
 
@@ -103,17 +106,20 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         BluetoothService.checkPermissions(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      //  FirestoreService.read("RPM", "Month");
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
+
         if (emu == true)
         {
-            emuService = new EmuService(MainActivity.this);
+            fuelLevel = EmuService.getFuel(MainActivity.this);
+            EmuService.writeFuel(MainActivity.this, fuelLevel);
+            timer();
         }
 
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
+        tvfuel = findViewById(R.id.tvfuel);
         rG = (RadioGroup) findViewById(R.id.radioGroup);
 
         btn = (Button) findViewById(R.id.buttonre);
@@ -672,8 +678,58 @@ e.printStackTrace();
         else
         {
             //EMU
-            emuService.updateFuel(MainActivity.this);
+          //  emuService.updateFuel(MainActivity.this);
+           // tvfuel.setText(String.valueOf(EmuService.getFuel(MainActivity.this)));
             return EmuService.getRPM();
         }
     }
+    long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
+    Handler handler = new Handler();
+    int Seconds, Minutes, MilliSeconds ;
+
+    private void timer() {
+        //global variable fuel
+        //return a stopwatch object from another helper class?
+        //check under the reading if its been x minutes
+        //-= the global var
+        StartTime = SystemClock.uptimeMillis();
+        handler.postDelayed(runnable, 0);
+
+        //reset.setEnabled(false);
+
+
+    }
+
+    public Runnable runnable = new Runnable() {
+
+        public void run() {
+
+            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+
+            UpdateTime = TimeBuff + MillisecondTime;
+
+            Seconds = (int) (UpdateTime / 1000);
+
+            Minutes = Seconds / 60;
+
+            Seconds = Seconds % 60;
+
+            MilliSeconds = (int) (UpdateTime % 1000);
+
+            String timer = ("" + Minutes + ":"
+                    + String.format("%02d", Seconds));
+
+            if (Seconds % 5 == 0 && MilliSeconds < 5)
+            {
+                fuelLevel -= 1;
+                EmuService.writeFuel(MainActivity.this, fuelLevel);
+                tvfuel.setText(String.valueOf(fuelLevel));
+            }
+
+            handler.postDelayed(this, 0);
+        }
+
+    };
+
+
 }

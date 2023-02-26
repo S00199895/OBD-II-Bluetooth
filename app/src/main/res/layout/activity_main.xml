@@ -32,17 +32,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.098" />
 
+    <TextView
+        android:id="@+id/tvfuel"
+        android:layout_width="111dp"
+        android:layout_height="50dp"
+        android:text="Speed"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.245" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
-        android:layout_width="362dp"
-        android:layout_height="428dp"
+        android:layout_width="345dp"
+        android:layout_height="255dp"
         android:layout_margin="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.587">
+        app:layout_constraintVertical_bias="0.754">
 
 
     </com.github.mikephil.charting.charts.LineChart>

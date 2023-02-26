@@ -14,7 +14,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class EmuService {
-    static int fuel;
+    //static int fuel;
     static SharedPreferences sharedPref;
     static SharedPreferences.Editor editor;
     static Stopwatch s;
@@ -29,8 +29,8 @@ public class EmuService {
         {
             stopStopwatch();
         }
-        else
-            s.start();
+//    else
+           s.start();
 
 
     }
@@ -56,8 +56,8 @@ public class EmuService {
     {
         Random random = new Random();
         //logic to reduce fuel
-
-        return random.nextInt(100);
+        int speed = 40;
+        return random.nextInt(91) + speed;
 
     }
 
@@ -75,12 +75,12 @@ public class EmuService {
     public static int getFuel(Activity main)
     {
 
-        //SharedPreferences sharedPref = main.getPreferences(Context.MODE_PRIVATE);
-      //  SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences sharedPref = main.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
         if (sharedPref.getInt("fuelLevel", -99) == -99)
         {
 
-            return fuel = 45;
+            return 45;
         }
         else
         {
@@ -91,18 +91,22 @@ public class EmuService {
 
     public void updateFuel(Activity main)
     {
-        if (s.elapsed(TimeUnit.MINUTES) == TimeUnit.MINUTES.toMinutes(21L))
-        {
-            fuel -= 1;
-            writeFuel(main);
-        }
+//        if (s.elapsed(TimeUnit.SECONDS) == TimeUnit.SECONDS.toSeconds(10L))
+//        {
+//            fuel -= 1;
+//            writeFuel(main);
+//        }
     }
 
-    private void writeFuel(Activity main)
+    public static void writeFuel(Activity main, int fuel)
     {
-        this.editor.putInt("fuelLevel", fuel);
+        SharedPreferences sharedPref = main.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putInt("fuelLevel", fuel);
     }
-    //trip time
+
 
 
 }
+//trip time
