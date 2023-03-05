@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class EditJobActivity extends AppCompatActivity implements Serializable {
@@ -22,6 +25,7 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
     String fault;
     String jobName;
     ArrayList<Note> allNotes = new ArrayList<>();
+    Spinner importanceSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +35,10 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
         content =  (EditText) findViewById(R.id.eTContent);
         save = (Button) findViewById(R.id.btnSave);
         Intent edit = getIntent();
+        importanceSpinner = (Spinner) findViewById(R.id.importance);
         ArrayList<String> allFaults = new ArrayList<>();
 
+        importanceSpinner.setAdapter(new ArrayAdapter<Importance>(this, android.R.layout.simple_spinner_item, Importance.values()));
      //   SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
      //   SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -85,6 +91,7 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
                 {
                     n.title = title.getText().toString();
                     n.content = content.getText().toString();
+                    n.importance = Importance.valueOf( importanceSpinner.getSelectedItem().toString().toUpperCase(Locale.ROOT));
                 }
                 finalAllNotes.add(n);
                 allNotes = duplicatejobs(allNotes, fault);

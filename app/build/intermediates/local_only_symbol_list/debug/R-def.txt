@@ -19,6 +19,7 @@ id buttonre
 id dayRB
 id eTContent
 id eTTitle
+id importance
 id infoSection
 id lVFaults
 id lVNotes
@@ -31,6 +32,9 @@ id spinnerReading
 id tV
 id tVRPM
 id tVSpeed
+id textView
+id tvSeverity
+id tvfuel
 id weekRB
 layout activity_edit_job
 layout activity_jobs

@@ -2927,6 +2927,7 @@ int id ignore 0x7f0900e6
 int id ignoreRequest 0x7f0900e7
 int id image 0x7f0900e8
 int id immediateStop 0x7f0900e9
+int id importance 0x7f0901fe
 int id included 0x7f0900ea
 int id indeterminate 0x7f0900eb
 int id info 0x7f0900ec
@@ -3149,6 +3150,7 @@ int id textSpacerNoButtons 0x7f0901c4
 int id textSpacerNoTitle 0x7f0901c5
 int id textStart 0x7f0901c6
 int id textTop 0x7f0901c7
+int id textView 0x7f0901ff
 int id text_input_end_icon 0x7f0901c8
 int id text_input_error_icon 0x7f0901c9
 int id text_input_start_icon 0x7f0901ca
@@ -3174,6 +3176,8 @@ int id transition_position 0x7f0901dd
 int id transition_scene_layoutid_cache 0x7f0901de
 int id transition_transform 0x7f0901df
 int id triangle 0x7f0901e0
+int id tvSeverity 0x7f090200
+int id tvfuel 0x7f0901fd
 int id unchecked 0x7f0901e1
 int id uniform 0x7f0901e2
 int id unlabeled 0x7f0901e3

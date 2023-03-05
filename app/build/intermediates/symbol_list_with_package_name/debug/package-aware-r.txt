@@ -2928,6 +2928,7 @@ id ignore
 id ignoreRequest
 id image
 id immediateStop
+id importance
 id included
 id indeterminate
 id info
@@ -3150,6 +3151,7 @@ id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
 id textTop
+id textView
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -3175,6 +3177,8 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tvSeverity
+id tvfuel
 id unchecked
 id uniform
 id unlabeled

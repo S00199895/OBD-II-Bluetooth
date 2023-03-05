@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,10 +120,23 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
 
                     TextView title = (TextView) view.findViewById(R.id.noteTitle);
                     TextView date = (TextView) view.findViewById(R.id.noteDate);
+                    TextView severity = (TextView) view.findViewById(R.id.tvSeverity);
+
 
                     title.setText(note.title);
                     date.setText(note.timestamp);
+                    severity.setText(note.importance.toString());
+                  //  note.importance = Importance.HIGH;
+                    if (note != null) {
+                        severity.setText(note.importance.toString());
 
+                        if (severity.getText().toString() == "High")
+                            severity.setBackgroundColor(Color.parseColor("#FF0000"));
+                        else if (severity.getText().toString() == "Medium")
+                            severity.setBackgroundColor(Color.parseColor("#FFA500"));
+                        else if (severity.getText().toString() == "Low")
+                            severity.setBackgroundColor(Color.parseColor("#257317"));
+                    }
                     return  view;
                 }
         }

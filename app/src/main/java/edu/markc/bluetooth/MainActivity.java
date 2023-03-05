@@ -557,9 +557,6 @@ e.printStackTrace();
         
         System.out.println("chart valeus");
         System.out.println(chartData);
-        //give this chart times for order and dates
-        //plot against values
-        //display chart
         ArrayList<Entry> yValues = new ArrayList<>();
 
         //sort

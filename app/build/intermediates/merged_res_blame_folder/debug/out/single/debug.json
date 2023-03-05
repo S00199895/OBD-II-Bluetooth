@@ -16,10 +16,6 @@
         "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-36:\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "edu.markc.bluetooth.app-merged_res-34:/layout_activity_main.xml.flat",
-        "source": "edu.markc.bluetooth.app-main-36:/layout/activity_main.xml"
-    },
-    {
         "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-34:\\layout_activity_stats.xml.flat",
         "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-36:\\layout\\activity_stats.xml"
     },
@@ -34,6 +30,10 @@
     {
         "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-34:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
         "source": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-main-36:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "edu.markc.bluetooth.app-merged_res-34:/layout_job_layout.xml.flat",
+        "source": "edu.markc.bluetooth.app-main-36:/layout/job_layout.xml"
     },
     {
         "merged": "C:\\Users\\noelc\\.gradle\\daemon\\7.4\\edu.markc.bluetooth.app-merged_res-34:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
