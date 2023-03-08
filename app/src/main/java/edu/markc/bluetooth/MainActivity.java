@@ -12,17 +12,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -65,6 +68,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executor;
@@ -97,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     Button btnStats;
     Button btnEmu;
     ArrayList<String> faults = new ArrayList<>();
+    ImageView speedlimitImage;
     //EmuService emuService;
 
     private  static  LocalDate localdate;
@@ -109,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
-
+speedLimits();
         if (emu == true)
         {
             fuelLevel = EmuService.getFuel(MainActivity.this);
@@ -533,22 +538,67 @@ e.printStackTrace();
              });
  }
 
-    private ArrayList<Map<String, Object>> removeDuplicates(ArrayList<Map<String, Object>> objsToPush) {
-        ArrayList<Map<String, Object>> unique = new ArrayList<>();
-        for (Map<String, Object> doc:objsToPush) {
-            Timestamp thisTimestamp = (Timestamp) doc.get("datetime");
 
-            if (unique.stream().anyMatch(o -> o.get("datetime") == thisTimestamp))
-            {
+    private void speedLimits() {
 
+        speedlimitImage = findViewById(R.id.imageView);
+        TypedArray imgs = getResources().obtainTypedArray(R.array.speedimgs);
+        int[] speeds = new int[] {50,60,80,100,120};
+         Runnable ru = new Runnable() {
+            @Override
+            public void run() {
+                Random r = new Random();
+                int speedIndex = r.nextInt(5);
+                speedlimitImage.setImageResource(imgs.getResourceId(speedIndex,0));
+
+                int speed = Integer.parseInt(tVSpeed.getText().toString());
+
+                if (speeds[speedIndex] < Integer.parseInt(tVSpeed.getText().toString()))
+                {
+                    overTheLimit();
+                }
+
+                handler.postDelayed(this, 10000);
             }
-            else
-            {
-                unique.add(doc);
+        };
+
+        Handler h = new Handler();
+        handler.postDelayed(ru, 10000);
+
+
+        /*
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
             }
-        }
-        return unique;
+        },1000);*/
+
     }
+
+    private void overTheLimit() {
+            Vibrator v = (Vibrator) MainActivity.this.getSystemService(Context.VIBRATOR_SERVICE);
+            Toast.makeText(MainActivity.this, "SLOW DOWN!", Toast.LENGTH_LONG).show();
+            v.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
+
+
+    }
+//
+//    private ArrayList<Map<String, Object>> removeDuplicates(ArrayList<Map<String, Object>> objsToPush) {
+//        ArrayList<Map<String, Object>> unique = new ArrayList<>();
+//        for (Map<String, Object> doc:objsToPush) {
+//            Timestamp thisTimestamp = (Timestamp) doc.get("datetime");
+//
+//            if (unique.stream().anyMatch(o -> o.get("datetime") == thisTimestamp))
+//            {
+//
+//            }
+//            else
+//            {
+//                unique.add(doc);
+//            }
+//        }
+//        return unique;
+//    }
 
     private void makeLineChart(ArrayList<Map<String, Object>> chartData) {
 

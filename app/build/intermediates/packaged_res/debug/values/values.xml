@@ -4,6 +4,13 @@
         <item>RPM</item>
         <item>Speed</item>
     </string-array>
+    <integer-array name="speedimgs">
+    <item>@drawable/s501</item>
+    <item>@drawable/s601</item>
+    <item>@drawable/s801</item>
+    <item>@drawable/s1001</item>
+    <item>@drawable/s1201</item>
+</integer-array>
     <color name="black">#FF000000</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

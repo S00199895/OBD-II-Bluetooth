@@ -56,8 +56,8 @@ public class EmuService {
     {
         Random random = new Random();
         //logic to reduce fuel
-        int speed = 40;
-        return random.nextInt(91) + speed;
+        int speed = 30;
+        return random.nextInt(90) + speed;
 
     }
 

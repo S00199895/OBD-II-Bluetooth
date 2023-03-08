@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><integer-array name="speedimgs">
+    <item>@drawable/s501</item>
+    <item>@drawable/s601</item>
+    <item>@drawable/s801</item>
+    <item>@drawable/s1001</item>
+    <item>@drawable/s1201</item>
+</integer-array></resources>

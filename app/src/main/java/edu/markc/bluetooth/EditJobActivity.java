@@ -2,18 +2,27 @@ package edu.markc.bluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -26,6 +35,7 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
     String jobName;
     ArrayList<Note> allNotes = new ArrayList<>();
     Spinner importanceSpinner;
+    ListView lvfaults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +47,7 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
         Intent edit = getIntent();
         importanceSpinner = (Spinner) findViewById(R.id.importance);
         ArrayList<String> allFaults = new ArrayList<>();
-
+        lvfaults = findViewById(R.id.lvfaultsedit);
         importanceSpinner.setAdapter(new ArrayAdapter<Importance>(this, android.R.layout.simple_spinner_item, Importance.values()));
      //   SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
      //   SharedPreferences.Editor editor = sharedPref.edit();
@@ -78,6 +88,9 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
 
 
 
+        ArrayAdapter<String> adapter = new FaultAdapter(EditJobActivity.this, 0, allFaults);
+        lvfaults.setAdapter(adapter);
+
 
         ArrayList<Note> finalAllNotes = allNotes;
         ArrayList<String> finalAllFaults = allFaults;
@@ -87,6 +100,9 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
                                 /* Intent i = new Intent(MainActivity.this, JobsActivity.class);
                 startActivity(i);*/
                 Note n = new Note();
+
+            //    n.content = ((FaultAdapter) adapter).getDescOut();
+
                 if (title.getText().toString() != null && content.getText().toString() != null)
                 {
                     n.title = title.getText().toString();
@@ -136,5 +152,73 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
 
 
         return  notesArray;
+    }
+
+    class FaultAdapter extends ArrayAdapter<String> {
+        Context context;
+        List<String> faults;
+        String descOut = "";
+        public FaultAdapter(Context context, int resource, ArrayList<String> objects) {
+
+
+            super(context, resource, objects);
+
+            this.context = context;
+            this.faults = objects;
+
+
+        }
+
+        public String getDescOut()
+        {
+            return descOut;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent){
+            String f = faults.get(position);
+
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.job_link_layout, null);
+
+            TextView title = (TextView) view.findViewById(R.id.tvFault);
+            CheckBox cb = (CheckBox) view.findViewById(R.id.cb);
+
+
+            cb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (cb.isChecked())
+                    {
+                        descOut += "\nLinked " + f;
+                        content.setText(descOut);
+
+                    }
+                    else if (!cb.isChecked())
+                    {
+                        descOut = descOut.replace("\nLinked " + f, "");
+                        content.setText(descOut);
+                    }
+                }
+            });
+
+            title.setText(f);
+/*
+        title.setText(f.title);
+        date.setText(f.timestamp);
+        severity.setText(note.importance.toString());
+        //  note.importance = Importance.HIGH;
+        if (note != null) {
+            severity.setText(note.importance.toString());
+
+            if (severity.getText().toString() == "High")
+                severity.setBackgroundColor(Color.parseColor("#FF0000"));
+            else if (severity.getText().toString() == "Medium")
+                severity.setBackgroundColor(Color.parseColor("#FFA500"));
+            else if (severity.getText().toString() == "Low")
+                severity.setBackgroundColor(Color.parseColor("#257317"));
+        }*/
+            return  view;
+        }
+
     }
 }

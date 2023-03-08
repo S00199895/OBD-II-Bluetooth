@@ -134,8 +134,10 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
                             severity.setBackgroundColor(Color.parseColor("#FF0000"));
                         else if (severity.getText().toString() == "Medium")
                             severity.setBackgroundColor(Color.parseColor("#FFA500"));
-                        else if (severity.getText().toString() == "Low")
-                            severity.setBackgroundColor(Color.parseColor("#257317"));
+                        else if (severity.getText().toString() == "Low") {
+                            severity.setBackgroundColor(Color.YELLOW);//.parseColor("#257317"));
+                            severity.setTextColor(Color.BLACK);
+                        }
                     }
                     return  view;
                 }
@@ -150,7 +152,7 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
 
        // notesArray = duplicatejobs(notesArray);
 
-        checkFaultLinks(notesArray, faults);
+        //checkFaultLinks(notesArray, faults);
 
 
         ArrayList<Note> finalNotesArray2 = notesArray;
