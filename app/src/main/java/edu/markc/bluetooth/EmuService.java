@@ -3,6 +3,7 @@ package edu.markc.bluetooth;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.widget.Chronometer;
 
 
@@ -69,6 +70,24 @@ public class EmuService {
         Random random = new Random();
 
         return random.nextInt(1001) + rpm;
+    }
+
+    public static boolean over(TypedArray imgs, int speed)
+    {
+        //passed:
+       // TypedArray imgs = getResources().obtainTypedArray(R.array.speedimgs);
+        //Integer.parseInt(tVSpeed.getText().toString())
+        int[] speeds = new int[] {50,60,80,100,120};
+        Random r = new Random();
+        int speedIndex = r.nextInt(5);
+        //speedlimitImage.setImageResource(imgs.getResourceId(speedIndex,0));
+
+
+        if (speeds[speedIndex] < speed)
+        {
+            return true;
+        }
+        return  false;
     }
 
     //fuel

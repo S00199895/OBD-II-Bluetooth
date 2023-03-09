@@ -2,6 +2,8 @@ package edu.markc.bluetooth;
 import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     //emu var
     static boolean emu = true;
     static boolean stop = false;
-    static int fuelLevel = -1;
+    static float fuelLevel = -1;
 
     private final static int REQUEST_ENABLE_BT = 1;
     private static final UUID CONNUUID = UUID.fromString("ea3836df-b860-4f33-b338-4e032c124870");
@@ -118,7 +120,7 @@ speedLimits();
         if (emu == true)
         {
             fuelLevel = EmuService.getFuel(MainActivity.this);
-            EmuService.writeFuel(MainActivity.this, fuelLevel);
+            EmuService.writeFuel(MainActivity.this, (int)fuelLevel);
             timer();
         }
 
@@ -294,7 +296,16 @@ speedLimits();
 e.printStackTrace();
             } }}
 
-
+    private void gauge(float fuelpc) {
+        if (fuelpc < 0)
+            fuelpc=0;
+        ConstraintSet set = new ConstraintSet();
+        TextView needle = (TextView)findViewById(R.id.needle);
+        ConstraintLayout constraintLayout = (ConstraintLayout)findViewById(R.id.clayout);
+        set.clone(constraintLayout);
+        set.setHorizontalBias(R.id.needle,fuelpc);
+        set.applyTo(constraintLayout);
+    }
 
     private ArrayList<String> getfaults(InputStream finalInputStream, OutputStream finalOutputStream) {
         if (emu == false)
@@ -547,13 +558,14 @@ e.printStackTrace();
          Runnable ru = new Runnable() {
             @Override
             public void run() {
-                Random r = new Random();
+               Random r = new Random();
                 int speedIndex = r.nextInt(5);
+
                 speedlimitImage.setImageResource(imgs.getResourceId(speedIndex,0));
 
                 int speed = Integer.parseInt(tVSpeed.getText().toString());
 
-                if (speeds[speedIndex] < Integer.parseInt(tVSpeed.getText().toString()))
+                if (EmuService.over(imgs, speed))
                 {
                     overTheLimit();
                 }
@@ -769,8 +781,9 @@ e.printStackTrace();
             if (Seconds % 5 == 0 && MilliSeconds < 5)
             {
                 fuelLevel -= 1;
-                EmuService.writeFuel(MainActivity.this, fuelLevel);
+                EmuService.writeFuel(MainActivity.this, (int)fuelLevel);
                 tvfuel.setText(String.valueOf(fuelLevel));
+                gauge(fuelLevel / 45f);
             }
 
             handler.postDelayed(this, 0);

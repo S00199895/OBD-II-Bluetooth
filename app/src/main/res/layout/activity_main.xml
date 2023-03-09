@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/clayout">
 
     <TextView
         android:id="@+id/tVRPM"
@@ -36,14 +37,14 @@
         android:id="@+id/tvfuel"
         android:layout_width="111dp"
         android:layout_height="50dp"
-        android:text="Speed"
+        android:text="Fuel"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintHorizontal_bias="0.406"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.245" />
+        app:layout_constraintVertical_bias="0.384" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
@@ -166,15 +167,66 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="62dp"
+        android:layout_height="72dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.346"
+        app:layout_constraintHorizontal_bias="0.056"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.359"
+        app:layout_constraintVertical_bias="0.247"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/gauge"
+        android:layout_width="349dp"
+        android:layout_height="44dp"
+        android:background="@drawable/gradgauge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473" />
+
+    <TextView
+        android:id="@+id/needle"
+        android:layout_width="6dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="20dp"
+        android:background="#C12C2C"
+        app:layout_constraintBottom_toBottomOf="@+id/gauge"
+        app:layout_constraintEnd_toEndOf="@+id/gauge"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="@+id/gauge"
+        app:layout_constraintTop_toTopOf="@+id/gauge"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="25dp"
+        android:layout_height="45dp"
+        android:text="E"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gauge"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="25dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="6dp"
+        android:text="F"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.472" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
