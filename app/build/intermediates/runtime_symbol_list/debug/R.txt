@@ -2611,6 +2611,7 @@ int drawable design_password_eye 0x7f080092
 int drawable design_snackbar_background 0x7f080093
 int drawable googleg_disabled_color_18 0x7f080094
 int drawable googleg_standard_color_18 0x7f080095
+int drawable gradgauge 0x7f0800ed
 int drawable ic_clock_black_24dp 0x7f080096
 int drawable ic_keyboard_black_24dp 0x7f080097
 int drawable ic_launcher_background 0x7f080098
@@ -2786,11 +2787,13 @@ int id antiClockwise 0x7f090054
 int id anticipate 0x7f090055
 int id arc 0x7f090056
 int id asConfigured 0x7f090057
+int id ascdesc 0x7f09020d
 int id async 0x7f090058
 int id auto 0x7f090059
 int id autoComplete 0x7f09005a
 int id autoCompleteToEnd 0x7f09005b
 int id autoCompleteToStart 0x7f09005c
+int id azrB 0x7f09020a
 int id barrier 0x7f09005d
 int id baseline 0x7f09005e
 int id beginOnFirstDraw 0x7f09005f
@@ -2824,6 +2827,7 @@ int id checkbox 0x7f09007a
 int id checked 0x7f09007b
 int id chronometer 0x7f09007c
 int id circle_center 0x7f09007d
+int id clayout 0x7f090205
 int id clear_text 0x7f09007e
 int id clip_horizontal 0x7f09007f
 int id clip_vertical 0x7f090080
@@ -2910,6 +2914,7 @@ int id forever 0x7f0900d0
 int id fragment_container_view_tag 0x7f0900d1
 int id frost 0x7f0900d2
 int id fullscreen_header 0x7f0900d3
+int id gauge 0x7f090206
 int id ghost_view 0x7f0900d4
 int id ghost_view_holder 0x7f0900d5
 int id gone 0x7f0900d6
@@ -2942,6 +2947,7 @@ int id info 0x7f0900ef
 int id infoSection 0x7f0900f0
 int id invisible 0x7f0900f1
 int id inward 0x7f0900f2
+int id irB 0x7f09020b
 int id italic 0x7f0900f3
 int id item_touch_helper_previous_elevation 0x7f0900f4
 int id jumpToEnd 0x7f0900f5
@@ -3026,6 +3032,7 @@ int id navigation_bar_item_labels_group 0x7f090143
 int id navigation_bar_item_large_label_view 0x7f090144
 int id navigation_bar_item_small_label_view 0x7f090145
 int id navigation_header_container 0x7f090146
+int id needle 0x7f090207
 int id never 0x7f090147
 int id neverCompleteToEnd 0x7f090148
 int id neverCompleteToStart 0x7f090149
@@ -3161,6 +3168,9 @@ int id textSpacerNoTitle 0x7f0901ca
 int id textStart 0x7f0901cb
 int id textTop 0x7f0901cc
 int id textView 0x7f0901cd
+int id textView2 0x7f09020c
+int id textView4 0x7f090208
+int id textView5 0x7f090209
 int id text_input_end_icon 0x7f0901ce
 int id text_input_error_icon 0x7f0901cf
 int id text_input_start_icon 0x7f0901d0

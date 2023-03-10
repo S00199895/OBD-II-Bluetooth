@@ -2612,6 +2612,7 @@ drawable design_password_eye
 drawable design_snackbar_background
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
+drawable gradgauge
 drawable ic_clock_black_24dp
 drawable ic_keyboard_black_24dp
 drawable ic_launcher_background
@@ -2787,11 +2788,13 @@ id antiClockwise
 id anticipate
 id arc
 id asConfigured
+id ascdesc
 id async
 id auto
 id autoComplete
 id autoCompleteToEnd
 id autoCompleteToStart
+id azrB
 id barrier
 id baseline
 id beginOnFirstDraw
@@ -2825,6 +2828,7 @@ id checkbox
 id checked
 id chronometer
 id circle_center
+id clayout
 id clear_text
 id clip_horizontal
 id clip_vertical
@@ -2911,6 +2915,7 @@ id forever
 id fragment_container_view_tag
 id frost
 id fullscreen_header
+id gauge
 id ghost_view
 id ghost_view_holder
 id gone
@@ -2943,6 +2948,7 @@ id info
 id infoSection
 id invisible
 id inward
+id irB
 id italic
 id item_touch_helper_previous_elevation
 id jumpToEnd
@@ -3027,6 +3033,7 @@ id navigation_bar_item_labels_group
 id navigation_bar_item_large_label_view
 id navigation_bar_item_small_label_view
 id navigation_header_container
+id needle
 id never
 id neverCompleteToEnd
 id neverCompleteToStart
@@ -3162,6 +3169,9 @@ id textSpacerNoTitle
 id textStart
 id textTop
 id textView
+id textView2
+id textView4
+id textView5
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon

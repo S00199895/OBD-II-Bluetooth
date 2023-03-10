@@ -664,7 +664,10 @@ e.printStackTrace();
         LineData data = new LineData(dataSets);
         mChart.setData(data);
         simulateTap(mChart);
+
     }
+
+
 
     private String checkRadio() {
         int selectedID = rG.getCheckedRadioButtonId();

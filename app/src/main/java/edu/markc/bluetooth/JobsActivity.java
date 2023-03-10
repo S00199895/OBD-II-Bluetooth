@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +28,9 @@ import com.google.gson.Gson;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class JobsActivity extends AppCompatActivity implements Serializable {
     ListView lV;
@@ -39,12 +38,22 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
     Gson g = new Gson();
     ArrayList<Note> notesArray = new ArrayList<Note>();
     ArrayList<String> faults = new ArrayList<>();
-
+    RadioButton importanceRB;
+    RadioButton azRB;
+    RadioGroup rgSort;
+    RadioButton selected;
+    TextView tvascdesc;
+    boolean AZisDescending = false;
+    boolean IisDescending = false;
+    boolean az = false;
+    boolean i = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobs);
-    //    alertDialog(JobsActivity.this);
+
+        rgSort = findViewById(R.id.radioGroup);
+        tvascdesc = findViewById(R.id.ascdesc);
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         if (readPrefs(sharedPref) != null) {
@@ -68,6 +77,9 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
             ArrayAdapter<String> faultsadapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, faults);
             ListView listView = (ListView) findViewById(R.id.lVFaults);
             listView.setAdapter(faultsadapter);
+
+
+
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -150,7 +162,105 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
             ArrayAdapter<Note> adapter = new noteArrayAdapter(this, 0, notesArray);
         lV.setAdapter(adapter);
 
-       // notesArray = duplicatejobs(notesArray);
+        //comparators for note
+        Comparator<Note> azcomp = new Comparator<Note>() {
+            @Override
+            public int compare(Note o1, Note o2) {
+                return o1.title.compareTo(o2.title);
+            }
+        };
+
+        Comparator<Note> icomp = new Comparator<Note>() {
+            @Override
+            public int compare(Note o1, Note o2) {
+                return Integer.compare(o1.importance.ordinal(),o2.importance.ordinal());
+              /* if (o1.importance.ordinal() < o2.importance.ordinal())
+                   return 1;
+               else if (o1.importance.ordinal() > o2.importance.ordinal())
+                    return 1;
+               return 0;*/
+            }
+        };
+
+        int selectedID = rgSort.getCheckedRadioButtonId();
+        selected = (RadioButton) findViewById(selectedID);
+        azRB = findViewById(R.id.azrB);
+        importanceRB = findViewById(R.id.irB);
+
+        /*   if (isDescending)
+                {
+                    Collections.reverse(notesArray);
+                }*/
+
+        tvascdesc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.reverse(notesArray);
+                if (tvascdesc.getText().toString().contains("↑"))
+                    tvascdesc.setText("↓");
+                else if (tvascdesc.getText().toString().contains("↓"))
+                    tvascdesc.setText("↑");
+                lV.invalidateViews();
+            }
+        });
+        azRB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             //   int selectedID = rgSort.getCheckedRadioButtonId();
+               // selected = (RadioButton) findViewById(selectedID);
+                if (AZisDescending) {
+                    tvascdesc.setText("↑");
+                    Collections.reverse(notesArray);
+                    AZisDescending = false;
+                    IisDescending = false;}
+                else {
+                    tvascdesc.setText("↓");
+
+                   /* az = true;
+                    i = false;*/
+                    Collections.sort(notesArray, azcomp);
+                    AZisDescending = true;
+                }
+                lV.invalidateViews();
+            }
+        });
+
+        importanceRB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (IisDescending) {
+                    tvascdesc.setText("↑");
+
+                    Collections.reverse(notesArray);
+                IisDescending = false;
+                AZisDescending = false;}
+                else {
+/*
+                    az = false;
+                i = true;*/
+                    tvascdesc.setText("↓");
+
+                    Collections.sort(notesArray, icomp);
+                    IisDescending = true;
+                }
+                //also do desc, asc
+                lV.invalidateViews();
+            }
+        });
+
+        rgSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+            }
+
+        });
+
+
+        // notesArray = duplicatejobs(notesArray);
 
         //checkFaultLinks(notesArray, faults);
 
