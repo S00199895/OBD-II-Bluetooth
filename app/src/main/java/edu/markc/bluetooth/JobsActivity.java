@@ -51,7 +51,7 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobs);
-
+getSupportActionBar().hide();
         rgSort = findViewById(R.id.radioGroup);
         tvascdesc = findViewById(R.id.ascdesc);
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
@@ -93,7 +93,6 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
 
         lV = (ListView) findViewById(R.id.lVNotes);
         add = (FloatingActionButton) findViewById(R.id.addNoteBtn);
-
         ArrayList<Note> finalNotesArray = notesArray;
 
         ArrayList<Note> finalNotesArray1 = notesArray;

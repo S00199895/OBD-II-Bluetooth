@@ -43,6 +43,8 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_edit_job);
         title =  (EditText) findViewById(R.id.eTTitle);
         content =  (EditText) findViewById(R.id.eTContent);
+
+
         save = (Button) findViewById(R.id.btnSave);
         Intent edit = getIntent();
         importanceSpinner = (Spinner) findViewById(R.id.importance);

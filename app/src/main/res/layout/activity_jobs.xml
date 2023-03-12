@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.416"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.066" />
+        app:layout_constraintVertical_bias="0.561" />
 
     <ListView
         android:id="@+id/lVNotes"
@@ -31,7 +31,7 @@
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.633">
+        app:layout_constraintVertical_bias="0.98">
 
     </ListView>
 
@@ -42,10 +42,10 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintHorizontal_bias="0.977"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lVNotes"
-        app:layout_constraintVertical_bias="0.557"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.991"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
     <RadioGroup
@@ -59,9 +59,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.18">
+        app:layout_constraintVertical_bias="0.333">
 
         <TextView
             android:id="@+id/textView2"
@@ -86,8 +87,8 @@
 
         <RadioButton
             android:id="@+id/irB"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
+            android:layout_width="154dp"
+            android:layout_height="54dp"
             android:layout_gravity="center"
             android:checked="false"
             android:padding="2dp"
@@ -105,6 +106,19 @@
             android:textColor="@color/white"
             android:textSize="50sp" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="406dp"
+        android:layout_height="42dp"
+        android:text="Current fault codes"
+        android:textSize="27sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.081" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
