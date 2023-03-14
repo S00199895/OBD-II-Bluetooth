@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
     ArrayList<Note> allNotes = new ArrayList<>();
     Spinner importanceSpinner;
     ListView lvfaults;
+    ArrayList<String> gfaults;
+    TextView tvselected;
+    int jobsselected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +47,10 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_edit_job);
         title =  (EditText) findViewById(R.id.eTTitle);
         content =  (EditText) findViewById(R.id.eTContent);
-
-
+        getSupportActionBar().hide();
+tvselected = findViewById(R.id.tvSelected);
+tvselected.setText("0 faults selected");
+jobsselected =0;
         save = (Button) findViewById(R.id.btnSave);
         Intent edit = getIntent();
         importanceSpinner = (Spinner) findViewById(R.id.importance);
@@ -58,9 +64,11 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
         {
             Note edited = new Note();
             allNotes = (ArrayList<Note>) edit.getSerializableExtra("allNotes");
+
             fault = edit.getStringExtra("thisFault");
             jobName = edit.getStringExtra("thisJob");
             allFaults = (ArrayList<String>) edit.getSerializableExtra("faults");
+            gfaults = allFaults;
 
             /*  i.putExtra("thisFault", fault);
                         i.putExtra("allNotes", notesArray);
@@ -113,10 +121,12 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
                 }
                 finalAllNotes.add(n);
                 allNotes = duplicatejobs(allNotes, fault);
+                Toast.makeText(EditJobActivity.this, "Job saved", Toast.LENGTH_SHORT).show();
                 //finalAllNotes = duplicatejobs(finalAllNotes);
                 Intent i = new Intent(EditJobActivity.this, JobsActivity.class);
                 i.putExtra("allNotes", finalAllNotes);
                 i.putExtra("faults", finalAllFaults);
+
                 startActivity(i);
                // finishActivity(0);
             }
@@ -156,6 +166,14 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
         return  notesArray;
     }
 
+    public void backtojobs(View view) {
+        Intent i = new Intent(EditJobActivity.this, JobsActivity.class);
+        i.putExtra("allNotes", allNotes);
+        i.putExtra("faults", gfaults);
+
+        startActivity(i);
+    }
+
     class FaultAdapter extends ArrayAdapter<String> {
         Context context;
         List<String> faults;
@@ -193,12 +211,17 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
                     {
                         descOut += "\nLinked " + f;
                         content.setText(descOut);
+                        jobsselected++;
+                        tvselected.setText(String.valueOf(jobsselected) + " jobs selected");
 
                     }
                     else if (!cb.isChecked())
                     {
                         descOut = descOut.replace("\nLinked " + f, "");
                         content.setText(descOut);
+
+                        jobsselected--;
+                        tvselected.setText(String.valueOf(jobsselected) + " jobs selected");
                     }
                 }
             });

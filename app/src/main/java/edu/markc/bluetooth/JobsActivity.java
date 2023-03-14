@@ -269,10 +269,12 @@ getSupportActionBar().hide();
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
               // TextView tVTitle =  view.findViewById(R.id.noteTitle);
-               Toast.makeText(JobsActivity.this, "Job deleted", Toast.LENGTH_SHORT).show();
+                dialogDeleteJob(JobsActivity.this, finalNotesArray2, position, adapter);
+
+               /*Toast.makeText(JobsActivity.this, "Job deleted", Toast.LENGTH_SHORT).show();
                 finalNotesArray2.remove(position);
                 adapter.notifyDataSetChanged();
-                writePrefs(sharedPref, editor, finalNotesArray2);
+                writePrefs(sharedPref, editor, finalNotesArray2);*/
                return true;
             }});
 
@@ -298,7 +300,7 @@ startActivity(i);
 
 
 
-    private void checkFaultLinks(ArrayList<Note> notesArray, ArrayList<String> faults) {
+ /*   private void checkFaultLinks(ArrayList<Note> notesArray, ArrayList<String> faults) {
         //get the last/newest note title
         //loop through faults and alert dialog the one that matches
         //yes = put fault in desc
@@ -378,7 +380,7 @@ if  (notesArray.size() > 0) {
         AlertDialog dialog = builder.create();
         dialog.show();
         }
-    }
+    }*/
 
     private void alertDialog(Context context, String fault) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -406,6 +408,35 @@ if  (notesArray.size() > 0) {
                     }
                 });
 
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void dialogDeleteJob(Context context, ArrayList<Note> finalNotesArray2, int position,/*index of the deleted?*/ArrayAdapter<Note> adapter) {
+        //find the code where it deletes
+        //put in here
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete job?")
+                .setMessage("Are you sure you want to delete this job")
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        Toast.makeText(JobsActivity.this, "Job deleted", Toast.LENGTH_SHORT).show();
+                        finalNotesArray2.remove(position);
+                        adapter.notifyDataSetChanged();
+                        writePrefs(sharedPref, editor, finalNotesArray2);
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked no button
+                    }
+                });
         AlertDialog dialog = builder.create();
         dialog.show();
     }

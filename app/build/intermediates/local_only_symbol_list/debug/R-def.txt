@@ -21,6 +21,7 @@ id MonthRB
 id addNoteBtn
 id ascdesc
 id azrB
+id back
 id btnEmuStopReading
 id btnSave
 id btnStats
@@ -51,9 +52,12 @@ id tVRPM
 id tVSpeed
 id textView
 id textView2
+id textView3
 id textView4
 id textView5
+id textView6
 id tvFault
+id tvSelected
 id tvSeverity
 id tvfuel
 id weekRB
