@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
     ArrayList<String> gfaults;
     TextView tvselected;
     int jobsselected;
+    Gson g;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class EditJobActivity extends AppCompatActivity implements Serializable {
 tvselected = findViewById(R.id.tvSelected);
 tvselected.setText("0 faults selected");
 jobsselected =0;
+g = new Gson();
         save = (Button) findViewById(R.id.btnSave);
         Intent edit = getIntent();
         importanceSpinner = (Spinner) findViewById(R.id.importance);
@@ -70,17 +74,12 @@ jobsselected =0;
             allFaults = (ArrayList<String>) edit.getSerializableExtra("faults");
             gfaults = allFaults;
 
-            /*  i.putExtra("thisFault", fault);
-                        i.putExtra("allNotes", notesArray);
-                        i.putExtra("faults", faults);*/
-
             if (Integer.valueOf(edit.getIntExtra("editNoteIndex", -5)) != -5)
             {
                 edited = allNotes.get(edit.getIntExtra("editNoteIndex", -5));
                 allNotes.remove(edit.getIntExtra("editNoteIndex", -5));
 
             }
-           // Note edited = (Note) edit.getSerializableExtra("editNote");
 
             title.setText(edited.title);
             content.setText(edited.content);
@@ -107,32 +106,33 @@ jobsselected =0;
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                                /* Intent i = new Intent(MainActivity.this, JobsActivity.class);
-                startActivity(i);*/
                 Note n = new Note();
-
-            //    n.content = ((FaultAdapter) adapter).getDescOut();
-
                 if (title.getText().toString() != null && content.getText().toString() != null)
                 {
                     n.title = title.getText().toString();
                     n.content = content.getText().toString();
                     n.importance = Importance.valueOf( importanceSpinner.getSelectedItem().toString().toUpperCase(Locale.ROOT));
                 }
+                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+
                 finalAllNotes.add(n);
                 allNotes = duplicatejobs(allNotes, fault);
                 Toast.makeText(EditJobActivity.this, "Job saved", Toast.LENGTH_SHORT).show();
-                //finalAllNotes = duplicatejobs(finalAllNotes);
                 Intent i = new Intent(EditJobActivity.this, JobsActivity.class);
                 i.putExtra("allNotes", finalAllNotes);
                 i.putExtra("faults", finalAllFaults);
-
+            writeFaults(sharedPref, editor, finalAllFaults);
                 startActivity(i);
-               // finishActivity(0);
             }
         });
     }
-
+    public void writeFaults(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<String> faults) {
+        String jsonNotes = g.toJson(faults);
+        // sendDataToFragment(notes);
+        editor.putString("faults", jsonNotes);
+        editor.apply();
+    }
     private ArrayList<Note> duplicatejobs(ArrayList<Note> notesArray, String fault) {
 
         ArrayList<String> titles = new ArrayList<String>(notesArray.stream().map(p -> p.title).collect(Collectors.toList()));
@@ -153,11 +153,7 @@ jobsselected =0;
         }
 
         if (duplicate == true)
-        {/*
-            for (Note n: notesArray
-            ) {
-                if (n.title.contains(title) && !n.content.contains(fault))
-                {*/
+        {
             String finalTitle = title;
             notesArray.removeIf(n -> n.title.contains(finalTitle) && !n.content.contains(fault));
                 }
@@ -227,21 +223,6 @@ jobsselected =0;
             });
 
             title.setText(f);
-/*
-        title.setText(f.title);
-        date.setText(f.timestamp);
-        severity.setText(note.importance.toString());
-        //  note.importance = Importance.HIGH;
-        if (note != null) {
-            severity.setText(note.importance.toString());
-
-            if (severity.getText().toString() == "High")
-                severity.setBackgroundColor(Color.parseColor("#FF0000"));
-            else if (severity.getText().toString() == "Medium")
-                severity.setBackgroundColor(Color.parseColor("#FFA500"));
-            else if (severity.getText().toString() == "Low")
-                severity.setBackgroundColor(Color.parseColor("#257317"));
-        }*/
             return  view;
         }
 

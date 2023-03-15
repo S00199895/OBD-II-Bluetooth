@@ -1,6 +1,9 @@
 package edu.markc.bluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -33,7 +37,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class JobsActivity extends AppCompatActivity implements Serializable {
-    ListView lV;
+   // ListView lV;
     FloatingActionButton add;
     Gson g = new Gson();
     ArrayList<Note> notesArray = new ArrayList<Note>();
@@ -43,15 +47,46 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
     RadioGroup rgSort;
     RadioButton selected;
     TextView tvascdesc;
+    CurrentJobs currentjobs;
     boolean AZisDescending = false;
     boolean IisDescending = false;
     boolean az = false;
     boolean i = false;
+
+    public interface FragmentListener {
+        void updateFragmentList(ArrayList<Note> newnotes);
+        void faults(ArrayList<String> faults);
+    }
+    FragmentListener fragmentListener;
+    public void setFragmentListener(FragmentListener listener)
+    {
+
+        this.fragmentListener = listener;
+
+    }
+
+    public void sendDataToFragment(ArrayList<Note> newnotes) {
+        this.fragmentListener.updateFragmentList(newnotes);
+    }
+
+    public void sendFaultsToFragment(ArrayList<String> faults) {
+        this.fragmentListener.faults(faults);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobs);
 getSupportActionBar().hide();
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.pager);
+        viewPager.setAdapter(new TablayoutFragment(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager);
+      // currentjobs = tabLayout.get
+               //(CurrentJobs) getSupportFragmentManager().getFragment(savedInstanceState, "CurrentJobs");
+
+       // currentjobs = (CurrentJobs) getSupportFragmentManager().findFragmentById(viewPager.getCurrentItem());
+
         rgSort = findViewById(R.id.radioGroup);
         tvascdesc = findViewById(R.id.ascdesc);
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
@@ -65,7 +100,9 @@ getSupportActionBar().hide();
         {
             if (getIntent().getSerializableExtra("allNotes") != null) {
             notesArray = (ArrayList<Note>) getIntent().getSerializableExtra("allNotes");}
+          //  sendDataToFragment(notesArray);
             faults = (ArrayList<String>) getIntent().getSerializableExtra("faults");
+
             writePrefs(sharedPref, editor, notesArray);
         }
 
@@ -78,8 +115,7 @@ getSupportActionBar().hide();
             ListView listView = (ListView) findViewById(R.id.lVFaults);
             listView.setAdapter(faultsadapter);
 
-
-
+writeFaults(sharedPref, editor, faults);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -91,7 +127,7 @@ getSupportActionBar().hide();
                 }
             });
 
-        lV = (ListView) findViewById(R.id.lVNotes);
+    //    lV = (ListView) findViewById(R.id.lVNotes);
         add = (FloatingActionButton) findViewById(R.id.addNoteBtn);
         ArrayList<Note> finalNotesArray = notesArray;
 
@@ -159,7 +195,7 @@ getSupportActionBar().hide();
             notesArray.add(t);
         }*/
             ArrayAdapter<Note> adapter = new noteArrayAdapter(this, 0, notesArray);
-        lV.setAdapter(adapter);
+        //lV.setAdapter(adapter);
 
         //comparators for note
         Comparator<Note> azcomp = new Comparator<Note>() {
@@ -199,9 +235,13 @@ getSupportActionBar().hide();
                     tvascdesc.setText("↓");
                 else if (tvascdesc.getText().toString().contains("↓"))
                     tvascdesc.setText("↑");
-                lV.invalidateViews();
+                /*lV.invalidateViews();*/
+                sendDataToFragment(notesArray);
+                sendFaultsToFragment(faults);
+
             }
         });
+
         azRB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,6 +250,7 @@ getSupportActionBar().hide();
                 if (AZisDescending) {
                     tvascdesc.setText("↑");
                     Collections.reverse(notesArray);
+                    sendDataToFragment(notesArray);
                     AZisDescending = false;
                     IisDescending = false;}
                 else {
@@ -218,9 +259,10 @@ getSupportActionBar().hide();
                    /* az = true;
                     i = false;*/
                     Collections.sort(notesArray, azcomp);
+                    sendDataToFragment(notesArray);
                     AZisDescending = true;
                 }
-                lV.invalidateViews();
+             //   lV.invalidateViews();
             }
         });
 
@@ -233,7 +275,10 @@ getSupportActionBar().hide();
 
                     Collections.reverse(notesArray);
                 IisDescending = false;
-                AZisDescending = false;}
+                AZisDescending = false;
+                    sendDataToFragment(notesArray);
+
+                }
                 else {
 /*
                     az = false;
@@ -242,9 +287,10 @@ getSupportActionBar().hide();
 
                     Collections.sort(notesArray, icomp);
                     IisDescending = true;
+                    sendDataToFragment(notesArray);
                 }
                 //also do desc, asc
-                lV.invalidateViews();
+   //             lV.invalidateViews();
             }
         });
 
@@ -265,21 +311,21 @@ getSupportActionBar().hide();
 
 
         ArrayList<Note> finalNotesArray2 = notesArray;
-        lV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+       /* lV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
               // TextView tVTitle =  view.findViewById(R.id.noteTitle);
                 dialogDeleteJob(JobsActivity.this, finalNotesArray2, position, adapter);
 
-               /*Toast.makeText(JobsActivity.this, "Job deleted", Toast.LENGTH_SHORT).show();
+               *//*Toast.makeText(JobsActivity.this, "Job deleted", Toast.LENGTH_SHORT).show();
                 finalNotesArray2.remove(position);
                 adapter.notifyDataSetChanged();
-                writePrefs(sharedPref, editor, finalNotesArray2);*/
+                writePrefs(sharedPref, editor, finalNotesArray2);*//*
                return true;
-            }});
+            }});*/
 
         ArrayList<Note> finalNotesArray3 = notesArray;
-        lV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+ /*       lV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Note e = (Note) parent.getAdapter().getItem(position);
@@ -295,7 +341,10 @@ getSupportActionBar().hide();
             //    notesArray.remove(position);
                // writePrefs(sharedPref, editor, notesArray);
 startActivity(i);
-            }});
+//startActivity(i);
+            }});*/
+
+
     }
 
 
@@ -441,16 +490,6 @@ if  (notesArray.size() > 0) {
         dialog.show();
     }
 
-    public ArrayList<String> readFaults(SharedPreferences sharedPref) {
-        String json = sharedPref.getString("faults", null);
-        if (json == null) {
-            return  new ArrayList<>();
-        }
-        Type type = new TypeToken<ArrayList<String>>(){}.getType();
-
-        return g.fromJson(json, type);
-    }
-
     public ArrayList<Note> readPrefs(SharedPreferences sharedPref) {
         String jsonNotes = sharedPref.getString("notes", null);
         if (jsonNotes == null) {
@@ -462,9 +501,29 @@ if  (notesArray.size() > 0) {
 
     public void writePrefs(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<Note> notes) {
         String jsonNotes = g.toJson(notes);
+       // sendDataToFragment(notes);
         editor.putString("notes", jsonNotes);
         editor.apply();
     }
+
+    public void writeFaults(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<String> faults) {
+        String jsonNotes = g.toJson(faults);
+        // sendDataToFragment(notes);
+        editor.putString("faults", jsonNotes);
+        editor.apply();
+    }
+
+    public ArrayList<String> readFaults(SharedPreferences sharedPref) {
+        String json = sharedPref.getString("faults", null);
+        if (json == null) {
+            return  new ArrayList<>();
+        }
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+
+        return g.fromJson(json, type);
+    }
+
+
 
 
 }
