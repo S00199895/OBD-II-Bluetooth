@@ -87,18 +87,19 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     TextView tVRPM;
     TextView tVSpeed;
     TextView tvfuel;
+    TextView uptime;
     FirebaseFirestore db;
     LineChart mChart;
     RadioGroup rG;
     RadioButton selected;
     Spinner selectSpinner;
-
-
+    double dist;
+    double fuelConsumed;
     RadioButton day;
     RadioButton week;
     RadioButton month;
     Gson g = new Gson();
-
+    int Gspeed;
     Button btn;
     Button btnStats;
     Button btnEmu;
@@ -113,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         BluetoothService.checkPermissions(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dist =0;
+
+
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -120,6 +124,8 @@ speedLimits();
         if (emu == true)
         {
             fuelLevel = EmuService.getFuel(MainActivity.this);
+
+
             EmuService.writeFuel(MainActivity.this, (int)fuelLevel);
             timer();
         }
@@ -128,7 +134,7 @@ speedLimits();
         tVSpeed = findViewById(R.id.tVSpeed);
         tvfuel = findViewById(R.id.tvfuel);
         rG = (RadioGroup) findViewById(R.id.radioGroup);
-
+uptime = findViewById(R.id.uptime);
         btn = (Button) findViewById(R.id.buttonre);
         btnStats = (Button) findViewById(R.id.btnStats);
         btnEmu = (Button) findViewById(R.id.btnEmuStopReading);
@@ -268,17 +274,17 @@ speedLimits();
 
                                          localdate = LocalDate.now();
 
-                                         int speed = getLiveSpeed(finalInputStream, finalOutputStream);
+                                         Gspeed = getLiveSpeed(finalInputStream, finalOutputStream);
                                          if (stop == true)
                                          {throw new NullPointerException();}
                                          //this line needs to be general for variables
-                                         if (speed != 0) {
+                                         if (Gspeed != 0) {
                                              thisDoc.put("type", "Speed");
-                                             thisDoc.put("value", speed);
+                                             thisDoc.put("value", Gspeed);
                                              thisDoc.put("datetime", Timestamp.now());
                                              speedList.add(thisDoc);
                                          }
-                                         tVSpeed.setText(String.valueOf(speed));
+                                         tVSpeed.setText(String.valueOf(Gspeed));
                                          try {
                                              Thread.sleep(5000);
                                          } catch (InterruptedException e) {
@@ -562,8 +568,8 @@ e.printStackTrace();
                 int speedIndex = r.nextInt(5);
 
                 speedlimitImage.setImageResource(imgs.getResourceId(speedIndex,0));
-
-                int speed = Integer.parseInt(tVSpeed.getText().toString());
+                int speed = 0;
+                speed = Integer.parseInt(tVSpeed.getText().toString());
 
                 if (EmuService.over(imgs, speed))
                 {
@@ -762,6 +768,9 @@ e.printStackTrace();
 
     }
 
+
+
+
     public Runnable runnable = new Runnable() {
 
         public void run() {
@@ -776,11 +785,20 @@ e.printStackTrace();
 
             Seconds = Seconds % 60;
 
+
+
             MilliSeconds = (int) (UpdateTime % 1000);
 
             String timer = ("" + Minutes + ":"
                     + String.format("%02d", Seconds));
+uptime.setText(timer);
+dist += distanceHandler();
 
+if (stop == true)
+{
+    fuelConsumptionHandler(dist);
+    return;
+}
             if (Seconds % 5 == 0 && MilliSeconds < 5)
             {
                 fuelLevel -= 1;
@@ -794,5 +812,92 @@ e.printStackTrace();
 
     };
 
+    private void fuelConsumptionHandler(double dist) {
+        fuelConsumed = dist /23800;
+        SFCPrefHandler(fuelConsumed);
+        //write fuel+distance to the existing today sfc
+    }
 
+    private double distanceHandler(/*int milliSeconds*/) {
+      //  if ()
+        double speed = Gspeed;
+       // double s = (double) milliSeconds / 1000;
+        speed = speed * .2778;
+        double distance = speed * 5;
+
+        return distance;
+    }
+
+    private void SFCPrefHandler(double fuelConsumed)
+    {
+        ArrayList<SFC> sfcs;
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        String existingJSON = sharedPref.getString("sfcs", null);
+        LocalDate today = LocalDate.now();
+
+        // Format the dateString to get the shortened day name
+        String dayName = today.format(DateTimeFormatter.ofPattern("E"));
+        if (existingJSON == null) {
+            sfcs = new ArrayList<SFC>();
+//if you need to make one
+
+            SFC newsfc = new SFC(fuelConsumed, dayName);
+            sfcs.add(newsfc);
+            writeSFCs(sfcs);
+        }
+        else {
+            //if it exists
+            Type type = new TypeToken<ArrayList<SFC>>() {
+            }.getType();
+
+            sfcs = g.fromJson(existingJSON, type);
+            sfcs = putNewSFC(sfcs, fuelConsumed, dayName);
+            writeSFCs(sfcs);
+        }
+                /*
+                *      String json = sharedPref.getString("faults", null);
+        if (json == null) {
+            return  new ArrayList<>();
+        }
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+
+        return g.fromJson(json, type);
+                * */
+
+    }
+
+    private ArrayList<SFC> putNewSFC(ArrayList<SFC> sfcs, double fuelConsumed, String dayName) {
+
+        //
+
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        String todaysdate = myDateObj.format(myFormatObj);
+        for (SFC entry:
+             sfcs) {
+            if (entry.dateString.contains(todaysdate))
+            {
+                double currentfuelC = entry.value;
+                SFC newentry = new SFC(currentfuelC + fuelConsumed, dayName);
+
+                sfcs.set(sfcs.indexOf(entry), newentry);
+            }
+
+        }
+        return sfcs;
+
+    }
+
+    void writeSFCs(ArrayList<SFC> sfcs)
+    {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putString("sfcs",g.toJson(sfcs));
+editor.apply();
+                //        String jsonNotes = g.toJson(faults);
+    }
 }

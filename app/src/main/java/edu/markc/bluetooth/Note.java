@@ -29,7 +29,7 @@ public class Note implements Serializable {
         return "Note{" +
                 "title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", timestamp='" + timestamp + '\'' +
+                ", dateString='" + timestamp + '\'' +
                 '}';
     }
 }

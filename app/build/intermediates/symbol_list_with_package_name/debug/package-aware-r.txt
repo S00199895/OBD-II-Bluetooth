@@ -2914,6 +2914,7 @@ id flip
 id floating
 id forever
 id fragment_container_view_tag
+id fragmentcurrentjobs
 id frost
 id fullscreen_header
 id gauge
@@ -2956,6 +2957,7 @@ id jumpToEnd
 id jumpToStart
 id lVFaults
 id lVNotes
+id lVNotesResolved
 id labeled
 id layout
 id left
@@ -3055,6 +3057,7 @@ id outline
 id outward
 id overshoot
 id packed
+id pager
 id parallax
 id parent
 id parentPanel
@@ -3075,6 +3078,7 @@ id radio
 id radioGroup
 id ratio
 id rectangles
+id resolvedjobs
 id reverseSawtooth
 id right
 id rightToLeft
@@ -3149,6 +3153,7 @@ id tV
 id tVRPM
 id tVSpeed
 id tabMode
+id tab_layout
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans
 id tag_accessibility_heading
@@ -3208,6 +3213,7 @@ id unchecked
 id uniform
 id unlabeled
 id up
+id uptime
 id useLogo
 id vertical
 id vertical_only
@@ -3354,6 +3360,7 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_edit_job
+layout activity_fuel
 layout activity_jobs
 layout activity_main
 layout activity_stats
@@ -3373,6 +3380,9 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout fragment_current_jobs
+layout fragment_resolved_jobs
+layout fragment_tablayout
 layout job_layout
 layout job_link_layout
 layout m3_alert_dialog
@@ -3506,6 +3516,7 @@ string google_api_key
 string google_app_id
 string google_crash_reporting_api_key
 string google_storage_bucket
+string hello_blank_fragment
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
 string item_view_role_description

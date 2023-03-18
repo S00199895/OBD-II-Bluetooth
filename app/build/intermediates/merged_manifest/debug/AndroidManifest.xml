@@ -35,6 +35,13 @@
         android:testOnly="true"
         android:theme="@style/Theme.Bluetooth" >
         <activity
+            android:name="edu.markc.bluetooth.FuelActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name="edu.markc.bluetooth.StatsActivity"
             android:exported="false" >
             <meta-data

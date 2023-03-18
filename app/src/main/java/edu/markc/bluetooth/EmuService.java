@@ -12,6 +12,7 @@ import com.google.common.base.Stopwatch;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class EmuService {
@@ -96,17 +97,29 @@ public class EmuService {
 
         SharedPreferences sharedPref = main.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        if (sharedPref.getInt("fuelLevel", -99) == -99)
+        int readfuel = sharedPref.getInt("fuelLevel", -1);
+        if (readfuel == -1)
         {
 
             return 45;
         }
         else
         {
-            return (int) sharedPref.getInt("fuelLevel", -99);
+            return readfuel;
         }
 
     }
+
+    public static void writeFuel(Activity main, int fuel)
+    {
+        SharedPreferences sharedPref = main.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putInt("fuelLevel", fuel);
+        editor.commit();
+    }
+
+
 
     public void updateFuel(Activity main)
     {
@@ -117,13 +130,7 @@ public class EmuService {
 //        }
     }
 
-    public static void writeFuel(Activity main, int fuel)
-    {
-        SharedPreferences sharedPref = main.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
 
-        editor.putInt("fuelLevel", fuel);
-    }
 
 
 

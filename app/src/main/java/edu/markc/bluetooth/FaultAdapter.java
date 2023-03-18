@@ -57,7 +57,7 @@ public class FaultAdapter extends ArrayAdapter<String> {
         title.setText(f);
 /*
         title.setText(f.title);
-        date.setText(f.timestamp);
+        dateString.setText(f.dateString);
         severity.setText(note.importance.toString());
         //  note.importance = Importance.HIGH;
         if (note != null) {
