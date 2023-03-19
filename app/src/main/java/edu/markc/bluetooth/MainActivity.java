@@ -101,10 +101,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     Gson g = new Gson();
     int Gspeed;
     Button btn;
+    Button btnFuel;
     Button btnStats;
     Button btnEmu;
     ArrayList<String> faults = new ArrayList<>();
     ImageView speedlimitImage;
+    ArrayList<SFC> Gsfcs;
     //EmuService emuService;
 
     private  static  LocalDate localdate;
@@ -133,6 +135,7 @@ speedLimits();
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
         tvfuel = findViewById(R.id.tvfuel);
+        btnFuel = findViewById(R.id.btnFuel);
         rG = (RadioGroup) findViewById(R.id.radioGroup);
 uptime = findViewById(R.id.uptime);
         btn = (Button) findViewById(R.id.buttonre);
@@ -153,6 +156,21 @@ uptime = findViewById(R.id.uptime);
                 i.putExtra("faults", faults);
                 startActivity(i);
             }
+        });
+
+        btnFuel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, FuelActivity.class);
+                //putextra the faults
+                if (Gsfcs == null)
+                {
+                    Gsfcs=  getsfcs();
+                }
+                i.putExtra("Gsfcs", Gsfcs);
+                startActivity(i);
+            }
+
         });
 
         btnStats.setOnClickListener(new View.OnClickListener() {
@@ -302,6 +320,17 @@ uptime = findViewById(R.id.uptime);
 e.printStackTrace();
             } }}
 
+    private ArrayList<SFC> getsfcs() {
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        String existingJSON = sharedPref.getString("sfcs", null);
+        Type type = new TypeToken<ArrayList<SFC>>() {
+        }.getType();
+
+        return g.fromJson(existingJSON, type);
+    }
+
     private void gauge(float fuelpc) {
         if (fuelpc < 0)
             fuelpc=0;
@@ -373,6 +402,11 @@ e.printStackTrace();
 
         view.dispatchTouchEvent(motionEvent);
     }
+
+
+
+
+
     private ArrayList<Map<String, Object>> read(String type) {
         //read and query where type is rpm
          ArrayList<Map<String, Object>>[] readMaps = new ArrayList[]{new ArrayList<>()};
@@ -734,6 +768,7 @@ e.printStackTrace();
             e.printStackTrace();
         }
 
+
         return btSocket;
     }
 
@@ -819,9 +854,8 @@ if (stop == true)
     }
 
     private double distanceHandler(/*int milliSeconds*/) {
-      //  if ()
+
         double speed = Gspeed;
-       // double s = (double) milliSeconds / 1000;
         speed = speed * .2778;
         double distance = speed * 5;
 
@@ -831,6 +865,9 @@ if (stop == true)
     private void SFCPrefHandler(double fuelConsumed)
     {
         ArrayList<SFC> sfcs;
+
+
+
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         String existingJSON = sharedPref.getString("sfcs", null);
@@ -842,9 +879,10 @@ if (stop == true)
             sfcs = new ArrayList<SFC>();
 //if you need to make one
 
-            SFC newsfc = new SFC(fuelConsumed, dayName);
+            SFC newsfc = new SFC(fuelConsumed, dayName, dist);
             sfcs.add(newsfc);
             writeSFCs(sfcs);
+            Gsfcs = sfcs;
         }
         else {
             //if it exists
@@ -854,6 +892,8 @@ if (stop == true)
             sfcs = g.fromJson(existingJSON, type);
             sfcs = putNewSFC(sfcs, fuelConsumed, dayName);
             writeSFCs(sfcs);
+            Gsfcs = sfcs;
+
         }
                 /*
                 *      String json = sharedPref.getString("faults", null);
@@ -873,31 +913,38 @@ if (stop == true)
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
         String todaysdate = myDateObj.format(myFormatObj);
         for (SFC entry:
-             sfcs) {
+                sfcs) {
+
             if (entry.dateString.contains(todaysdate))
             {
                 double currentfuelC = entry.value;
-                SFC newentry = new SFC(currentfuelC + fuelConsumed, dayName);
+                double currentDist = entry.distance;
+                SFC newentry = new SFC(currentfuelC + fuelConsumed, dayName, dist + currentDist);
 
                 sfcs.set(sfcs.indexOf(entry), newentry);
+                return sfcs;
+
             }
 
         }
-        return sfcs;
-
+        SFC newdayentry = new SFC(fuelConsumed, dayName, dist);
+        sfcs.add(newdayentry);
+return sfcs;
     }
 
     void writeSFCs(ArrayList<SFC> sfcs)
     {
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getPreferences( Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putString("sfcs",g.toJson(sfcs));
+    //    editor.putString("sfcs",null);
+       editor.putString("sfcs",g.toJson(sfcs));
 editor.apply();
                 //        String jsonNotes = g.toJson(faults);
     }
+
+
+
 }
