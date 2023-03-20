@@ -10,6 +10,7 @@ public class Note implements Serializable {
     public String content;
     public String timestamp;
     public Importance importance;
+    public String type;
 
     public Note() {
         LocalDateTime myDateObj = LocalDateTime.now();
@@ -22,6 +23,13 @@ public class Note implements Serializable {
         this.title = t;
         this.content = c;
         this.importance = i;
+    }
+
+    public Note(String t, String c, Importance i, String timestamp) {
+        this.title = t;
+        this.content = c;
+        this.importance = i;
+        this.timestamp = timestamp;
     }
 
     @Override

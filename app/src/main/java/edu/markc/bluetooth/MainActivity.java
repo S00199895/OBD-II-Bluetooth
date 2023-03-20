@@ -553,10 +553,12 @@ e.printStackTrace();
     }
 
  private void addToFirestore(ArrayList<Map<String, Object>> objsToPush) {
+/*
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
      StackTraceElement callingMethod = stackTrace[2]; // Index 0 is getStackTrace, index 1 is myMethod, index 2 is the caller
      int lineNumber = callingMethod.getLineNumber();
      System.out.println("myMethod was called from line " + lineNumber);
+*/
 
      //ArrayList<Map<String, Object>> unique = removeDuplicates(objsToPush);
    //  objsToPush = unique;

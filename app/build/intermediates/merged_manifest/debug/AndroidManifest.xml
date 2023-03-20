@@ -8,6 +8,8 @@
         android:minSdkVersion="30"
         android:targetSdkVersion="32" />
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -16,10 +18,8 @@
         android:name="android.hardware.bluetooth"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -34,6 +34,14 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/Theme.Bluetooth" >
+
+        <!--
+            <provider
+            android:authorities="com.google.android.gms.providerinstaller"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:node="replace"/>
+        -->
         <activity
             android:name="edu.markc.bluetooth.FuelActivity"
             android:exported="false" >

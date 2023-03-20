@@ -1,5 +1,8 @@
 package edu.markc.bluetooth;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -13,6 +16,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +28,30 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.common.reflect.TypeToken;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class JobsActivity extends AppCompatActivity implements Serializable {
    // ListView lV;
@@ -48,6 +65,7 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
     RadioButton selected;
     TextView tvascdesc;
     CurrentJobs currentjobs;
+    FirebaseFirestore db;
     boolean AZisDescending = false;
     boolean IisDescending = false;
     boolean az = false;
@@ -92,14 +110,16 @@ getSupportActionBar().hide();
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         if (readPrefs(sharedPref) != null) {
-            notesArray = readPrefs(sharedPref);
-
+            notesArray = readJobs();//readPrefs(sharedPref);
+            System.out.println("notesmain "+notesArray);
+addJobsToFirestore(notesArray);
         }
 
         if (getIntent().getExtras() != null)
         {
             if (getIntent().getSerializableExtra("allNotes") != null) {
             notesArray = (ArrayList<Note>) getIntent().getSerializableExtra("allNotes");}
+            addJobsToFirestore(notesArray);
           //  sendDataToFragment(notesArray);
             faults = (ArrayList<String>) getIntent().getSerializableExtra("faults");
 
@@ -301,6 +321,57 @@ writeFaults(sharedPref, editor, faults);
 
         });
     }
+
+    private ArrayList<Note> readJobs() {
+        db = FirebaseFirestore.getInstance();
+        System.out.println("STARTING");
+
+        CollectionReference jobs = db.collection("data")
+                .document("jobs")
+                .collection("alljobs");
+        ArrayList<Note> firestorenotes = new ArrayList<>();
+        System.out.println("STARTING");
+        jobs.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                System.out.println("DOCS");
+                for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                    System.out.println(doc.getData());
+                    Importance thisI = Importance.valueOf(String.valueOf(doc.getData().get("importance")));
+                    String t = String.valueOf(doc.getData().get("title"));
+                    String c = String.valueOf(doc.getData().get("content"));
+                    String time = String.valueOf(doc.getData().get("timestamp"));
+                    Note e = new Note(t, c, thisI, time);
+                    System.out.println("the note"+e);
+                    firestorenotes.add(e);
+
+                }
+                notesArray = firestorenotes;
+                sendDataToFragment(notesArray);
+
+            }
+        });
+
+        System.out.println("STARTING");
+        return firestorenotes;
+    }
+
+    private void addJobsToFirestore(ArrayList<Note> jobsforfirestore)
+    {
+        db=FirebaseFirestore.getInstance();
+
+        CollectionReference jobs = db.collection("data")
+                .document("jobs")
+                .collection("alljobs");
+
+        for (Note e:
+             jobsforfirestore) {
+            jobs.document(e.title).set(e);
+        }
+
+
+    }
+
     private void alertDialog(Context context, String fault) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
