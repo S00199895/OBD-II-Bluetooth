@@ -2794,6 +2794,7 @@ id auto
 id autoComplete
 id autoCompleteToEnd
 id autoCompleteToStart
+id avgFE
 id azrB
 id back
 id barrier
@@ -2808,6 +2809,7 @@ id bounceBoth
 id bounceEnd
 id bounceStart
 id btnEmuStopReading
+id btnFuel
 id btnSave
 id btnStats
 id buttonPanel
@@ -2916,6 +2918,7 @@ id forever
 id fragment_container_view_tag
 id fragmentcurrentjobs
 id frost
+id fuel_barchart
 id fullscreen_header
 id gauge
 id ghost_view
@@ -3180,6 +3183,7 @@ id textView3
 id textView4
 id textView5
 id textView6
+id textView7
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -3196,6 +3200,7 @@ id title_template
 id toggle
 id top
 id topPanel
+id totaldist
 id touch_outside
 id transitionToEnd
 id transitionToStart
@@ -3205,6 +3210,11 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tvDetails
+id tvDetails2
+id tvDetails3
+id tvEfficiency
+id tvEfficiency2
 id tvFault
 id tvSelected
 id tvSeverity

@@ -68,10 +68,10 @@ double avgFE;
             totalFuel += e.value;
         }
 totalDistance = totalDistance / 1000;
-        avgFE = totalDistance / totalFuel;
+        avgFE =(totalFuel * 100) / totalDistance;
 DecimalFormat df = new DecimalFormat("0.00");
 /*String formattedDouble = df.format(myDouble);*/
-        tvfe.setText("Average Fuel Efficiency: " + df.format(avgFE) + " km/L");
+        tvfe.setText("Average Fuel Efficiency: " + df.format(avgFE) + " L/100km");
         tvdist.setText("Total Distance Travelled: " + df.format(totalDistance) + " km");
     }
 
