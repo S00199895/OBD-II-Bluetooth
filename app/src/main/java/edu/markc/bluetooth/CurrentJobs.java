@@ -1,8 +1,5 @@
 package edu.markc.bluetooth;
 
-import static edu.markc.bluetooth.EmuService.editor;
-import static edu.markc.bluetooth.EmuService.sharedPref;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,10 +9,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +22,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.reflect.TypeToken;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
@@ -45,6 +47,7 @@ public class CurrentJobs extends Fragment implements JobsActivity.FragmentListen
     ArrayList<Note> notes;
     ArrayList<String> faults;
     ArrayList<Note> resolvedjobs;
+    FirebaseFirestore db;
     @Override
     public void updateFragmentList(ArrayList<Note> newnotes) {
         notes = newnotes;
@@ -76,6 +79,11 @@ public class CurrentJobs extends Fragment implements JobsActivity.FragmentListen
             this.notes = objects;
 
 
+        }
+
+        public void remove(int i)
+        {
+            notes.remove(i);
         }
 
         public View getView(int position, View convertView, ViewGroup parent){
@@ -164,17 +172,23 @@ public class CurrentJobs extends Fragment implements JobsActivity.FragmentListen
 
         lvNotes = view.findViewById(R.id.lVNotes);
 
+        notes = readActiveJobs();
 
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         faults = readFaults(sharedPref);
         resolvedjobs = new ArrayList<>();
-        if (readResolved(sharedPref) != null)
-        {
-            resolvedjobs = readResolved(sharedPref);
-        }
-        ArrayList<Note> notes = readPrefs(sharedPref);
-
+        resolvedjobs = resolvedFirestore();
+       // if (readResolved(sharedPref) != null)
+      //  {
+      //      resolvedjobs = readResolved(sharedPref);
+      //  }
+     //   ArrayList<Note> notes = readPrefs(sharedPref);
+if (notes == null)
+{
+    notes = new ArrayList<Note>();
+  //  notes = readActiveJobs();
+}
          adapter = new noteArrayAdapter(getActivity(), 0, notes);
         lvNotes.setAdapter(adapter);
         lvNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -207,6 +221,48 @@ writeFaults(sharedPref, editor, faults);
         return view;
     }
 
+    private ArrayList<Note> readActiveJobs() {
+        db = FirebaseFirestore.getInstance();
+
+
+        ArrayList<Note> firestorenotes = new ArrayList<>();
+        System.out.println("STARTING");
+        db.collection("data")
+                .document("jobs")
+                .collection("alljobs").whereEqualTo("type", "Active")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        System.out.println("DOCS");
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            System.out.println(doc.getData());
+                            Importance thisI = Importance.valueOf(String.valueOf(doc.getData().get("importance")));
+                            String t = String.valueOf(doc.getData().get("title"));
+                            String c = String.valueOf(doc.getData().get("content"));
+                            String time = String.valueOf(doc.getData().get("timestamp"));
+                            String type = String.valueOf(doc.getData().get("type"));
+                            Note e = new Note(t, c, thisI, time);
+                            e.type=type;
+                            System.out.println("the note"+e);
+                            notes.add(e);
+
+                        }
+                    notes = firestorenotes;
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println(e.toString());
+                    }
+                });
+
+        System.out.println("STARTING");
+        return notes;
+    }
+
+
     public void writeFaults(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<String> faults) {
         String jsonNotes = g.toJson(faults);
         // sendDataToFragment(notes);
@@ -237,9 +293,10 @@ writeFaults(sharedPref, editor, faults);
                         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         Toast.makeText(getActivity(), "Job deleted", Toast.LENGTH_SHORT).show();
-                        finalNotesArray2.remove(position);
+                        adapter.remove(adapter.getItem(position));
                         adapter.notifyDataSetChanged();
-                        writePrefs(sharedPref, editor, finalNotesArray2);
+
+                      //  writePrefs(sharedPref, editor, finalNotesArray2);
 
                     }
                 }).setNeutralButton("Resolve", new DialogInterface.OnClickListener() {
@@ -247,17 +304,22 @@ writeFaults(sharedPref, editor, faults);
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
-                        Note resolved = finalNotesArray2.get(position);
+                       // finalNotesArray2 = adapter.getItem(position)
+                        Note resolved = adapter.getItem(position);
                         resolved.content = "Resolved";
                         LocalDateTime myDateObj = LocalDateTime.now();
                         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
                         resolved.timestamp = myDateObj.format(myFormatObj);
+                        resolved.type = "Resolved";
+
                         resolvedjobs.add(resolved);
-                        finalNotesArray2.remove(position);
+                       // resolvedFirestore(resolved);
+                        adapter.remove(adapter.getItem(position));
+                       // finalNotesArray2.remove(position);
                         notifyResolved(resolvedjobs);
-                        writePrefs(sharedPref, editor, finalNotesArray2);
-                        writeResolved(sharedPref, editor, resolvedjobs);
+                      //  writePrefs(sharedPref, editor, finalNotesArray2);
+                      //  writeResolved(sharedPref, editor, resolvedjobs);
 
 
                     }
@@ -272,11 +334,64 @@ writeFaults(sharedPref, editor, faults);
         dialog.show();
     }
 
+
+
     private void notifyResolved(ArrayList<Note> resolvedjobs) {
+        resolvedjobs = resolvedFirestore();
+
         ResolvedJobs.getInstance().resolvedchanged(resolvedjobs);
     }
 
-    public void writePrefs(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<Note> notes) {
+    private ArrayList<Note> resolvedFirestore() {
+        db = FirebaseFirestore.getInstance();
+
+        ArrayList<Note> thisresolvedjobs = new ArrayList<>();
+
+        db.collection("data")
+                .document("jobs")
+                .collection("alljobs").whereEqualTo("type", "Resolved")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        System.out.println("DOCS");
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            System.out.println(doc.getData());
+                            Importance thisI = Importance.valueOf(String.valueOf(doc.getData().get("importance")));
+                            String t = String.valueOf(doc.getData().get("title"));
+                            String c = String.valueOf(doc.getData().get("content"));
+                            String time = String.valueOf(doc.getData().get("timestamp"));
+                            String type = String.valueOf(doc.getData().get("type"));
+                            Note e = new Note(t, c, thisI, time);
+                            e.type = type;
+                            System.out.println("the note" + e);
+                            thisresolvedjobs.add(e);
+
+                        }
+                        resolvedjobs = thisresolvedjobs;
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("DIDNT WORK " +e.toString());
+                    }
+                });
+        System.out.println(resolvedjobs);
+
+        CollectionReference jobs = db.collection("data")
+                .document("jobs")
+                .collection("alljobs");
+
+        for (Note e :
+                resolvedjobs) {
+            jobs.document(e.title).set(e);
+        }
+
+       return resolvedjobs;
+    }
+
+
+   /* public void writePrefs(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<Note> notes) {
         String jsonNotes = g.toJson(notes);
         // sendDataToFragment(notes);
         editor.putString("notes", jsonNotes);
@@ -308,7 +423,7 @@ writeFaults(sharedPref, editor, faults);
         }
         Type type = new TypeToken<ArrayList<Note>>(){}.getType();
         return g.fromJson(jsonNotes, type);
-    }
+    }*/
 
     public void updateArray(ArrayList<Note> newnotes)
     {

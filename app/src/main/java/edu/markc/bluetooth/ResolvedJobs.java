@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,7 +16,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.reflect.TypeToken;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
@@ -63,6 +70,7 @@ ListView lvResolved;
         return fragment;
     }
     private  static ResolvedJobs instance = null;
+    FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +92,9 @@ ListView lvResolved;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Gson g = new Gson();
+
+        resolvedjobs = getResolvedJobs();
+       /* Gson g = new Gson();
 
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -96,8 +106,9 @@ ListView lvResolved;
         }
         else
         {
+            //empty array
             resolvedjobs = new ArrayList<Note>();
-        }
+        }*/
 
 
         // Inflate the layout for this fragment
@@ -148,11 +159,63 @@ ListView lvResolved;
         View view = inflater.inflate(R.layout.fragment_resolved_jobs, container, false);
 
         lvResolved = view.findViewById(R.id.lVNotesResolved);
+        if (resolvedjobs == null)
+        {
+            resolvedjobs = getResolvedJobs();
+        }
         adapter = new noteArrayAdapter(getActivity(), 0, resolvedjobs);
 
 
         lvResolved.setAdapter(adapter);
         return  view;
+    }
+
+    private ArrayList<Note> getResolvedJobs() {
+        db = FirebaseFirestore.getInstance();
+
+        resolvedjobs = new ArrayList<>();
+
+        db.collection("data")
+                .document("jobs")
+                .collection("alljobs").whereEqualTo("type", "Resolved")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        System.out.println("DOCS");
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            System.out.println(doc.getData());
+                            Importance thisI = Importance.valueOf(String.valueOf(doc.getData().get("importance")));
+                            String t = String.valueOf(doc.getData().get("title"));
+                            String c = String.valueOf(doc.getData().get("content"));
+                            String time = String.valueOf(doc.getData().get("timestamp"));
+                            String type = String.valueOf(doc.getData().get("type"));
+                            Note e = new Note(t, c, thisI, time);
+                            e.type = type;
+                            System.out.println("the note" + e);
+                            resolvedjobs.add(e);
+
+                        }
+                     //   resolvedjobs = thisresolvedjobs;
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("DIDNT WORK " +e.toString());
+                    }
+                });
+        System.out.println(resolvedjobs);
+
+        CollectionReference jobs = db.collection("data")
+                .document("jobs")
+                .collection("alljobs");
+
+        for (Note e :
+                resolvedjobs) {
+            jobs.document(e.title).set(e);
+        }
+
+        return resolvedjobs;
     }
 
     public void resolvedchanged(ArrayList<Note> newresolved)

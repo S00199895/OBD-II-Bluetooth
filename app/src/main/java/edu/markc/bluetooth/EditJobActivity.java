@@ -112,7 +112,10 @@ g = new Gson();
                     n.title = title.getText().toString();
                     n.content = content.getText().toString();
                     n.importance = Importance.valueOf( importanceSpinner.getSelectedItem().toString().toUpperCase(Locale.ROOT));
+                    n.type = "Active";
                 }
+
+
                 SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
