@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class FuelActivity extends AppCompatActivity {
 BarChart fuelBC;
@@ -43,19 +44,20 @@ double avgFE;
         getSupportActionBar().hide();
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        ArrayList<SFC> fuelData;
+        LinkedBlockingQueue<SFC> fuelData;
 
         if (getIntent().getExtras() != null)
         {
-            fuelData = (ArrayList<SFC>) getIntent().getSerializableExtra("Gsfcs");
+            fuelData = (LinkedBlockingQueue<SFC>) getIntent().getSerializableExtra("Gsfcs");
         }
         else {
-            fuelData = new ArrayList<SFC>();
+            fuelData = new LinkedBlockingQueue<>();
         }
-        getStats(fuelData);
+        ArrayList<SFC> arrFuelData = new ArrayList<>(fuelData);
+        getStats(arrFuelData);
         fuelBC = findViewById(R.id.fuel_barchart);
         //sharedprefs
-        makeBarChart(fuelData);
+        makeBarChart(arrFuelData);
     }
 
     private void getStats(ArrayList<SFC> fuelData) {

@@ -75,6 +75,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainActivity extends AppCompatActivity implements Serializable {
     //emu var
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     Button btnEmu;
     ArrayList<String> faults = new ArrayList<>();
     ImageView speedlimitImage;
-    ArrayList<SFC> Gsfcs;
+    LinkedBlockingQueue<SFC> Gsfcs;
     //EmuService emuService;
 
     private  static  LocalDate localdate;
@@ -320,12 +321,12 @@ uptime = findViewById(R.id.uptime);
 e.printStackTrace();
             } }}
 
-    private ArrayList<SFC> getsfcs() {
+    private LinkedBlockingQueue<SFC> getsfcs() {
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         String existingJSON = sharedPref.getString("sfcs", null);
-        Type type = new TypeToken<ArrayList<SFC>>() {
+        Type type = new TypeToken<LinkedBlockingQueue<SFC>>() {
         }.getType();
 
         return g.fromJson(existingJSON, type);
@@ -838,7 +839,10 @@ if (stop == true)
 }
             if (Seconds % 5 == 0 && MilliSeconds < 5)
             {
+                if (fuelLevel >= 1)
                 fuelLevel -= 1;
+                else
+                    fuelLevel = 44;
                 EmuService.writeFuel(MainActivity.this, (int)fuelLevel);
                 tvfuel.setText(String.valueOf(fuelLevel));
                 gauge(fuelLevel / 45f);
@@ -866,7 +870,7 @@ if (stop == true)
 
     private void SFCPrefHandler(double fuelConsumed)
     {
-        ArrayList<SFC> sfcs;
+        LinkedBlockingQueue<SFC> sfcs;
 
 
 
@@ -878,7 +882,7 @@ if (stop == true)
         // Format the dateString to get the shortened day name
         String dayName = today.format(DateTimeFormatter.ofPattern("E"));
         if (existingJSON == null) {
-            sfcs = new ArrayList<SFC>();
+            sfcs = new LinkedBlockingQueue<>();
 //if you need to make one
 
             SFC newsfc = new SFC(fuelConsumed, dayName, dist);
@@ -888,7 +892,7 @@ if (stop == true)
         }
         else {
             //if it exists
-            Type type = new TypeToken<ArrayList<SFC>>() {
+            Type type = new TypeToken<LinkedBlockingQueue<SFC>>() {
             }.getType();
 
             sfcs = g.fromJson(existingJSON, type);
@@ -909,13 +913,16 @@ if (stop == true)
 
     }
 
-    private ArrayList<SFC> putNewSFC(ArrayList<SFC> sfcs, double fuelConsumed, String dayName) {
+    private LinkedBlockingQueue<SFC> putNewSFC(LinkedBlockingQueue<SFC> sfcs, double fuelConsumed, String dayName) {
 
         //
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String todaysdate = myDateObj.format(myFormatObj);
+
+        if (sfcs.size() >= 7)
+            sfcs.poll();
         for (SFC entry:
                 sfcs) {
 
@@ -925,18 +932,21 @@ if (stop == true)
                 double currentDist = entry.distance;
                 SFC newentry = new SFC(currentfuelC + fuelConsumed, dayName, dist + currentDist);
 
-                sfcs.set(sfcs.indexOf(entry), newentry);
+
+                ArrayList<SFC> sfcsArr = new ArrayList<>(sfcs);
                 return sfcs;
 
             }
 
         }
-        SFC newdayentry = new SFC(fuelConsumed, dayName, dist);
-        sfcs.add(newdayentry);
+            SFC newdayentry = new SFC(fuelConsumed, dayName, dist);
+
+            sfcs.add(newdayentry);
+
 return sfcs;
     }
 
-    void writeSFCs(ArrayList<SFC> sfcs)
+    void writeSFCs(LinkedBlockingQueue<SFC> sfcs)
     {
         SharedPreferences sharedPref = getPreferences( Context.MODE_PRIVATE);
 
