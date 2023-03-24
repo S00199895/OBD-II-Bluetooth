@@ -1,13 +1,7 @@
 package edu.markc.bluetooth;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
-import androidx.annotation.FontRes;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,30 +22,22 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.common.reflect.TypeToken;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 public class JobsActivity extends AppCompatActivity implements Serializable {
    // ListView lV;
@@ -72,6 +57,7 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
     boolean IisDescending = false;
     boolean az = false;
     boolean i = false;
+    ArrayAdapter<Note> currentadapter = null;
 
     public interface FragmentListener {
         void updateFragmentList(ArrayList<Note> newnotes);
@@ -259,47 +245,41 @@ writeFaults(sharedPref, editor, faults);
                     tvascdesc.setText("↓");
                 else if (tvascdesc.getText().toString().contains("↓"))
                     tvascdesc.setText("↑");
-
-               // System.out.println("CURERNTHOSB"+CurrentJobs.getInstance().notes );
-                ArrayAdapter<Note> currentadapter = CurrentJobs.getInstance().adapter;
-                for (int j = 0; j < currentadapter.getCount(); j++) {
-                    notesArray.add(currentadapter.getItem(j));
-                }
-
-                currentadapter.clear();
+                if (notesArray.size() == 0){
+                    currentadapter = addToAdapter();
+                    if (currentadapter == null)
+                        currentadapter = addToAdapter();}
                 Collections.reverse(notesArray);
-                currentadapter.addAll(notesArray);
-
-
-
-                /*lV.invalidateViews();*/
-//                CurrentJobs.getInstance().notes = notesArray;
-//                CurrentJobs.getInstance().lvNotes.invalidateViews();
                 sendDataToFragment(notesArray);
                 sendFaultsToFragment(faults);
-
             }
         });
 
         azRB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   int selectedID = rgSort.getCheckedRadioButtonId();
+
+                //   int selectedID = rgSort.getCheckedRadioButtonId();
                // selected = (RadioButton) findViewById(selectedID);
                 if (AZisDescending) {
                     tvascdesc.setText("↑");
                     Collections.reverse(notesArray);
-                    sendDataToFragment(notesArray);
                     AZisDescending = false;
-                    IisDescending = false;}
-                else {
-                    tvascdesc.setText("↓");
-
-                   /* az = true;
-                    i = false;*/
-                    Collections.sort(notesArray, azcomp);
+                    IisDescending = false;
                     sendDataToFragment(notesArray);
-                    AZisDescending = true;
+                   }
+                else {
+                    if (notesArray.size() == 0){
+                        currentadapter = addToAdapter();
+                        if (currentadapter == null)
+                            currentadapter = addToAdapter();}
+                    else{
+                        tvascdesc.setText("↓");
+
+                        Collections.sort(notesArray, azcomp);
+                        AZisDescending = true;
+                        sendDataToFragment(notesArray);
+                    }
                 }
              //   lV.invalidateViews();
             }
@@ -311,25 +291,24 @@ writeFaults(sharedPref, editor, faults);
 
                 if (IisDescending) {
                     tvascdesc.setText("↑");
-
                     Collections.reverse(notesArray);
                 IisDescending = false;
                 AZisDescending = false;
                     sendDataToFragment(notesArray);
-
                 }
                 else {
-/*
-                    az = false;
-                i = true;*/
-                    tvascdesc.setText("↓");
+                    if (notesArray.size() == 0){
+                    currentadapter = addToAdapter();
+                    if (currentadapter == null)
+                        currentadapter = addToAdapter();}
+                    else{
+                        tvascdesc.setText("↓");
 
-                    Collections.sort(notesArray, icomp);
+                        Collections.sort(notesArray, icomp);
                     IisDescending = true;
                     sendDataToFragment(notesArray);
+                    }
                 }
-                //also do desc, asc
-   //             lV.invalidateViews();
             }
         });
 
@@ -339,6 +318,15 @@ writeFaults(sharedPref, editor, faults);
             }
 
         });
+    }
+
+    private ArrayAdapter<Note> addToAdapter()
+    {
+        ArrayAdapter<Note> currentadapter = CurrentJobs.getInstance().adapter;
+        for (int j = 0; j < currentadapter.getCount(); j++) {
+            notesArray.add(currentadapter.getItem(j));
+        }
+        return currentadapter;
     }
 
     public ArrayList<Note> readJobs() {
