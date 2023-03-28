@@ -44,6 +44,7 @@ id lVFaults
 id lVNotes
 id lVNotesResolved
 id lineChart
+id lineChartStats
 id lvFaults
 id lvfaultsedit
 id needle

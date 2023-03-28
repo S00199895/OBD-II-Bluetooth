@@ -1,26 +1,13 @@
 package edu.markc.bluetooth;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.ParcelUuid;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,10 +15,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,8 +34,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -57,8 +45,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 public class StatsActivity extends AppCompatActivity {
 
@@ -113,13 +99,14 @@ public class StatsActivity extends AppCompatActivity {
     private void makeLineChart(ArrayList<Map<String, Object>> chartData) {
 
         //check button selected
-        checkRadio();
+        String interval = checkRadio();
 
         System.out.println("chart valeus");
         System.out.println(chartData);
         //give this chart times for order and dates
         //plot against values
         //display chart
+
         ArrayList<Entry> yValues = new ArrayList<>();
 
         //sort
@@ -147,9 +134,47 @@ public class StatsActivity extends AppCompatActivity {
         System.out.println(yValues);
 
         Description d = new Description();
-        d.setText(spinner.getSelectedItem().toString() + " of this " + checkRadio());
+        d.setText(spinner.getSelectedItem().toString() + " of this " + interval);
         mChart = (LineChart) findViewById(R.id.lineChartStats);
-        mChart.setDescription(d);
+mChart.setExtraOffsets(0,0,20,0);
+
+
+        XAxis x = mChart.getXAxis();
+       String giosdroni =  x.getFormattedLabel(1000);
+
+
+       /* x.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                //if
+                int sssss = x.getLabelCount();
+                String ttt= x.getFormattedLabel(1);
+                System.out.println(String.valueOf(sssss) + " " + ttt + " " + String.valueOf(value));
+                return "test";
+            }
+        });*/
+        //x.setLabelCount(2);
+       /* x.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                switch (interval){
+                    case "Day":
+                if (value == 0 || value == 4.8f) {
+                    Toast.makeText(StatsActivity.this, String.valueOf(value), Toast.LENGTH_SHORT).show();
+                    return "test";//chartData.get((int)value).get("datetime").toString();
+
+                }
+                    case "Week":
+                        CheckWeekChart(value, chartData);
+                        break;
+                    case "Month":
+
+            }
+return "";
+            }
+        });*/
+
+                mChart.setDescription(d);
 
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDragEnabled(true);
@@ -163,8 +188,43 @@ public class StatsActivity extends AppCompatActivity {
         dataSets.add(set1);
 
         LineData data = new LineData(dataSets);
-        mChart.setData(data);
+
+ mChart.setData(data);
+
+
+        ArrayList<String> labels = new ArrayList<>();
+
+        String thisLabel = "first";
+        int k=0;
+        while (thisLabel != "")
+        {
+            thisLabel = x.getFormattedLabel(k);
+            if (thisLabel != "")
+                labels.add(thisLabel);
+            k++;
+        }
+
+        x.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                String val = String.valueOf((int)value);
+                if(val.equals( labels.get(0)))
+                    return "does";
+                else if (val.equals( labels.get(labels.size()-1)))
+                    return "yeah";
+
+                return "";
+            }
+        });
+
+        System.out.println("LABLESARE"+labels);
+//yValues.get
+        //invalidate
         simulateTap(mChart);
+    }
+
+    private void CheckWeekChart(float value, ArrayList<Map<String, Object>> chartData) {
+        //
     }
 
     private String checkRadio() {
