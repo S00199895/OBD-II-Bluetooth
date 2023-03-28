@@ -72,13 +72,14 @@
                 tools:layout_editor_absoluteX="200dp"
                 tools:layout_editor_absoluteY="658dp" />
         </RadioGroup>
-        
+
+
         <com.github.mikephil.charting.charts.LineChart
-            android:layout_width="400dp"
-            android:layout_height="500dp"/>
+            android:id="@+id/lineChartStats"
+            android:layout_width="378dp"
+            android:layout_height="420dp" />
 
-
-            <TextView
+        <TextView
                 android:layout_marginTop="20dp"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
@@ -96,8 +97,5 @@
                 android:text="Total time"
                 android:layout_marginBottom="20dp"/>
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:layout_width="400dp"
-            android:layout_height="500dp"/>
     </LinearLayout>
 </ScrollView>

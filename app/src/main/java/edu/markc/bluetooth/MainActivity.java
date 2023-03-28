@@ -179,6 +179,7 @@ uptime = findViewById(R.id.uptime);
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, StatsActivity.class);
                 //good idea to pass the current spinner value in future
+             //   i.putExtra("")
                 startActivity(i);
             }
         });

@@ -89,25 +89,25 @@ public class StatsActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapter);
 
-        read(spinner.getSelectedItem().toString());
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        day.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View v) {
                 read(spinner.getSelectedItem().toString());
             }
-
+        });
+        week.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                read(spinner.getSelectedItem().toString());
             }
         });
-       rG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-           @Override
-           public void onCheckedChanged(RadioGroup group, int checkedId) {
-               read(spinner.getSelectedItem().toString());
-
-           }
-       });
+        month.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                read(spinner.getSelectedItem().toString());
+            }
+        });
     }
 
     private void makeLineChart(ArrayList<Map<String, Object>> chartData) {
@@ -148,7 +148,7 @@ public class StatsActivity extends AppCompatActivity {
 
         Description d = new Description();
         d.setText(spinner.getSelectedItem().toString() + " of this " + checkRadio());
-        mChart = (LineChart) findViewById(R.id.lineChart);
+        mChart = (LineChart) findViewById(R.id.lineChartStats);
         mChart.setDescription(d);
 
         mChart.setBackgroundColor(Color.WHITE);
@@ -217,7 +217,7 @@ public class StatsActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                                System.out.println(doc.getData());
+                                System.out.println("STATS WORKLS "+doc.getData());
                                 readMaps[0].add(doc.getData());
                             }
                             makeLineChart(readMaps[0]);
