@@ -12,12 +12,14 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -33,9 +35,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.protobuf.DescriptorProtos;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -56,13 +61,16 @@ public class StatsActivity extends AppCompatActivity {
     RadioButton selected;
     RadioGroup rG;
     FirebaseFirestore db;
-
+    TextView avg;
+    TextView timetv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
 
+        avg = findViewById(R.id.avgtv);
+        timetv = findViewById(R.id.totaltimetv);
         spinner = (Spinner) findViewById(R.id.spinnerReading);
         day = (RadioButton) findViewById(R.id.dayRB);
         week = (RadioButton) findViewById(R.id.weekRB);
@@ -141,39 +149,6 @@ mChart.setExtraOffsets(0,0,20,0);
 
         XAxis x = mChart.getXAxis();
        String giosdroni =  x.getFormattedLabel(1000);
-
-
-       /* x.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                //if
-                int sssss = x.getLabelCount();
-                String ttt= x.getFormattedLabel(1);
-                System.out.println(String.valueOf(sssss) + " " + ttt + " " + String.valueOf(value));
-                return "test";
-            }
-        });*/
-        //x.setLabelCount(2);
-       /* x.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getAxisLabel(float value, AxisBase axis) {
-                switch (interval){
-                    case "Day":
-                if (value == 0 || value == 4.8f) {
-                    Toast.makeText(StatsActivity.this, String.valueOf(value), Toast.LENGTH_SHORT).show();
-                    return "test";//chartData.get((int)value).get("datetime").toString();
-
-                }
-                    case "Week":
-                        CheckWeekChart(value, chartData);
-                        break;
-                    case "Month":
-
-            }
-return "";
-            }
-        });*/
-
                 mChart.setDescription(d);
 
         mChart.setBackgroundColor(Color.WHITE);
@@ -190,9 +165,7 @@ return "";
         LineData data = new LineData(dataSets);
 
  mChart.setData(data);
-
-
-        ArrayList<String> labels = new ArrayList<>();
+ ArrayList<String> labels = new ArrayList<>();
 
         String thisLabel = "first";
         int k=0;
@@ -204,15 +177,68 @@ return "";
             k++;
         }
 
+    /*    Timestamp t2 = (Timestamp) o2.get("datetime");
+
+        Date d1 = t1.toDate();*/
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+        Timestamp first = (Timestamp)  chartData.get(0).get("datetime");
+        Timestamp last = (Timestamp) chartData.get(chartData.size()-1).get("datetime");
+        String Firstdate = time.format(first.toDate());
+        String Lastdate = time.format(last.toDate());
+        ArrayList<LabelIndex> labelIndexArr = new ArrayList<>();
+        String current = date.format( ((Timestamp) chartData.get(0).get("datetime")).toDate());
+        labelIndexArr.add(new LabelIndex(0, current));
+        for (int j=1;j<chartData.size(); j++ )
+        {
+            String thisTimestamp = date.format( ((Timestamp) chartData.get(j).get("datetime")).toDate());
+
+            if (!thisTimestamp.equals(current))
+            {
+                LabelIndex li = new LabelIndex(j, thisTimestamp);
+                if (li.index % 2 != 0 || li.index - Math.floor(li.index) == .5)
+                li.index = Math.round(li.index) + 1;
+                labelIndexArr.add(li);
+                current = thisTimestamp;
+            }
+
+        }
+        System.out.println("done" + labelIndexArr);
+
         x.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                String val = String.valueOf((int)value);
-                if(val.equals( labels.get(0)))
-                    return "does";
-                else if (val.equals( labels.get(labels.size()-1)))
-                    return "yeah";
+                //day case WORKS
+                //make returns the start and end date
+                //week/month case
+                //use dates(???)
+                String val = String.valueOf(value);
+                switch (interval) {
+                    case "Day":
+                    if (val.equals(labels.get(0)))
+                        return Firstdate;
+                    else if (val.equals(labels.get(labels.size() - 1)))
+                        return Lastdate;
+                    case "Week":
+                        for (LabelIndex li:labelIndexArr
+                             ) {
+                            if (val.equals(String.valueOf(li.index)))
+                            {
+                                return li.Label;
+                            }
+                        }
 
+                    case "Month":
+                        for (LabelIndex li:labelIndexArr
+                        ) {
+                            if (val.equals(String.valueOf(li.index)))
+                            {
+                                return li.Label;
+                            }
+                        }
+
+
+                }
                 return "";
             }
         });
@@ -221,6 +247,36 @@ return "";
 //yValues.get
         //invalidate
         simulateTap(mChart);
+
+        getStats(chartData);
+    }
+
+    private void getStats(ArrayList<Map<String, Object>> chartData) {
+        //average
+        //sum up all the values in a loop divide by size
+
+        float average = 0;
+        String type = checkRadio();
+        for (Map<String, Object> obj : chartData)
+        {
+            average += Integer.valueOf(obj.get("value").toString());
+        }
+
+        average = average / chartData.size();
+
+        avg.setText(String.valueOf(average) + " " + spinner.getSelectedItem().toString());
+
+        //total time
+        //get the first and the last and subtract them to get hours and minutes
+        Date first = ((Timestamp)chartData.get(0).get("datetime")).toDate();
+        Date last = ((Timestamp)chartData.get(chartData.size()-1).get("datetime")).toDate();
+
+        long diff = last.getTime() -  first.getTime();
+
+        long hours = diff / (60 * 60 * 1000);
+        long minutes = (diff / (60 * 1000)) % 60;
+//JUST FOR DAY??
+        timetv.setText(String.valueOf(hours) +" hour(s) and "+String.valueOf(minutes) + " minutes");
     }
 
     private void CheckWeekChart(float value, ArrayList<Map<String, Object>> chartData) {
