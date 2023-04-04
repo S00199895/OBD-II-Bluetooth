@@ -38,6 +38,9 @@ double avgFE;
     ArrayList<String> faults;
     TextView tvfe ;
             TextView tvdist;
+            TextView tveff;
+            TextView details;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,8 @@ double avgFE;
 
         tvfe = findViewById(R.id.avgFE);
          tvdist = findViewById(R.id.totaldist);
+         tveff = findViewById(R.id.tvEfficiency);
+details = findViewById(R.id.tvDetails);
         getSupportActionBar().hide();
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -132,8 +137,42 @@ totalDistance = totalDistance / 1000;
         avgFE =(totalFuel * 100) / totalDistance;
 DecimalFormat df = new DecimalFormat("0.00");
 /*String formattedDouble = df.format(myDouble);*/
+
         tvfe.setText("Average Fuel Efficiency: " + df.format(avgFE) + " L/100km");
         tvdist.setText("Total Distance Travelled: " + df.format(totalDistance) + " km");
+
+        efficiencyDetails(avgFE);
+    }
+
+    private void efficiencyDetails(double avgFE) {
+        //Anything that is listed as less than 6-litres/100km
+        /*
+         * less than 4.5 good colour green
+         * between 4.5 and 6 fine yellow
+         * over 6 bad orange
+         * */
+
+        if (avgFE <= 4.5) {
+
+            tveff.setTextColor(Color.GREEN);
+            tveff.setText("Good");
+            details.setText("Keep it up!");
+        } else if (avgFE > 4.5 && avgFE < 6)
+        {
+            tveff.setTextColor(Color.BLUE);
+            tveff.setText("Fine");
+
+            details.setText("Lower your revs to improve your fuel efficiency.");
+
+        }
+        else if (avgFE >= 6)
+        {
+            tveff.setTextColor(Color.RED);
+            tveff.setText("Bad");
+
+            details.setText("Make sure you're in the right gear to improve your fuel efficiency.");
+
+        }
     }
 
 

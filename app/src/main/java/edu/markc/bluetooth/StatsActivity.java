@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -67,6 +69,7 @@ public class StatsActivity extends AppCompatActivity {
     FirebaseFirestore db;
     TextView avg;
     TextView timetv;
+    TextView warning;
     LinkedBlockingQueue<SFC> Gsfcs;
     ArrayList<String> faults;
 
@@ -80,6 +83,7 @@ public class StatsActivity extends AppCompatActivity {
         faults = new ArrayList<String>();
         avg = findViewById(R.id.avgtv);
         timetv = findViewById(R.id.totaltimetv);
+        warning = findViewById(R.id.warning);
         spinner = (Spinner) findViewById(R.id.spinnerReading);
         day = (RadioButton) findViewById(R.id.dayRB);
         week = (RadioButton) findViewById(R.id.weekRB);
@@ -98,6 +102,8 @@ public class StatsActivity extends AppCompatActivity {
 
             faults = (ArrayList<String>) getIntent().getSerializableExtra("faults");
         }
+   //     day.setSelected(true);
+
 
         day.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,24 +174,78 @@ public class StatsActivity extends AppCompatActivity {
                         return true;
                     default:
                         return false;
+
                 }
             }
         });
     }
 
+    private void highReadings( ArrayList<Entry> yValues) {
+    //   yValues.get(0).getY
+        //get all the y values
+        //iterate over them
+        //add ones over the limit to the array
+        //if array is bigger than half the size of yvalues
+        //put message
+
+        ArrayList<Float> values = new ArrayList<>();
+
+        for (Entry e:
+             yValues)
+        {
+            if (spinner.getSelectedItem().toString().equals("Speed"))
+            {
+                if (e.getY() > 120)
+                    values.add(e.getY());
+            }
+            else if (spinner.getSelectedItem().toString().equals("RPM"))
+            {
+                if (e.getY() > 1500)
+                    values.add(e.getY());
+            }}
+        if (values.size() >= (int) yValues.size() / 2)
+        {
+            //text
+            if (spinner.getSelectedItem().toString().equals("RPM"))
+            {
+                warning.setText("WARNING! Your RPM recorded this " + checkRadio() + " is very high. Lower RPM can mean lower fuel costs nad engine health." );
+
+            }
+            else if (spinner.getSelectedItem().toString().equals("Speed"))
+            {
+                warning.setText("WARNING! Your Speed recorded this " + checkRadio() + " is very high. Reduce your speed to be more aware of your surroundings and to save on fuel");
+
+            }
+        }
+    }
+
     private void makeLineChart(ArrayList<Map<String, Object>> chartData) {
 
+        String spinnerValue = spinner.getSelectedItem().toString();
         //check button selected
         String interval = checkRadio();
+    //do spinner
+        LimitLine ll = new LimitLine(1f);
+        if (spinnerValue.contains("RPM"))
+        {
+            ll = new LimitLine(1700f, "High RPM");
+        }
+        else if (spinnerValue.contains("Speed"))
+        {
+            ll = new LimitLine(120f, "High Speed");
+        }
+
+        ll.setLineWidth(2f);
+        ll.setLineColor(Color.RED);
+
+
 
         System.out.println("chart valeus");
         System.out.println(chartData);
         //give this chart times for order and dates
         //plot against values
         //display chart
-
         ArrayList<Entry> yValues = new ArrayList<>();
-
         //sort
         chartData.sort(new Comparator<Map<String, Object>>() {
             @Override
@@ -271,9 +331,13 @@ mChart.setExtraOffsets(0,0,20,0);
                 current = thisTimestamp;
             }
 
-        }
-        System.out.println("done" + labelIndexArr);
 
+        }
+
+        System.out.println("done" + labelIndexArr);
+YAxis y = mChart.getAxis(YAxis.AxisDependency.LEFT);
+
+y.addLimitLine(ll);
         x.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -317,7 +381,9 @@ mChart.setExtraOffsets(0,0,20,0);
         //invalidate
         simulateTap(mChart);
 
+
         getStats(chartData);
+highReadings(yValues);
     }
 
     private void getStats(ArrayList<Map<String, Object>> chartData) {

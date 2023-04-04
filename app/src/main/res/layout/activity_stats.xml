@@ -8,12 +8,13 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical">
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/navbar"
@@ -36,10 +37,16 @@
             app:menu="@menu/navmenu" />
 
         <Spinner
+            android:id="@+id/spinnerReading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spinnerReading"
-            android:layout_margin="30dp"/>
+            android:layout_margin="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.06" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -48,8 +55,13 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:gravity="center"
-
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.154">
 
 
             <!--adding a radio button -->
@@ -94,11 +106,32 @@
                 tools:layout_editor_absoluteY="658dp" />
         </RadioGroup>
 
-
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChartStats"
-            android:layout_width="378dp"
-            android:layout_height="420dp" />
+            android:layout_width="370dp"
+            android:layout_height="361dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="187dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/warning"
+            android:layout_width="377dp"
+            android:layout_height="82dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:gravity="left"
+            android:text="Test"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.411"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.862" />
 
         <TextView
             android:id="@+id/avgtv"
@@ -106,9 +139,15 @@
             android:layout_height="50dp"
             android:layout_row="0"
             android:layout_column="0"
-            android:layout_marginTop="20dp"
             android:gravity="left"
-            android:text="Average" />
+            android:text="Average"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.075"
+
+            app:layout_constraintVertical_bias="0.953" />
 
         <TextView
             android:id="@+id/totaltimetv"
@@ -116,8 +155,13 @@
             android:layout_height="50dp"
             android:layout_row="0"
             android:layout_column="1"
-            android:layout_marginBottom="20dp"
-            android:text="Total time" />
+            android:text="Total time"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.954" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

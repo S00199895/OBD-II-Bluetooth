@@ -83,6 +83,7 @@ id tvSelected
 id tvSeverity
 id tvfuel
 id uptime
+id warning
 id weekRB
 layout activity_edit_job
 layout activity_fuel
