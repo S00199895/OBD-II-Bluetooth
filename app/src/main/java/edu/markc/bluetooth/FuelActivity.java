@@ -1,12 +1,14 @@
 package edu.markc.bluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -32,6 +34,8 @@ public class FuelActivity extends AppCompatActivity {
 BarChart fuelBC;
 double totalDistance;
 double avgFE;
+    LinkedBlockingQueue<SFC> Gsfcs;
+    ArrayList<String> faults;
     TextView tvfe ;
             TextView tvdist;
     @Override
@@ -49,10 +53,65 @@ double avgFE;
         if (getIntent().getExtras() != null)
         {
             fuelData = (LinkedBlockingQueue<SFC>) getIntent().getSerializableExtra("Gsfcs");
+            faults = (ArrayList<String>) getIntent().getSerializableExtra("faults");
         }
+
         else {
             fuelData = new LinkedBlockingQueue<>();
         }
+
+
+        Toolbar toolbar = findViewById(R.id.navbar);
+
+
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                System.out.println(item.getTitle().toString());
+                item.getTitle().toString();
+                Intent i;
+                switch (item.getTitle().toString()) {
+                    case "home":
+                        // Handle settings item click
+                        // Handle search item click
+                        i = new Intent(FuelActivity.this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                       /* if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }*/
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    case "stats":
+                        i = new Intent(FuelActivity.this, StatsActivity.class);
+                        //putextra the faults
+                        i.putExtra("faults", faults);
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    case "fuel":
+                        return true;
+                    case "jobs":
+                        i = new Intent(FuelActivity.this, JobsActivity.class);
+                        //putextra the faults
+                        i.putExtra("faults", faults);
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+
         ArrayList<SFC> arrFuelData = new ArrayList<>(fuelData);
         getStats(arrFuelData);
         fuelBC = findViewById(R.id.fuel_barchart);

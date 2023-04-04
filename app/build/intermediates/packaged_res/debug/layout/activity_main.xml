@@ -2,51 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:id="@+id/clayout">
+    tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tVRPM"
-        android:layout_width="111dp"
-        android:layout_height="50dp"
-        android:text="RPM"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.943"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.008" />
-
-    <TextView
-        android:id="@+id/tVSpeed"
-        android:layout_width="111dp"
-        android:layout_height="50dp"
-        android:text="Speed"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.943"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.098" />
-
-    <TextView
-        android:id="@+id/tvfuel"
-        android:layout_width="111dp"
-        android:layout_height="50dp"
-        android:text="Fuel"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.406"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.384" />
-
-    <com.github.mikephil.charting.charts.LineChart
+    <!--   <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="194dp"
         android:layout_height="95dp"
@@ -76,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.972">
 
-        <!--adding a radio button -->
+        &lt;!&ndash;adding a radio button &ndash;&gt;
         <RadioButton
             android:id="@+id/dayRB"
             android:layout_width="100dp"
@@ -88,7 +49,7 @@
             android:textAlignment="center"
             android:textSize="14sp" />
 
-        <!--adding a radio button -->
+        &lt;!&ndash;adding a radio button &ndash;&gt;
         <RadioButton
             android:id="@+id/weekRB"
             android:layout_width="100dp"
@@ -101,7 +62,7 @@
             android:textAlignment="center"
             android:textSize="14sp" />
 
-        <!--adding a radio button -->
+        &lt;!&ndash;adding a radio button &ndash;&gt;
         <RadioButton
             android:id="@+id/MonthRB"
             android:layout_width="201dp"
@@ -127,66 +88,127 @@
         app:layout_constraintHorizontal_bias="0.096"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.023" />-->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/navbar"
+        android:layout_width="253dp"
+        android:layout_height="56dp"
+        android:background="?attr/colorPrimary"
+        android:gravity="center"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.004"
+        app:menu="@menu/navmenu" />
 
     <Button
         android:id="@+id/buttonre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
         android:text="To notes"
-        app:layout_constraintBottom_toTopOf="@+id/lineChart"
-        app:layout_constraintEnd_toStartOf="@+id/tVSpeed"
-        app:layout_constraintHorizontal_bias="0.811"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.897"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        app:layout_constraintVertical_bias="0.146" />
+        app:layout_constraintTop_toBottomOf="@+id/navbar"
+        app:layout_constraintVertical_bias="0.156" />
+
+    <TextView
+        android:id="@+id/tVRPM"
+        android:layout_width="111dp"
+        android:layout_height="50dp"
+        android:text="RPM"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.415" />
+
+    <TextView
+        android:id="@+id/tVSpeed"
+        android:layout_width="111dp"
+        android:layout_height="50dp"
+        android:text="Speed"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.896"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.415" />
+
+    <TextView
+        android:id="@+id/tvfuel"
+        android:layout_width="111dp"
+        android:layout_height="50dp"
+        android:text="Fuel"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.544" />
 
     <Button
         android:id="@+id/btnEmuStopReading"
         android:layout_width="88dp"
         android:layout_height="34dp"
+        android:layout_marginTop="496dp"
         android:text="Stop"
-        app:layout_constraintBottom_toTopOf="@+id/lineChart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.699"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.956" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnStats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="to stats"
-        app:layout_constraintBottom_toTopOf="@+id/lineChart"
-        app:layout_constraintEnd_toStartOf="@+id/tVSpeed"
-        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonre"
+        app:layout_constraintHorizontal_bias="0.981"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.389" />
 
     <Button
         android:id="@+id/btnFuel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="19dp"
         android:text="to fuel"
-        app:layout_constraintBottom_toTopOf="@+id/lineChart"
-        app:layout_constraintEnd_toStartOf="@+id/tVSpeed"
-        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonre"
+        app:layout_constraintVertical_bias="0.012" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="62dp"
-        android:layout_height="72dp"
+        android:layout_width="0dp"
+        android:layout_height="113dp"
+        android:layout_marginEnd="151dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toEndOf="@+id/btnFuel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.247"
+        app:layout_constraintVertical_bias="0.142"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -198,7 +220,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintVertical_bias="0.62" />
 
     <TextView
         android:id="@+id/needle"
@@ -224,7 +246,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintVertical_bias="0.613" />
 
     <TextView
         android:id="@+id/textView5"
@@ -238,7 +260,7 @@
         app:layout_constraintHorizontal_bias="0.984"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.472" />
+        app:layout_constraintVertical_bias="0.613" />
 
     <TextView
         android:id="@+id/uptime"
@@ -247,10 +269,10 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.28" />
+        app:layout_constraintVertical_bias="0.546" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

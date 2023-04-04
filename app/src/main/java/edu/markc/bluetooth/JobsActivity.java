@@ -1,6 +1,7 @@
 package edu.markc.bluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class JobsActivity extends AppCompatActivity implements Serializable {
    // ListView lV;
@@ -57,6 +60,9 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
     boolean IisDescending = false;
     boolean az = false;
     boolean i = false;
+
+    LinkedBlockingQueue<SFC> Gsfcs;
+
     ArrayAdapter<Note> currentadapter = null;
 
     public interface FragmentListener {
@@ -112,6 +118,7 @@ resolvedjobs = readResolvedJobs();
           //  sendDataToFragment(notesArray);
             faults = (ArrayList<String>) getIntent().getSerializableExtra("faults");
 
+            Gsfcs = (LinkedBlockingQueue<SFC>) getIntent().getSerializableExtra("Gsfcs");
             addJobsToFirestore(notesArray);
             //writePrefs(sharedPref, editor, notesArray);
         }
@@ -126,6 +133,52 @@ resolvedjobs = readResolvedJobs();
             listView.setAdapter(faultsadapter);
 
 writeFaults(sharedPref, editor, faults);
+
+        Toolbar toolbar = findViewById(R.id.navbar);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                System.out.println(item.getTitle().toString());
+                item.getTitle().toString();
+                Intent i;
+                switch (item.getTitle().toString()) {
+                    case "home":
+                        // Handle settings item click
+                        // Handle search item click
+                        i = new Intent(JobsActivity.this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                       /* if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }*/
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    case "stats":
+//this
+                        return true;
+                    case "fuel":
+                        i = new Intent(JobsActivity.this, FuelActivity.class);
+                        //putextra the faults
+                     /*   if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }*/
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    case "jobs":
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

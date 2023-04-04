@@ -2,10 +2,13 @@ package edu.markc.bluetooth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -50,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class StatsActivity extends AppCompatActivity {
 
@@ -63,12 +67,17 @@ public class StatsActivity extends AppCompatActivity {
     FirebaseFirestore db;
     TextView avg;
     TextView timetv;
+    LinkedBlockingQueue<SFC> Gsfcs;
+    ArrayList<String> faults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
+        getSupportActionBar().hide();
 
+        Gsfcs = new LinkedBlockingQueue<>(7);
+        faults = new ArrayList<String>();
         avg = findViewById(R.id.avgtv);
         timetv = findViewById(R.id.totaltimetv);
         spinner = (Spinner) findViewById(R.id.spinnerReading);
@@ -82,7 +91,13 @@ public class StatsActivity extends AppCompatActivity {
                 R.array.readings_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapter);
+        Toolbar toolbar = findViewById(R.id.navbar);
+        if (getIntent().getExtras() != null)
+        {
+            Gsfcs = (LinkedBlockingQueue<SFC>) getIntent().getSerializableExtra("Gsfcs");
 
+            faults = (ArrayList<String>) getIntent().getSerializableExtra("faults");
+        }
 
         day.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +115,60 @@ public class StatsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 read(spinner.getSelectedItem().toString());
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                System.out.println(item.getTitle().toString());
+                item.getTitle().toString();
+                Intent i;
+                switch (item.getTitle().toString()) {
+                    case "home":
+                        // Handle settings item click
+                        // Handle search item click
+                        i = new Intent(StatsActivity.this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                       /* if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }*/
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    case "stats":
+//this
+                        return true;
+                    case "fuel":
+                        i = new Intent(StatsActivity.this, FuelActivity.class);
+                        //putextra the faults
+                     /*   if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }*/
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    case "jobs":
+                        i = new Intent(StatsActivity.this, JobsActivity.class);
+                        //putextra the faults
+                        i.putExtra("faults", faults);
+                      /*  if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }*/
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    default:
+                        return false;
+                }
             }
         });
     }
@@ -197,7 +266,7 @@ mChart.setExtraOffsets(0,0,20,0);
             {
                 LabelIndex li = new LabelIndex(j, thisTimestamp);
                 if (li.index % 2 != 0 || li.index - Math.floor(li.index) == .5)
-                li.index = Math.round(li.index) + 1;
+                    li.index = Math.round(li.index) + 1;
                 labelIndexArr.add(li);
                 current = thisTimestamp;
             }

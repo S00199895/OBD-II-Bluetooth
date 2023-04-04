@@ -23,6 +23,9 @@ import android.os.SystemClock;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,6 +36,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -77,6 +81,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import androidx.appcompat.widget.Toolbar;
+
 public class MainActivity extends AppCompatActivity implements Serializable {
     //emu var
     static boolean emu = true;
@@ -90,15 +96,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     TextView tvfuel;
     TextView uptime;
     FirebaseFirestore db;
-    LineChart mChart;
-    RadioGroup rG;
-    RadioButton selected;
-    Spinner selectSpinner;
+  //  LineChart mChart;
+   // RadioGroup rG;
+   // RadioButton selected;
+   // Spinner selectSpinner;
     double dist;
     double fuelConsumed;
-    RadioButton day;
+   /* RadioButton day;
     RadioButton week;
-    RadioButton month;
+    RadioButton month;*/
     Gson g = new Gson();
     int Gspeed;
     Button btn;
@@ -112,13 +118,18 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     private  static  LocalDate localdate;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         BluetoothService.checkPermissions(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         dist =0;
 
+        getSupportActionBar().hide();
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -132,12 +143,17 @@ speedLimits();
             EmuService.writeFuel(MainActivity.this, (int)fuelLevel);
             timer();
         }
+        Toolbar toolbar = findViewById(R.id.navbar);
+
+      //  toolbar.getMenu().findItem(R.id.homenav).setIcon(R.drawable.highlight_link);
+      //  getSupportActionBar().setCustomView(toolbar);
+       // setSupportActionBar(toolbar);
 
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
         tvfuel = findViewById(R.id.tvfuel);
         btnFuel = findViewById(R.id.btnFuel);
-        rG = (RadioGroup) findViewById(R.id.radioGroup);
+      //  rG = (RadioGroup) findViewById(R.id.radioGroup);
 uptime = findViewById(R.id.uptime);
         btn = (Button) findViewById(R.id.buttonre);
         btnStats = (Button) findViewById(R.id.btnStats);
@@ -163,7 +179,7 @@ uptime = findViewById(R.id.uptime);
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, FuelActivity.class);
-                //putextra the faults
+                //putextra the sfcs
                 if (Gsfcs == null)
                 {
                     Gsfcs=  getsfcs();
@@ -178,21 +194,70 @@ uptime = findViewById(R.id.uptime);
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, StatsActivity.class);
-                //good idea to pass the current spinner value in future
-             //   i.putExtra("")
                 startActivity(i);
             }
         });
-        selectSpinner = (Spinner) findViewById(R.id.spinner);
+       // selectSpinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.readings_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        selectSpinner.setAdapter(adapter);
 
-        day = (RadioButton) findViewById(R.id.dayRB);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                System.out.println(item.getTitle().toString());
+                item.getTitle().toString();
+                Intent i;
+                switch (item.getTitle().toString()) {
+                    case "home":
+                        // Handle settings item click
+                        return true;
+                    case "stats":
+                        // Handle search item click
+                        i = new Intent(MainActivity.this, StatsActivity.class);
+                        if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    case "fuel":
+                       i = new Intent(MainActivity.this, FuelActivity.class);
+                        //putextra the faults
+                        if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    case "jobs":
+                         i = new Intent(MainActivity.this, JobsActivity.class);
+                        //putextra the faults
+                        i.putExtra("faults", faults);
+                        if (Gsfcs == null)
+                        {
+                            Gsfcs=  getsfcs();
+                        }
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+      //  selectSpinner.setAdapter(adapter);
+
+      /*  day = (RadioButton) findViewById(R.id.dayRB);
         week = (RadioButton) findViewById(R.id.weekRB);
-        month = (RadioButton) findViewById(R.id.MonthRB);
-
+        month = (RadioButton) findViewById(R.id.MonthRB);*/
+/*
         day.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,8 +275,9 @@ uptime = findViewById(R.id.uptime);
             public void onClick(View v) {
                 read(selectSpinner.getSelectedItem().toString());
             }
-        });
-        ArrayList<Map<String, Object>> reads = read(selectSpinner.getSelectedItem().toString());
+        });*/
+       // ArrayList<Map<String, Object>> reads = read(selectSpinner.getSelectedItem().toString());
+
         BluetoothSocket btSocket = connectToOBD();
 
          if (btSocket.isConnected() || emu == true) {
@@ -280,7 +346,7 @@ uptime = findViewById(R.id.uptime);
                                      }
                                  } catch (NullPointerException e) {
                                       addToFirestore(rpmList);
-                                      read(selectSpinner.getSelectedItem().toString());
+                                //      read(selectSpinner.getSelectedItem().toString());
                                  }
                          }
                  });
@@ -313,7 +379,7 @@ uptime = findViewById(R.id.uptime);
                                      }
                                  } catch (NullPointerException e) {
                                      addToFirestore(speedList);
-                                     read(selectSpinner.getSelectedItem().toString());
+                                  //   read(selectSpinner.getSelectedItem().toString());
                                  }
                          }
                  });
@@ -321,6 +387,15 @@ uptime = findViewById(R.id.uptime);
             catch(Exception e){
 e.printStackTrace();
             } }}
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navmenu,menu);
+
+
+        return true;
+    }
 
     private LinkedBlockingQueue<SFC> getsfcs() {
 
@@ -415,7 +490,7 @@ e.printStackTrace();
 
         db = FirebaseFirestore.getInstance();
 
-        String interval = checkRadio();
+        String interval = "checkRadio();";
         //interval = "Week";
         if (interval.contains("Day")) {
             db.collection("data").document(String.valueOf(LocalDate.now())).collection(type)
@@ -427,7 +502,7 @@ e.printStackTrace();
                                 System.out.println(doc.getData());
                                 readMaps[0].add(doc.getData());
                             }
-                            makeLineChart(readMaps[0]);
+                            //makeLineChart(readMaps[0]);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -475,7 +550,7 @@ e.printStackTrace();
                                             weekMaps.add(d.getData());
                                         }
                                         readMaps[0] = weekMaps;
-                                        makeLineChart(readMaps[0]);
+                                        //makeLineChart(readMaps[0]);
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -533,7 +608,7 @@ e.printStackTrace();
                                             weekMaps.add(d.getData());
                                         }
                                         readMaps[0] = weekMaps;
-                                        makeLineChart(readMaps[0]);
+                                        //makeLineChart(readMaps[0]);
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -655,7 +730,7 @@ e.printStackTrace();
 //        }
 //        return unique;
 //    }
-
+/*
     private void makeLineChart(ArrayList<Map<String, Object>> chartData) {
 
         //check button selected
@@ -727,7 +802,7 @@ e.printStackTrace();
         if (selected != null)
             return selected.getText().toString();
         return "";
-    }
+    }*/
 
         private BluetoothSocket connectToOBD()
     {
