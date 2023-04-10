@@ -38,6 +38,14 @@ public class SFC implements Serializable {
 
     }
 
+    public SFC(double v, String day, double d, String date)
+    {
+        this.value = v;
+        this.dayName =day;
+        this.distance = d;
+        this.dateString = date;
+    }
+
 
 }
 

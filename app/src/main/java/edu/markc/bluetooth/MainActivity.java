@@ -70,6 +70,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -946,19 +947,20 @@ if (stop == true)
 
     private void SFCPrefHandler(double fuelConsumed)
     {
-        LinkedBlockingQueue<SFC> sfcs;
+        LinkedBlockingQueue<SFC> sfcs;/* =new LinkedBlockingQueue<>();
 
-
+        writeSFCs(sfcs);*/
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         String existingJSON = sharedPref.getString("sfcs", null);
+
         LocalDate today = LocalDate.now();
 
         // Format the dateString to get the shortened day name
         String dayName = today.format(DateTimeFormatter.ofPattern("E"));
         if (existingJSON == null) {
-            sfcs = new LinkedBlockingQueue<>();
+            sfcs = new LinkedBlockingQueue<>(7);
 //if you need to make one
 
             SFC newsfc = new SFC(fuelConsumed, dayName, dist);
@@ -977,49 +979,87 @@ if (stop == true)
             Gsfcs = sfcs;
 
         }
-                /*
-                *      String json = sharedPref.getString("faults", null);
-        if (json == null) {
-            return  new ArrayList<>();
-        }
-        Type type = new TypeToken<ArrayList<String>>(){}.getType();
-
-        return g.fromJson(json, type);
-                * */
 
     }
 
     private LinkedBlockingQueue<SFC> putNewSFC(LinkedBlockingQueue<SFC> sfcs, double fuelConsumed, String dayName) {
 
-        //
+    /*
+        ArrayList<SFC> newsfcs = new ArrayList<>();
 
-        LocalDateTime myDateObj = LocalDateTime.now();
+        String thisdayName = thisday.format(DateTimeFormatter.ofPattern("E"));
+*/
+        ArrayList<SFC> arrsfcs = new ArrayList<SFC>(sfcs);
+    // dayName= "Fri";
+        LocalDateTime myDateObj = LocalDateTime.now();//.plusDays(4);
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String todaysdate = myDateObj.format(myFormatObj);
 
-        if (sfcs.size() >= 7)
-            sfcs.poll();
-        for (SFC entry:
-                sfcs) {
+        if (sfcs.size() == 0)
+        {
+            sfcs.add(new SFC(fuelConsumed, dayName, dist, todaysdate));
+            return sfcs;
+        }
+        else if (sfcs.size() == 7)
+        {
+            //LOGIC IN HERE FOR SAME DAY
 
-            if (entry.dateString.contains(todaysdate))
+            if (arrsfcs.get(6).dateString.equals(todaysdate))
             {
-                double currentfuelC = entry.value;
-                double currentDist = entry.distance;
-                SFC newentry = new SFC(currentfuelC + fuelConsumed, dayName, dist + currentDist);
-
-
-                ArrayList<SFC> sfcsArr = new ArrayList<>(sfcs);
+                arrsfcs.get(6).distance += dist;
+                arrsfcs.get(6).value += fuelConsumed;
                 return sfcs;
 
             }
+            sfcs.poll();
+            sfcs.offer(new SFC(fuelConsumed, dayName, dist, todaysdate));
+
+            return sfcs;
+        }
+        else
+        {
+            for (SFC e:arrsfcs) {
+                if (e.dateString.equals(todaysdate))
+                {
+                    arrsfcs.get(arrsfcs.indexOf(e)).distance += dist;
+                    arrsfcs.get(arrsfcs.indexOf(e)).value += fuelConsumed;
+
+                    sfcs = new LinkedBlockingQueue<>(arrsfcs);
+                    return sfcs;
+                }
+
+            }
+        /*    System.out.println(LocalDate.parse(arrsfcs.get(arrsfcs.size()-1).dateString, myFormatObj).plusDays(1).atStartOfDay());
+            System.out.println(LocalDate.now().plusDays(1).atStartOfDay())fixe;*/
+            if (LocalDate.parse(arrsfcs.get(arrsfcs.size()-1).dateString, myFormatObj).plusDays(1).atStartOfDay().equals(LocalDate.now().atStartOfDay()))
+            {
+                sfcs.offer(new SFC(fuelConsumed,dayName,dist));
+                return sfcs;
+            }
+            ArrayList<SFC> gapsfcs = new ArrayList<SFC>();
+            //between 0 and 7
+            SFC last = arrsfcs.get(arrsfcs.size()-1);
+            gapsfcs.add(new SFC(fuelConsumed, dayName, dist, todaysdate));
+
+            LocalDateTime currentDate = LocalDateTime.now();//.plusDays(4);
+            //        String todaysdate = myDateObj.format(myFormatObj);
+            for (int i=0; i<7; i++)
+            {
+                //!currentDate.format(myFormatObj).equals(last.dateString)
+                //        String thisdayName = thisday.format(DateTimeFormatter.ofPattern("E"));
+                currentDate = currentDate.minusDays(1);
+                if (currentDate.format(myFormatObj).equals(last.dateString))
+                    break;
+                gapsfcs.add(new SFC(0, currentDate.format(DateTimeFormatter.ofPattern("E")),0));
+            }
+
+                gapsfcs.add(last);
+            Collections.reverse(gapsfcs);
+            sfcs = new LinkedBlockingQueue<>(gapsfcs);
+            return sfcs;
 
         }
-            SFC newdayentry = new SFC(fuelConsumed, dayName, dist);
 
-            sfcs.add(newdayentry);
-
-return sfcs;
     }
 
     void writeSFCs(LinkedBlockingQueue<SFC> sfcs)
