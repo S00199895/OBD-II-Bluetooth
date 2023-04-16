@@ -29,21 +29,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ResolvedJobs#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ResolvedJobs extends Fragment {
 ArrayList<Note> resolvedjobs;
 Gson g;
 ListView lvResolved;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -52,15 +44,6 @@ ListView lvResolved;
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ResolvedJobs.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ResolvedJobs newInstance(String param1, String param2) {
         ResolvedJobs fragment = new ResolvedJobs();
         Bundle args = new Bundle();
@@ -94,36 +77,15 @@ ListView lvResolved;
                              Bundle savedInstanceState) {
 
         resolvedjobs = getResolvedJobs();
-       /* Gson g = new Gson();
-
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        String jsonNotes = sharedPref.getString("Rjobs", null);
-        if (jsonNotes != null) {
-            Type type = new TypeToken<ArrayList<Note>>(){}.getType();
-            resolvedjobs = g.fromJson(jsonNotes, type);
-        }
-        else
-        {
-            //empty array
-            resolvedjobs = new ArrayList<Note>();
-        }*/
-
-
-        // Inflate the layout for this fragment
         class noteArrayAdapter extends ArrayAdapter<Note> {
             private Context context;
             private List<Note> notes;
 
-            //constructor, call on creation
             public noteArrayAdapter(Context context, int resource, ArrayList<Note> objects) {
                 super(context, resource, objects);
 
                 this.context = context;
                 this.notes = objects;
-
-
             }
 
             public View getView(int position, View convertView, ViewGroup parent){
@@ -136,11 +98,9 @@ ListView lvResolved;
                 TextView date = (TextView) view.findViewById(R.id.noteDate);
                 TextView severity = (TextView) view.findViewById(R.id.tvSeverity);
 
-
                 title.setText(note.title);
                 date.setText("Resolved " + note.timestamp);
                 severity.setText(note.importance.toString());
-                //  note.importance = Importance.HIGH;
                 if (note != null) {
                     severity.setText(note.importance.toString());
 
@@ -195,7 +155,6 @@ ListView lvResolved;
                             resolvedjobs.add(e);
 
                         }
-                     //   resolvedjobs = thisresolvedjobs;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

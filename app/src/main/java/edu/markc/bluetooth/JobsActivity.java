@@ -46,7 +46,7 @@ public class JobsActivity extends AppCompatActivity implements Serializable {
    // ListView lV;
     FloatingActionButton add;
     Gson g = new Gson();
-    ArrayList<Note> notesArray = new ArrayList<Note>();
+    public ArrayList<Note> notesArray = new ArrayList<Note>();
     ArrayList<String> faults = new ArrayList<>();
     RadioButton importanceRB;
     RadioButton azRB;
@@ -94,18 +94,13 @@ getSupportActionBar().hide();
         ViewPager viewPager = findViewById(R.id.pager);
         viewPager.setAdapter(new TablayoutFragment(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
-      // currentjobs = tabLayout.get
-               //(CurrentJobs) getSupportFragmentManager().getFragment(savedInstanceState, "CurrentJobs");
-
-       // currentjobs = (CurrentJobs) getSupportFragmentManager().findFragmentById(viewPager.getCurrentItem());
-
         rgSort = findViewById(R.id.radioGroup);
         tvascdesc = findViewById(R.id.ascdesc);
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
         if (notesArray == null) {
-            notesArray = readJobs();//readPrefs(sharedPref);
+            notesArray = readJobs();
             System.out.println("notesmain " + notesArray);
             addJobsToFirestore(notesArray);
         }
@@ -120,7 +115,6 @@ resolvedjobs = readResolvedJobs();
 
             Gsfcs = (LinkedBlockingQueue<SFC>) getIntent().getSerializableExtra("Gsfcs");
             addJobsToFirestore(notesArray);
-            //writePrefs(sharedPref, editor, notesArray);
         }
 
         if (faults == null) {
@@ -145,29 +139,23 @@ writeFaults(sharedPref, editor, faults);
                 Intent i;
                 switch (item.getTitle().toString()) {
                     case "home":
-                        // Handle settings item click
-                        // Handle search item click
                         i = new Intent(JobsActivity.this, MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                       /* if (Gsfcs == null)
-                        {
-                            Gsfcs=  getsfcs();
-                        }*/
                         i.putExtra("Gsfcs", Gsfcs);
                         i.putExtra("faults", faults);
                         startActivity(i);
                         return true;
                     case "stats":
-//this
+                        i = new Intent(JobsActivity.this, StatsActivity.class);
+                        //putextra the faults
+                        i.putExtra("faults", faults);
+                        i.putExtra("Gsfcs", Gsfcs);
+                        i.putExtra("faults", faults);
+                        startActivity(i);
                         return true;
                     case "fuel":
                         i = new Intent(JobsActivity.this, FuelActivity.class);
-                        //putextra the faults
-                     /*   if (Gsfcs == null)
-                        {
-                            Gsfcs=  getsfcs();
-                        }*/
+
                         i.putExtra("Gsfcs", Gsfcs);
                         i.putExtra("faults", faults);
                         startActivity(i);
@@ -183,14 +171,12 @@ writeFaults(sharedPref, editor, faults);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //                Note e = (Note) parent.getAdapter().getItem(position);
                     String fault = (String) parent.getAdapter().getItem(position);
                     alertDialog(JobsActivity.this, fault);
 
                 }
             });
 
-    //    lV = (ListView) findViewById(R.id.lVNotes);
         add = (FloatingActionButton) findViewById(R.id.addNoteBtn);
         ArrayList<Note> finalNotesArray = notesArray;
 
@@ -199,7 +185,6 @@ writeFaults(sharedPref, editor, faults);
             @Override
             public void onClick(View v) {
                 addJobsToFirestore(finalNotesArray);
-                //writePrefs(sharedPref, editor, finalNotesArray);
 
                 Intent i = new Intent(JobsActivity.this, EditJobActivity.class);
                 i.putExtra("allNotes", finalNotesArray1);
@@ -213,7 +198,6 @@ writeFaults(sharedPref, editor, faults);
             private Context context;
             private List<Note> notes;
 
-            //constructor, call on creation
             public noteArrayAdapter(Context context, int resource, ArrayList<Note> objects) {
                 super(context, resource, objects);
 
@@ -237,7 +221,6 @@ writeFaults(sharedPref, editor, faults);
                     title.setText(note.title);
                     date.setText(note.timestamp);
                     severity.setText(note.importance.toString());
-                  //  note.importance = Importance.HIGH;
                     if (note != null) {
                         severity.setText(note.importance.toString());
 
@@ -254,14 +237,7 @@ writeFaults(sharedPref, editor, faults);
                 }
         }
         System.out.println(notesArray);
-       /* Note t = new Note("test" ,"fgeg");
-        if (notesArray != null) {
-            notesArray.add(t);
-        }*/
             ArrayAdapter<Note> adapter = new noteArrayAdapter(this, 0, notesArray);
-        //lV.setAdapter(adapter);
-
-        //comparators for note
         Comparator<Note> azcomp = new Comparator<Note>() {
             @Override
             public int compare(Note o1, Note o2) {
@@ -273,11 +249,7 @@ writeFaults(sharedPref, editor, faults);
             @Override
             public int compare(Note o1, Note o2) {
                 return Integer.compare(o1.importance.ordinal(),o2.importance.ordinal());
-              /* if (o1.importance.ordinal() < o2.importance.ordinal())
-                   return 1;
-               else if (o1.importance.ordinal() > o2.importance.ordinal())
-                    return 1;
-               return 0;*/
+
             }
         };
 
@@ -285,11 +257,6 @@ writeFaults(sharedPref, editor, faults);
         selected = (RadioButton) findViewById(selectedID);
         azRB = findViewById(R.id.azrB);
         importanceRB = findViewById(R.id.irB);
-
-        /*   if (isDescending)
-                {
-                    Collections.reverse(notesArray);
-                }*/
 
         tvascdesc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,8 +279,6 @@ writeFaults(sharedPref, editor, faults);
             @Override
             public void onClick(View v) {
 
-                //   int selectedID = rgSort.getCheckedRadioButtonId();
-               // selected = (RadioButton) findViewById(selectedID);
                 if (AZisDescending) {
                     tvascdesc.setText("↑");
                     Collections.reverse(notesArray);
@@ -334,7 +299,6 @@ writeFaults(sharedPref, editor, faults);
                         sendDataToFragment(notesArray);
                     }
                 }
-             //   lV.invalidateViews();
             }
         });
 
@@ -483,9 +447,6 @@ writeFaults(sharedPref, editor, faults);
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // User clicked yes button
-                        //make intent
-                        //make note to pass - description is the fault code string
                         Intent i = new Intent(JobsActivity.this, EditJobActivity.class);
                         i.putExtra("thisFault", fault);
                         i.putExtra("allNotes", notesArray);
@@ -505,70 +466,13 @@ writeFaults(sharedPref, editor, faults);
         dialog.show();
     }
 
-    private void dialogDeleteJob(Context context, ArrayList<Note> finalNotesArray2, int position,/*index of the deleted?*/ArrayAdapter<Note> adapter) {
-        //find the code where it deletes
-        //put in here
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Delete job?")
-                .setMessage("Are you sure you want to delete this job")
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        Toast.makeText(JobsActivity.this, "Job deleted", Toast.LENGTH_SHORT).show();
-                        finalNotesArray2.remove(position);
-                        adapter.notifyDataSetChanged();
-                        addJobsToFirestore(finalNotesArray2);
-                        //writePrefs(sharedPref, editor, finalNotesArray2);
 
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // User clicked no button
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
- /*   public ArrayList<Note> readPrefs(SharedPreferences sharedPref) {
-        String jsonNotes = sharedPref.getString("notes", null);
-        if (jsonNotes == null) {
-            return new ArrayList<>();
-        }
-        Type type = new TypeToken<ArrayList<Note>>(){}.getType();
-        return g.fromJson(jsonNotes, type);
-    }
-
-    public void writePrefs(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<Note> notes) {
-        String jsonNotes = g.toJson(notes);
-       // sendDataToFragment(notes);
-        editor.putString("notes", jsonNotes);
-        editor.apply();
-    }*/
 
     public void writeFaults(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<String> faults) {
         String jsonNotes = g.toJson(faults);
-        // sendDataToFragment(notes);
         editor.putString("faults", jsonNotes);
         editor.apply();
     }
-
-    public ArrayList<String> readFaults(SharedPreferences sharedPref) {
-        String json = sharedPref.getString("faults", null);
-        if (json == null) {
-            return  new ArrayList<>();
-        }
-        Type type = new TypeToken<ArrayList<String>>(){}.getType();
-
-        return g.fromJson(json, type);
-    }
-
-
-
 
 }

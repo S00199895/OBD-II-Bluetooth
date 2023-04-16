@@ -2814,6 +2814,7 @@ id btnEmuStopReading
 id btnFuel
 id btnSave
 id btnStats
+id button
 id buttonPanel
 id buttonre
 id cache_measures
@@ -3049,6 +3050,7 @@ id needle
 id never
 id neverCompleteToEnd
 id neverCompleteToStart
+id nextbtn
 id noScroll
 id noState
 id none
@@ -3184,12 +3186,14 @@ id textSpacerNoTitle
 id textStart
 id textTop
 id textView
+id textView10
 id textView2
 id textView3
 id textView4
 id textView5
 id textView6
 id textView7
+id textView8
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -3232,6 +3236,7 @@ id unlabeled
 id up
 id uptime
 id useLogo
+id vFl
 id vertical
 id vertical_only
 id view_offset_helper
@@ -3401,8 +3406,10 @@ layout design_text_input_start_icon
 layout fragment_current_jobs
 layout fragment_resolved_jobs
 layout fragment_tablayout
+layout fuel_tut
 layout job_layout
 layout job_link_layout
+layout jobs_tut
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title
@@ -3421,6 +3428,7 @@ layout material_time_input
 layout material_timepicker
 layout material_timepicker_dialog
 layout material_timepicker_textinput_display
+layout modal
 layout mtrl_alert_dialog
 layout mtrl_alert_dialog_actions
 layout mtrl_alert_dialog_title

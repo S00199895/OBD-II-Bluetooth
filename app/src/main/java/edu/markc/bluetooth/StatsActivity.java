@@ -102,7 +102,6 @@ public class StatsActivity extends AppCompatActivity {
 
             faults = (ArrayList<String>) getIntent().getSerializableExtra("faults");
         }
-   //     day.setSelected(true);
 
 
         day.setOnClickListener(new View.OnClickListener() {
@@ -133,41 +132,28 @@ public class StatsActivity extends AppCompatActivity {
                 Intent i;
                 switch (item.getTitle().toString()) {
                     case "home":
-                        // Handle settings item click
-                        // Handle search item click
                         i = new Intent(StatsActivity.this, MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                       /* if (Gsfcs == null)
-                        {
-                            Gsfcs=  getsfcs();
-                        }*/
                         i.putExtra("Gsfcs", Gsfcs);
                         i.putExtra("faults", faults);
                         startActivity(i);
                         return true;
                     case "stats":
-//this
+
                         return true;
                     case "fuel":
                         i = new Intent(StatsActivity.this, FuelActivity.class);
-                        //putextra the faults
-                     /*   if (Gsfcs == null)
-                        {
-                            Gsfcs=  getsfcs();
-                        }*/
+
                         i.putExtra("Gsfcs", Gsfcs);
                         i.putExtra("faults", faults);
                         startActivity(i);
                         return true;
                     case "jobs":
                         i = new Intent(StatsActivity.this, JobsActivity.class);
-                        //putextra the faults
+
                         i.putExtra("faults", faults);
-                      /*  if (Gsfcs == null)
-                        {
-                            Gsfcs=  getsfcs();
-                        }*/
+
                         i.putExtra("Gsfcs", Gsfcs);
                         i.putExtra("faults", faults);
                         startActivity(i);
@@ -181,12 +167,7 @@ public class StatsActivity extends AppCompatActivity {
     }
 
     private void highReadings( ArrayList<Entry> yValues) {
-    //   yValues.get(0).getY
-        //get all the y values
-        //iterate over them
-        //add ones over the limit to the array
-        //if array is bigger than half the size of yvalues
-        //put message
+
 
         ArrayList<Float> values = new ArrayList<>();
 
@@ -208,7 +189,7 @@ public class StatsActivity extends AppCompatActivity {
             //text
             if (spinner.getSelectedItem().toString().equals("RPM"))
             {
-                warning.setText("WARNING! Your RPM recorded this " + checkRadio() + " is very high. Lower RPM can mean lower fuel costs nad engine health." );
+                warning.setText("WARNING! Your RPM recorded this " + checkRadio() + " is very high. Lower RPM can mean lower fuel costs and engine health." );
 
             }
             else if (spinner.getSelectedItem().toString().equals("Speed"))
@@ -242,9 +223,6 @@ public class StatsActivity extends AppCompatActivity {
 
         System.out.println("chart valeus");
         System.out.println(chartData);
-        //give this chart times for order and dates
-        //plot against values
-        //display chart
         ArrayList<Entry> yValues = new ArrayList<>();
         //sort
         chartData.sort(new Comparator<Map<String, Object>>() {
@@ -306,9 +284,6 @@ mChart.setExtraOffsets(0,0,20,0);
             k++;
         }
 
-    /*    Timestamp t2 = (Timestamp) o2.get("datetime");
-
-        Date d1 = t1.toDate();*/
         SimpleDateFormat time = new SimpleDateFormat("HH:mm");
         SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         Timestamp first = (Timestamp)  chartData.get(0).get("datetime");
@@ -330,8 +305,6 @@ mChart.setExtraOffsets(0,0,20,0);
                 labelIndexArr.add(li);
                 current = thisTimestamp;
             }
-
-
         }
 
         System.out.println("done" + labelIndexArr);
@@ -341,11 +314,8 @@ y.addLimitLine(ll);
         x.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                //day case WORKS
-                //make returns the start and end date
-                //week/month case
-                //use dates(???)
                 String val = String.valueOf(value);
+                if (labels.size()>0){
                 switch (interval) {
                     case "Day":
                     if (val.equals(labels.get(0)))
@@ -371,25 +341,17 @@ y.addLimitLine(ll);
                         }
 
 
-                }
+                }}
                 return "";
             }
         });
 
         System.out.println("LABLESARE"+labels);
-//yValues.get
-        //invalidate
         simulateTap(mChart);
-
-
         getStats(chartData);
 highReadings(yValues);
     }
-
     private void getStats(ArrayList<Map<String, Object>> chartData) {
-        //average
-        //sum up all the values in a loop divide by size
-
         float average = 0;
         String type = checkRadio();
         for (Map<String, Object> obj : chartData)
@@ -410,13 +372,9 @@ highReadings(yValues);
 
         long hours = diff / (60 * 60 * 1000);
         long minutes = (diff / (60 * 1000)) % 60;
-//JUST FOR DAY??
         timetv.setText(String.valueOf(hours) +" hour(s) and "+String.valueOf(minutes) + " minutes");
     }
 
-    private void CheckWeekChart(float value, ArrayList<Map<String, Object>> chartData) {
-        //
-    }
 
     private String checkRadio() {
         int selectedID = rG.getCheckedRadioButtonId();
@@ -451,17 +409,12 @@ highReadings(yValues);
     }
 
     private ArrayList<Map<String, Object>> read(String type) {
-        //read and query where type is rpm
         ArrayList<Map<String, Object>>[] readMaps = new ArrayList[]{new ArrayList<>()};
 
         db = FirebaseFirestore.getInstance();
 
         String interval = checkRadio();
-        //interval = "Week";
         if (interval.contains("Day")) {
-
-            //change these RPMs to a variable
-            //has to be a parameter
             db.collection("data").document(String.valueOf(LocalDate.now())).collection(type)
                     .whereEqualTo("type", type).orderBy("datetime", Query.Direction.ASCENDING)
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -471,7 +424,10 @@ highReadings(yValues);
                                 System.out.println("STATS WORKLS "+doc.getData());
                                 readMaps[0].add(doc.getData());
                             }
-                            makeLineChart(readMaps[0]);
+                            if (readMaps[0].size() > 0 )
+                                makeLineChart(readMaps[0]);
+                            else
+                                Toast.makeText(StatsActivity.this, "No data for today to show", Toast.LENGTH_SHORT);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -546,8 +502,6 @@ highReadings(yValues);
             ZonedDateTime zonedDateTime = lastWeek.atZone(zid);
             Instant i = zonedDateTime.toInstant();
             date = Date.from(i);
-//change to ascending
-            //19012023
             db.collection("data").whereGreaterThanOrEqualTo("datedoc", date)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -597,9 +551,6 @@ highReadings(yValues);
                         }
                     });
         }
-
-
-
         return readMaps[0];
     }
 }

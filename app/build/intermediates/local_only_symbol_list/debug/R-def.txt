@@ -29,6 +29,7 @@ id btnEmuStopReading
 id btnFuel
 id btnSave
 id btnStats
+id button
 id buttonre
 id cb
 id clayout
@@ -53,6 +54,7 @@ id lvFaults
 id lvfaultsedit
 id navbar
 id needle
+id nextbtn
 id noteDate
 id noteTitle
 id pager
@@ -65,12 +67,14 @@ id tVRPM
 id tVSpeed
 id tab_layout
 id textView
+id textView10
 id textView2
 id textView3
 id textView4
 id textView5
 id textView6
 id textView7
+id textView8
 id totaldist
 id totaltimetv
 id tvDetails
@@ -83,6 +87,7 @@ id tvSelected
 id tvSeverity
 id tvfuel
 id uptime
+id vFl
 id warning
 id weekRB
 layout activity_edit_job
@@ -93,8 +98,11 @@ layout activity_stats
 layout fragment_current_jobs
 layout fragment_resolved_jobs
 layout fragment_tablayout
+layout fuel_tut
 layout job_layout
 layout job_link_layout
+layout jobs_tut
+layout modal
 menu navmenu
 mipmap ic_launcher
 mipmap ic_launcher_round

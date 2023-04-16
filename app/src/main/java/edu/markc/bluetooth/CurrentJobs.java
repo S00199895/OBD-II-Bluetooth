@@ -127,21 +127,12 @@ public class CurrentJobs extends Fragment implements JobsActivity.FragmentListen
 
     public CurrentJobs() {
 
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment CurrentJobs.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CurrentJobs newInstance() {
         CurrentJobs fragment = new CurrentJobs();
         Bundle args = new Bundle();
-      /*  args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);*/
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -167,7 +158,7 @@ public class CurrentJobs extends Fragment implements JobsActivity.FragmentListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_current_jobs, container, false);
 
         lvNotes = view.findViewById(R.id.lVNotes);
@@ -179,15 +170,9 @@ public class CurrentJobs extends Fragment implements JobsActivity.FragmentListen
         faults = readFaults(sharedPref);
         resolvedjobs = new ArrayList<>();
         resolvedjobs = resolvedFirestore();
-       // if (readResolved(sharedPref) != null)
-      //  {
-      //      resolvedjobs = readResolved(sharedPref);
-      //  }
-     //   ArrayList<Note> notes = readPrefs(sharedPref);
 if (notes == null)
 {
     notes = new ArrayList<Note>();
-  //  notes = readActiveJobs();
 }
          adapter = new noteArrayAdapter(getActivity(), 0, notes);
         lvNotes.setAdapter(adapter);
@@ -198,23 +183,20 @@ if (notes == null)
                 //  System.out.println(e.toString());
 writeFaults(sharedPref, editor, faults);
                 Intent i = new Intent(getActivity(), EditJobActivity.class);
+                notes = getInstance().notes;
                 i.putExtra("allNotes", notes);
                 i.putExtra("editNoteIndex", notes.indexOf(e));
                 i.putExtra("faults", readFaults(sharedPref));
                 startActivity(i);
-//startActivity(i);
+
             }});
 
         lvNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // TextView tVTitle =  view.findViewById(R.id.noteTitle);
+
                 dialogDeleteJob(getActivity(), notes, position, adapter);
 
-               /*Toast.makeText(JobsActivity.this, "Job deleted", Toast.LENGTH_SHORT).show();
-                finalNotesArray2.remove(position);
-                adapter.notifyDataSetChanged();
-                writePrefs(sharedPref, editor, finalNotesArray2);*/
                 return true;
             }});
 
@@ -247,7 +229,6 @@ writeFaults(sharedPref, editor, faults);
                             notes.add(e);
 
                         }
-                    notes = firestorenotes;
                         adapter.notifyDataSetChanged();
                     }
                 })
@@ -265,7 +246,6 @@ writeFaults(sharedPref, editor, faults);
 
     public void writeFaults(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<String> faults) {
         String jsonNotes = g.toJson(faults);
-        // sendDataToFragment(notes);
         editor.putString("faults", jsonNotes);
         editor.apply();
     }
@@ -281,23 +261,18 @@ writeFaults(sharedPref, editor, faults);
     }
 
     private void dialogDeleteJob(Context context, ArrayList<Note> finalNotesArray2, int position,/*index of the deleted?*/ArrayAdapter<Note> adapter) {
-        //find the code where it deletes
-        //put in here
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Delete job?")
                 .setMessage("Tap Yes to delete the job or Resolve to view it later")
                 .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         Toast.makeText(getActivity(), "Job deleted", Toast.LENGTH_SHORT).show();
                         adapter.remove(adapter.getItem(position));
                         adapter.notifyDataSetChanged();
-
-                      //  writePrefs(sharedPref, editor, finalNotesArray2);
-
                     }
                 }).setNeutralButton("Resolve", new DialogInterface.OnClickListener() {
                     @Override
@@ -314,12 +289,8 @@ writeFaults(sharedPref, editor, faults);
                         resolved.type = "Resolved";
 
                         resolvedjobs.add(resolved);
-                       // resolvedFirestore(resolved);
                         adapter.remove(adapter.getItem(position));
-                       // finalNotesArray2.remove(position);
                         notifyResolved(resolvedjobs);
-                      //  writePrefs(sharedPref, editor, finalNotesArray2);
-                      //  writeResolved(sharedPref, editor, resolvedjobs);
 
 
                     }
@@ -327,14 +298,12 @@ writeFaults(sharedPref, editor, faults);
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // User clicked no button
+
                     }
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
 
     private void notifyResolved(ArrayList<Note> resolvedjobs) {
         resolvedjobs = resolvedFirestore();
@@ -391,78 +360,11 @@ writeFaults(sharedPref, editor, faults);
     }
 
 
-   /* public void writePrefs(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<Note> notes) {
-        String jsonNotes = g.toJson(notes);
-        // sendDataToFragment(notes);
-        editor.putString("notes", jsonNotes);
-        editor.apply();
-    }
-
-    public void writeResolved(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<Note> notes) {
-        String jsonNotes = g.toJson(notes);
-        // sendDataToFragment(notes);
-        editor.putString("Rjobs", jsonNotes);
-        editor.apply();
-        adapter.notifyDataSetChanged();
-        //other adapter changed
-    }
-
-    public ArrayList<Note> readPrefs(SharedPreferences sharedPref) {
-        String jsonNotes = sharedPref.getString("notes", null);
-        if (jsonNotes == null) {
-            return new ArrayList<>();
-        }
-        Type type = new TypeToken<ArrayList<Note>>(){}.getType();
-        return g.fromJson(jsonNotes, type);
-    }
-
-    public ArrayList<Note> readResolved(SharedPreferences sharedPref) {
-        String jsonNotes = sharedPref.getString("Rjobs", null);
-        if (jsonNotes == null) {
-            return new ArrayList<>();
-        }
-        Type type = new TypeToken<ArrayList<Note>>(){}.getType();
-        return g.fromJson(jsonNotes, type);
-    }*/
-
     public void updateArray(ArrayList<Note> newnotes)
     {
-      //  adapter = new noteArrayAdapter(getActivity(), 0, newnotes);
 
         adapter.clear();
 adapter.addAll(newnotes);
 adapter.notifyDataSetChanged();
-    }
-
-
-    //TODO: put resolve logic in here too
-    private void alertDialog(Context context, String fault) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setTitle("Fault Code")
-                .setMessage("Create a job associated with this fault?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // User clicked yes button
-                        //make intent
-                        //make note to pass - description is the fault code string
-                        Intent i = new Intent(getActivity(), EditJobActivity.class);
-                        i.putExtra("thisFault", fault);
-                        i.putExtra("allNotes", notes);
-                   //     i.putExtra("faults", faults);
-                        startActivity(i);
-
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // User clicked no button
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }

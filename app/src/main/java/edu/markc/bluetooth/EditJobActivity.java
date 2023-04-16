@@ -61,8 +61,6 @@ g = new Gson();
         ArrayList<String> allFaults = new ArrayList<>();
         lvfaults = findViewById(R.id.lvfaultsedit);
         importanceSpinner.setAdapter(new ArrayAdapter<Importance>(this, android.R.layout.simple_spinner_item, Importance.values()));
-     //   SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-     //   SharedPreferences.Editor editor = sharedPref.edit();
 
         if (edit.getExtras() != null)
         {
@@ -78,7 +76,6 @@ g = new Gson();
             {
                 edited = allNotes.get(edit.getIntExtra("editNoteIndex", -5));
                 allNotes.remove(edit.getIntExtra("editNoteIndex", -5));
-
             }
 
             title.setText(edited.title);
@@ -94,9 +91,6 @@ g = new Gson();
                 title.setText(jobName);
             }
         }
-
-
-
         ArrayAdapter<String> adapter = new FaultAdapter(EditJobActivity.this, 0, allFaults);
         lvfaults.setAdapter(adapter);
 
@@ -115,7 +109,6 @@ g = new Gson();
                     n.type = "Active";
                 }
 
-
                 SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -132,7 +125,6 @@ g = new Gson();
     }
     public void writeFaults(SharedPreferences sharedPref, SharedPreferences.Editor editor, ArrayList<String> faults) {
         String jsonNotes = g.toJson(faults);
-        // sendDataToFragment(notes);
         editor.putString("faults", jsonNotes);
         editor.apply();
     }

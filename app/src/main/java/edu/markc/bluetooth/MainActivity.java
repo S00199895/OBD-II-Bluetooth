@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -23,11 +24,13 @@ import android.os.SystemClock;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,6 +39,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -96,16 +100,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     TextView tVSpeed;
     TextView tvfuel;
     TextView uptime;
+    Dialog tut;
     FirebaseFirestore db;
-  //  LineChart mChart;
-   // RadioGroup rG;
-   // RadioButton selected;
-   // Spinner selectSpinner;
     double dist;
+    ViewFlipper vF;
     double fuelConsumed;
-   /* RadioButton day;
-    RadioButton week;
-    RadioButton month;*/
     Gson g = new Gson();
     int Gspeed;
     Button btn;
@@ -115,11 +114,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     ArrayList<String> faults = new ArrayList<>();
     ImageView speedlimitImage;
     LinkedBlockingQueue<SFC> Gsfcs;
-    //EmuService emuService;
 
     private  static  LocalDate localdate;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +123,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         BluetoothService.checkPermissions(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         dist =0;
 
         getSupportActionBar().hide();
+        tutorial();
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -145,10 +141,6 @@ speedLimits();
             timer();
         }
         Toolbar toolbar = findViewById(R.id.navbar);
-
-      //  toolbar.getMenu().findItem(R.id.homenav).setIcon(R.drawable.highlight_link);
-      //  getSupportActionBar().setCustomView(toolbar);
-       // setSupportActionBar(toolbar);
 
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
@@ -188,7 +180,6 @@ uptime = findViewById(R.id.uptime);
                 i.putExtra("Gsfcs", Gsfcs);
                 startActivity(i);
             }
-
         });
 
         btnStats.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +189,6 @@ uptime = findViewById(R.id.uptime);
                 startActivity(i);
             }
         });
-       // selectSpinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.readings_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -212,10 +202,8 @@ uptime = findViewById(R.id.uptime);
                 Intent i;
                 switch (item.getTitle().toString()) {
                     case "home":
-                        // Handle settings item click
                         return true;
                     case "stats":
-                        // Handle search item click
                         i = new Intent(MainActivity.this, StatsActivity.class);
                         if (Gsfcs == null)
                         {
@@ -227,7 +215,6 @@ uptime = findViewById(R.id.uptime);
                         return true;
                     case "fuel":
                        i = new Intent(MainActivity.this, FuelActivity.class);
-                        //putextra the faults
                         if (Gsfcs == null)
                         {
                             Gsfcs=  getsfcs();
@@ -238,7 +225,6 @@ uptime = findViewById(R.id.uptime);
                         return true;
                     case "jobs":
                          i = new Intent(MainActivity.this, JobsActivity.class);
-                        //putextra the faults
                         i.putExtra("faults", faults);
                         if (Gsfcs == null)
                         {
@@ -253,32 +239,6 @@ uptime = findViewById(R.id.uptime);
                 }
             }
         });
-      //  selectSpinner.setAdapter(adapter);
-
-      /*  day = (RadioButton) findViewById(R.id.dayRB);
-        week = (RadioButton) findViewById(R.id.weekRB);
-        month = (RadioButton) findViewById(R.id.MonthRB);*/
-/*
-        day.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                read(selectSpinner.getSelectedItem().toString());
-            }
-        });
-        week.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                read(selectSpinner.getSelectedItem().toString());
-            }
-        });
-        month.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                read(selectSpinner.getSelectedItem().toString());
-            }
-        });*/
-       // ArrayList<Map<String, Object>> reads = read(selectSpinner.getSelectedItem().toString());
-
         BluetoothSocket btSocket = connectToOBD();
 
          if (btSocket.isConnected() || emu == true) {
@@ -300,7 +260,6 @@ uptime = findViewById(R.id.uptime);
                  e.printStackTrace();
              }
              try {
-
                  InputStream finalInputStream = inputStream;
                  OutputStream finalOutputStream = outputStream;
 
@@ -315,10 +274,6 @@ uptime = findViewById(R.id.uptime);
                  executor.execute(new Runnable() {
                      @Override
                      public void run() {
-                             //work
-                        //may try mock btsocket
-                         //how?
-
                              try {
                                  while (btSocket.isConnected() || emu == true) {
                                      Map<String, Object> thisDoc = new HashMap<>();
@@ -347,12 +302,11 @@ uptime = findViewById(R.id.uptime);
                                      }
                                  } catch (NullPointerException e) {
                                       addToFirestore(rpmList);
-                                //      read(selectSpinner.getSelectedItem().toString());
                                  }
                          }
                  });
                  executor.execute(new Runnable() {
-                     //speed thread
+
                      @Override
                      public void run() {
                                  try {
@@ -364,7 +318,6 @@ uptime = findViewById(R.id.uptime);
                                          Gspeed = getLiveSpeed(finalInputStream, finalOutputStream);
                                          if (stop == true)
                                          {throw new NullPointerException();}
-                                         //this line needs to be general for variables
                                          if (Gspeed != 0) {
                                              thisDoc.put("type", "Speed");
                                              thisDoc.put("value", Gspeed);
@@ -380,7 +333,6 @@ uptime = findViewById(R.id.uptime);
                                      }
                                  } catch (NullPointerException e) {
                                      addToFirestore(speedList);
-                                  //   read(selectSpinner.getSelectedItem().toString());
                                  }
                          }
                  });
@@ -389,6 +341,22 @@ uptime = findViewById(R.id.uptime);
 e.printStackTrace();
             } }}
 
+    private void tutorial() {
+
+        tut = new Dialog(MainActivity.this);
+
+    tut.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        View modal = getLayoutInflater().inflate(R.layout.modal, null);
+        vF = modal.findViewById(R.id.vFl);
+
+        tut.setContentView(R.layout.modal);
+
+        tut.show();
+
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -427,7 +395,6 @@ e.printStackTrace();
         }
         else
         {
-            //EMU
             return EmuService.getFaults();
         }
 
@@ -440,7 +407,6 @@ e.printStackTrace();
         }
         else
         {
-            //EMU
             return EmuService.getSpeed();
         }
     }
@@ -481,165 +447,7 @@ e.printStackTrace();
         view.dispatchTouchEvent(motionEvent);
     }
 
-
-
-
-
-    private ArrayList<Map<String, Object>> read(String type) {
-        //read and query where type is rpm
-         ArrayList<Map<String, Object>>[] readMaps = new ArrayList[]{new ArrayList<>()};
-
-        db = FirebaseFirestore.getInstance();
-
-        String interval = "checkRadio();";
-        //interval = "Week";
-        if (interval.contains("Day")) {
-            db.collection("data").document(String.valueOf(LocalDate.now())).collection(type)
-                    .whereEqualTo("type", type).orderBy("datetime", Query.Direction.ASCENDING)
-                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                                System.out.println(doc.getData());
-                                readMaps[0].add(doc.getData());
-                            }
-                            //makeLineChart(readMaps[0]);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            System.out.println("printing "+e.toString());
-                        }
-                    });
-        }
-        else if (interval.contains("Week") )
-        {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            LocalDateTime lastWeek = LocalDateTime.now().minusWeeks(1);
-            ZoneId zid = ZoneId.of("UTC");
-            ZonedDateTime zonedDateTime = lastWeek.atZone(zid);
-            Instant i = zonedDateTime.toInstant();
-            date = Date.from(i);
-            db.collection("data").whereGreaterThanOrEqualTo("datedoc", date)
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    System.out.println("printing the " + document);
-                                }
-                            }
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            ArrayList<Map<String, Object>> weekMaps = new ArrayList<Map<String, Object>>();
-                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                //gets the 2023-01-20 document
-                                System.out.println("printing the " + document);
-
-                                //then get rpm colelction within
-                                document.getReference().collection(type).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        System.out.println(queryDocumentSnapshots);
-                                        //queryDocumentSnapshots.getDocuments();
-                                        for (DocumentSnapshot d : queryDocumentSnapshots.getDocuments())
-                                        {
-                                            String test = d.getData().toString();
-                                            weekMaps.add(d.getData());
-                                        }
-                                        readMaps[0] = weekMaps;
-                                        //makeLineChart(readMaps[0]);
-
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        String et = e.toString();
-                                    }
-                                });
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            String t = e.toString();
-                        }
-                    });
-        }
-        else if (interval.contains("Month"))
-        {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            LocalDateTime lastWeek = LocalDateTime.now().minusMonths(1);
-            ZoneId zid = ZoneId.of("UTC");
-            ZonedDateTime zonedDateTime = lastWeek.atZone(zid);
-            Instant i = zonedDateTime.toInstant();
-            date = Date.from(i);
-            db.collection("data").whereGreaterThanOrEqualTo("datedoc", date)
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    System.out.println("printing the " + document);
-                                    //apparently this works
-                                }
-                            }
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            ArrayList<Map<String, Object>> weekMaps = new ArrayList<Map<String, Object>>();
-                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                //gets the 2023-01-20 document
-                                System.out.println("printing the " + document);
-
-                                //then get rpm colelction within
-                                document.getReference().collection(type).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        System.out.println(queryDocumentSnapshots);
-                                        //queryDocumentSnapshots.getDocuments();
-                                        for (DocumentSnapshot d : queryDocumentSnapshots.getDocuments())
-                                        {
-                                            String test = d.getData().toString();
-                                            weekMaps.add(d.getData());
-                                        }
-                                        readMaps[0] = weekMaps;
-                                        //makeLineChart(readMaps[0]);
-
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        String et = e.toString();
-                                    }
-                                });
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            String t = e.toString();
-                        }
-                    });
-        }
-        return readMaps[0];
-    }
-
  private void addToFirestore(ArrayList<Map<String, Object>> objsToPush) {
-/*
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-     StackTraceElement callingMethod = stackTrace[2]; // Index 0 is getStackTrace, index 1 is myMethod, index 2 is the caller
-     int lineNumber = callingMethod.getLineNumber();
-     System.out.println("myMethod was called from line " + lineNumber);
-*/
-
-     //ArrayList<Map<String, Object>> unique = removeDuplicates(objsToPush);
-   //  objsToPush = unique;
      db = FirebaseFirestore.getInstance();
      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
      for (Map<String, Object> oneDoc : objsToPush) {
@@ -669,7 +477,6 @@ e.printStackTrace();
              });
  }
 
-
     private void speedLimits() {
 
         speedlimitImage = findViewById(R.id.imageView);
@@ -697,14 +504,6 @@ e.printStackTrace();
         Handler h = new Handler();
         handler.postDelayed(ru, 10000);
 
-
-        /*
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-            }
-        },1000);*/
-
     }
 
     private void overTheLimit() {
@@ -714,103 +513,12 @@ e.printStackTrace();
 
 
     }
-//
-//    private ArrayList<Map<String, Object>> removeDuplicates(ArrayList<Map<String, Object>> objsToPush) {
-//        ArrayList<Map<String, Object>> unique = new ArrayList<>();
-//        for (Map<String, Object> doc:objsToPush) {
-//            Timestamp thisTimestamp = (Timestamp) doc.get("datetime");
-//
-//            if (unique.stream().anyMatch(o -> o.get("datetime") == thisTimestamp))
-//            {
-//
-//            }
-//            else
-//            {
-//                unique.add(doc);
-//            }
-//        }
-//        return unique;
-//    }
-/*
-    private void makeLineChart(ArrayList<Map<String, Object>> chartData) {
-
-        //check button selected
-        checkRadio();
-        
-        System.out.println("chart valeus");
-        System.out.println(chartData);
-        ArrayList<Entry> yValues = new ArrayList<>();
-
-        //sort
-        chartData.sort(new Comparator<Map<String, Object>>() {
-            @Override
-            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                Timestamp t1 = (Timestamp) o1.get("datetime");
-                Timestamp t2 = (Timestamp) o2.get("datetime");
-
-                Date d1 = t1.toDate();
-                Date d2 = t2.toDate();
-
-                return d1.compareTo(d2);
-            }
-        });
-
-        int i = 0;
-        for(Map<String, Object> oneDoc : chartData)
-        {
-            yValues.add(new Entry(i, Float.parseFloat(String.valueOf(oneDoc.get("value")))));
-            i++;
-
-        }
-        System.out.println("yvalues");
-        System.out.println(yValues);
-
-        Description d = new Description();
-        d.setText(selectSpinner.getSelectedItem().toString() + " of this " + checkRadio());
-        mChart = (LineChart) findViewById(R.id.lineChart);
-        mChart.setDescription(d);
-
-        mChart.setBackgroundColor(Color.WHITE);
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-
-
-        LineDataSet set1 = new LineDataSet(yValues, "Data");
-        set1.setFillAlpha(110);
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
-
-        LineData data = new LineData(dataSets);
-        mChart.setData(data);
-        simulateTap(mChart);
-
-    }
-
-
-
-    private String checkRadio() {
-        int selectedID = rG.getCheckedRadioButtonId();
-        selected = (RadioButton) findViewById(selectedID);
-
-        if (selectedID == -1) {
-
-            MainActivity.super.runOnUiThread(() -> {
-                Toast.makeText(MainActivity.this, "Please select a time period", Toast.LENGTH_SHORT).show();
-
-            });
-        }
-        if (selected != null)
-            return selected.getText().toString();
-        return "";
-    }*/
 
         private BluetoothSocket connectToOBD()
     {
         BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         if (bluetoothAdapter == null) {
-            // Device doesn't support Bluetooth
         }
 
         if (!bluetoothAdapter.isEnabled()) {
@@ -860,9 +568,6 @@ e.printStackTrace();
         }
         else
         {
-            //EMU
-          //  emuService.updateFuel(MainActivity.this);
-           // tvfuel.setText(String.valueOf(EmuService.getFuel(MainActivity.this)));
             return EmuService.getRPM();
         }
     }
@@ -871,16 +576,8 @@ e.printStackTrace();
     int Seconds, Minutes, MilliSeconds ;
 
     private void timer() {
-        //global variable fuel
-        //return a stopwatch object from another helper class?
-        //check under the reading if its been x minutes
-        //-= the global var
         StartTime = SystemClock.uptimeMillis();
         handler.postDelayed(runnable, 0);
-
-        //reset.setEnabled(false);
-
-
     }
 
 
@@ -891,17 +588,10 @@ e.printStackTrace();
         public void run() {
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
-
             UpdateTime = TimeBuff + MillisecondTime;
-
             Seconds = (int) (UpdateTime / 1000);
-
             Minutes = Seconds / 60;
-
             Seconds = Seconds % 60;
-
-
-
             MilliSeconds = (int) (UpdateTime % 1000);
 
             String timer = ("" + Minutes + ":"
@@ -933,7 +623,6 @@ if (stop == true)
     private void fuelConsumptionHandler(double dist) {
         fuelConsumed = dist /23800;
         SFCPrefHandler(fuelConsumed);
-        //write fuel+distance to the existing today sfc
     }
 
     private double distanceHandler(/*int milliSeconds*/) {
@@ -947,9 +636,8 @@ if (stop == true)
 
     private void SFCPrefHandler(double fuelConsumed)
     {
-        LinkedBlockingQueue<SFC> sfcs;/* =new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<SFC> sfcs;
 
-        writeSFCs(sfcs);*/
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -957,11 +645,9 @@ if (stop == true)
 
         LocalDate today = LocalDate.now();
 
-        // Format the dateString to get the shortened day name
         String dayName = today.format(DateTimeFormatter.ofPattern("E"));
         if (existingJSON == null) {
             sfcs = new LinkedBlockingQueue<>(7);
-//if you need to make one
 
             SFC newsfc = new SFC(fuelConsumed, dayName, dist);
             sfcs.add(newsfc);
@@ -977,20 +663,12 @@ if (stop == true)
             sfcs = putNewSFC(sfcs, fuelConsumed, dayName);
             writeSFCs(sfcs);
             Gsfcs = sfcs;
-
         }
-
     }
 
     private LinkedBlockingQueue<SFC> putNewSFC(LinkedBlockingQueue<SFC> sfcs, double fuelConsumed, String dayName) {
-
-    /*
-        ArrayList<SFC> newsfcs = new ArrayList<>();
-
-        String thisdayName = thisday.format(DateTimeFormatter.ofPattern("E"));
-*/
         ArrayList<SFC> arrsfcs = new ArrayList<SFC>(sfcs);
-    // dayName= "Fri";
+
         LocalDateTime myDateObj = LocalDateTime.now();//.plusDays(4);
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String todaysdate = myDateObj.format(myFormatObj);
@@ -1029,8 +707,6 @@ if (stop == true)
                 }
 
             }
-        /*    System.out.println(LocalDate.parse(arrsfcs.get(arrsfcs.size()-1).dateString, myFormatObj).plusDays(1).atStartOfDay());
-            System.out.println(LocalDate.now().plusDays(1).atStartOfDay())fixe;*/
             if (LocalDate.parse(arrsfcs.get(arrsfcs.size()-1).dateString, myFormatObj).plusDays(1).atStartOfDay().equals(LocalDate.now().atStartOfDay()))
             {
                 sfcs.offer(new SFC(fuelConsumed,dayName,dist));
@@ -1041,12 +717,9 @@ if (stop == true)
             SFC last = arrsfcs.get(arrsfcs.size()-1);
             gapsfcs.add(new SFC(fuelConsumed, dayName, dist, todaysdate));
 
-            LocalDateTime currentDate = LocalDateTime.now();//.plusDays(4);
-            //        String todaysdate = myDateObj.format(myFormatObj);
+            LocalDateTime currentDate = LocalDateTime.now();
             for (int i=0; i<7; i++)
             {
-                //!currentDate.format(myFormatObj).equals(last.dateString)
-                //        String thisdayName = thisday.format(DateTimeFormatter.ofPattern("E"));
                 currentDate = currentDate.minusDays(1);
                 if (currentDate.format(myFormatObj).equals(last.dateString))
                     break;
@@ -1059,7 +732,6 @@ if (stop == true)
             return sfcs;
 
         }
-
     }
 
     void writeSFCs(LinkedBlockingQueue<SFC> sfcs)
@@ -1067,12 +739,18 @@ if (stop == true)
         SharedPreferences sharedPref = getPreferences( Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPref.edit();
-    //    editor.putString("sfcs",null);
        editor.putString("sfcs",g.toJson(sfcs));
 editor.apply();
-                //        String jsonNotes = g.toJson(faults);
     }
 
+    public void nextModal(View view) {
+        tut.setContentView(R.layout.fuel_tut);
 
+        System.out.println("DID");
+    }
 
+    public void nextJobs(View view) {
+        tut.setContentView(R.layout.jobs_tut);
+
+    }
 }

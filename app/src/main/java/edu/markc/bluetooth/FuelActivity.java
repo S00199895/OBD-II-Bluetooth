@@ -79,15 +79,10 @@ details = findViewById(R.id.tvDetails);
                 Intent i;
                 switch (item.getTitle().toString()) {
                     case "home":
-                        // Handle settings item click
-                        // Handle search item click
                         i = new Intent(FuelActivity.this, MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                       /* if (Gsfcs == null)
-                        {
-                            Gsfcs=  getsfcs();
-                        }*/
+
                         i.putExtra("Gsfcs", Gsfcs);
                         i.putExtra("faults", faults);
                         startActivity(i);
@@ -145,12 +140,6 @@ DecimalFormat df = new DecimalFormat("0.00");
     }
 
     private void efficiencyDetails(double avgFE) {
-        //Anything that is listed as less than 6-litres/100km
-        /*
-         * less than 4.5 good colour green
-         * between 4.5 and 6 fine yellow
-         * over 6 bad orange
-         * */
 
         if (avgFE <= 4.5) {
 
@@ -185,10 +174,6 @@ DecimalFormat df = new DecimalFormat("0.00");
 
         BarDataSet dataSet = new BarDataSet(entries, "Values");
 
-        /*for (SFC e:fuelData
-             ) {
-            entries.add(new Entry())
-        }*/
         BarData barData = new BarData(dataSet);
         fuelBC.setData(barData);
         XAxis xAxis = fuelBC.getXAxis();
@@ -210,7 +195,6 @@ xAxis.setXOffset(barData.getBarWidth() / 2);
 
                 return fuelData.get((int)value).dayName;
 
-               // return super.getAxisLabel(value, axis);
             }
         });
 

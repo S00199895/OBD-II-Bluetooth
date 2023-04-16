@@ -92,8 +92,8 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/navbar"
-        android:layout_width="253dp"
-        android:layout_height="56dp"
+        android:layout_width="262dp"
+        android:layout_height="53dp"
         android:background="?attr/colorPrimary"
         android:gravity="center"
         android:minHeight="?attr/actionBarSize"
