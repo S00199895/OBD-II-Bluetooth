@@ -70,6 +70,7 @@ public class StatsActivity extends AppCompatActivity {
     TextView avg;
     TextView timetv;
     TextView warning;
+    TextView title;
     LinkedBlockingQueue<SFC> Gsfcs;
     ArrayList<String> faults;
 
@@ -82,6 +83,7 @@ public class StatsActivity extends AppCompatActivity {
         Gsfcs = new LinkedBlockingQueue<>(7);
         faults = new ArrayList<String>();
         avg = findViewById(R.id.avgtv);
+        title = findViewById(R.id.graphtitle);
         timetv = findViewById(R.id.totaltimetv);
         warning = findViewById(R.id.warning);
         spinner = (Spinner) findViewById(R.id.spinnerReading);
@@ -195,6 +197,19 @@ public class StatsActivity extends AppCompatActivity {
             else if (spinner.getSelectedItem().toString().equals("Speed"))
             {
                 warning.setText("WARNING! Your Speed recorded this " + checkRadio() + " is very high. Reduce your speed to be more aware of your surroundings and to save on fuel");
+
+            }
+        }
+        else
+        {
+            if (spinner.getSelectedItem().toString().equals("RPM"))
+            {
+                warning.setText("Your RPM recorded this " + checkRadio() + " is healthy. Good job!" );
+
+            }
+            else if (spinner.getSelectedItem().toString().equals("Speed"))
+            {
+                warning.setText("WARNING! Your Speed recorded this " + checkRadio() + " is safe.");
 
             }
         }
@@ -348,6 +363,8 @@ y.addLimitLine(ll);
 
         System.out.println("LABLESARE"+labels);
         simulateTap(mChart);
+
+        title.setText(spinner.getSelectedItem().toString() +" readings for this " + checkRadio());
         getStats(chartData);
 highReadings(yValues);
     }
@@ -361,7 +378,7 @@ highReadings(yValues);
 
         average = average / chartData.size();
 
-        avg.setText(String.valueOf(average) + " " + spinner.getSelectedItem().toString());
+        avg.setText("Average:\n " + String.valueOf(average) + " " + spinner.getSelectedItem().toString());
 
         //total time
         //get the first and the last and subtract them to get hours and minutes
@@ -372,7 +389,7 @@ highReadings(yValues);
 
         long hours = diff / (60 * 60 * 1000);
         long minutes = (diff / (60 * 1000)) % 60;
-        timetv.setText(String.valueOf(hours) +" hour(s) and "+String.valueOf(minutes) + " minutes");
+        timetv.setText("Total time:\n "+String.valueOf(hours) +" hour(s) and "+String.valueOf(minutes) + " minutes");
     }
 
 

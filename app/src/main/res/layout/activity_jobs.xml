@@ -7,11 +7,39 @@
 
     tools:context=".JobsActivity">
 
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="421dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.305" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="421dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.872" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/navbar"
         android:layout_width="262dp"
-        android:layout_height="53dp"
-        android:background="?attr/colorPrimary"
+        android:layout_height="56dp"
+        android:background="@color/design_default_color_secondary_variant"
         android:gravity="center"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -24,46 +52,33 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.004"
+        app:layout_constraintVertical_bias="0.0"
         app:menu="@menu/navmenu" />
+
     <ListView
         android:id="@+id/lVFaults"
         android:layout_width="399dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="104dp"
         android:fadeScrollbars="false"
-        app:layout_constraintBottom_toTopOf="@+id/lVNotes"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.416"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.561" />
+        app:layout_constraintVertical_bias="0.155" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="396dp"
-        android:layout_height="237dp"
-        android:layout_weight="1"
-        android:fadeScrollbars="false"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.785" />
-
- <!--   <ListView
+    <!--   <ListView
         android:id="@+id/lVNotes"
         android:layout_width="383dp"
         android:layout_height="90dp"
@@ -78,6 +93,20 @@
 
     </ListView>-->
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="401dp"
+        android:layout_height="244dp"
+        android:layout_weight="1"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.809" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNoteBtn"
         android:layout_width="wrap_content"
@@ -85,10 +114,10 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.977"
+        app:layout_constraintHorizontal_bias="0.918"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.991"
+        app:layout_constraintVertical_bias="0.976"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
     <RadioGroup
@@ -112,6 +141,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sort jobs by:"
+            android:textColor="@color/black"
+
             android:textSize="19sp"
             tools:layout_editor_absoluteX="47dp"
             tools:layout_editor_absoluteY="136dp" />
@@ -124,6 +155,8 @@
             android:layout_gravity="center"
             android:checked="false"
             android:padding="2dp"
+            android:textColor="@color/black"
+
             android:text="A-Z"
             android:textAlignment="center"
             android:textSize="17sp" />
@@ -137,6 +170,8 @@
             android:padding="2dp"
             android:text="Importance"
             android:textAlignment="center"
+            android:textColor="@color/black"
+
             android:textSize="17sp" />
 
         <TextView
@@ -154,7 +189,9 @@
         android:id="@+id/textView6"
         android:layout_width="406dp"
         android:layout_height="42dp"
+        android:gravity="center"
         android:text="Current fault codes"
+        android:textColor="@color/black"
         android:textSize="27sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,6 +199,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.081" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="406dp"
+        android:layout_height="42dp"
+        android:gravity="center"
+        android:text="Jobs"
+        android:textColor="@color/black"
+
+        android:textSize="27sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.357" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -122,8 +122,9 @@ resolvedjobs = readResolvedJobs();
             faults.add("No faults found");
         }
 
-            ArrayAdapter<String> faultsadapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, faults);
+            ArrayAdapter<String> faultsadapter = new ArrayAdapter<>(this, R.layout.faultstyle, faults);
             ListView listView = (ListView) findViewById(R.id.lVFaults);
+
             listView.setAdapter(faultsadapter);
 
 writeFaults(sharedPref, editor, faults);
@@ -451,6 +452,7 @@ writeFaults(sharedPref, editor, faults);
                         i.putExtra("thisFault", fault);
                         i.putExtra("allNotes", notesArray);
                         i.putExtra("faults", faults);
+                        i.putExtra("Gsfcs", Gsfcs);
                         startActivity(i);
 
                     }

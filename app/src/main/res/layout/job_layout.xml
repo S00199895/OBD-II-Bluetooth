@@ -8,14 +8,17 @@
 
     <LinearLayout
         android:id="@+id/infoSection"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="38dp"
+
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/noteTitle"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -26,6 +29,7 @@
 
         <TextView
             android:id="@+id/tvSeverity"
+
             android:layout_width="match_parent"
             android:width="40sp"
             android:layout_height="wrap_content"
@@ -39,6 +43,8 @@
 
         <TextView
             android:id="@+id/noteDate"
+            android:textColor="@color/black"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

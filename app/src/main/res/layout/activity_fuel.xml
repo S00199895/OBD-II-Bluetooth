@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:background="#FFFFFF"
+
     tools:context=".FuelActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/navbar"
         android:layout_width="262dp"
         android:layout_height="56dp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/design_default_color_secondary_variant"
         android:gravity="center"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -24,13 +26,14 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.004"
+        app:layout_constraintVertical_bias="0.0"
         app:menu="@menu/navmenu" />
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/fuel_barchart"
         android:layout_width="340dp"
         android:layout_height="399dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.777"
@@ -43,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your Fuel efficiency is:"
+        android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +72,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Fuel usage over the last 7 days"
+        android:textColor="@color/black"
+
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/fuel_barchart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,6 +87,8 @@
         android:layout_height="wrap_content"
         android:text="Make sure you're in the right gear to improve your fuel efficiency."
         android:textSize="20sp"
+        android:textColor="@color/black"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -93,10 +101,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="details"
+        android:textColor="@color/black"
         android:textSize="20sp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.313" />
@@ -106,10 +116,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="details"
+        android:textColor="@color/black"
+
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.275" />
@@ -120,6 +132,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:text="Last 7 days"
+        android:textColor="@color/black"
+
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,6 +148,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="204dp"
         android:layout_marginEnd="320dp"
+        android:textColor="@color/black"
+
         android:orientation="vertical"
         android:rotation="-90"
         android:text="Fuel used (Litres)"

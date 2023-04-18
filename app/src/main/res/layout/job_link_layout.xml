@@ -7,20 +7,24 @@
 
     <TextView
         android:id="@+id/tvFault"
-        android:layout_width="303dp"
-        android:layout_height="79dp"
+        android:layout_width="345dp"
+        android:layout_height="63dp"
+        android:background="@color/design_default_color_secondary_variant"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.031" />
+        app:layout_constraintVertical_bias="0.001" />
 
     <CheckBox
         android:id="@+id/cb"
         android:layout_width="41dp"
+        android:textColor="@color/white"
+        android:foregroundTint="@color/white"
         android:layout_height="39dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvFault"

@@ -1,23 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center">
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="125dp"
-        android:layout_height="88dp"
-        android:text="Fuel"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="169dp" />
+    <LinearLayout
+        android:layout_width="377dp"
+        android:layout_height="539dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="242dp"
+            android:src="@drawable/stats"
+            android:layout_height="341dp" />
+
+        <TextView
+
+            android:layout_width="367dp"
+            android:layout_height="135dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+
+            android:clickable="true"
+            android:text="\u2022 The Fuel and Stats screens show your reading insights.
+\n\u2022 Choose RPM or Speed from the dropdown to show its statistics.
+\n\u2022 Choose between the time intervals to view different periods of your data." />
+
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="nextJobs"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
+
+            android:text="next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
 
     <Button
-        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="266dp"
-        android:onClick="nextJobs"/>
+        android:backgroundTint="@color/design_default_color_secondary_variant"
+        android:onClick="skip"
+
+        android:text="skip tutorial"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.935"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.049" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -143,7 +143,7 @@ DecimalFormat df = new DecimalFormat("0.00");
 
         if (avgFE <= 4.5) {
 
-            tveff.setTextColor(Color.GREEN);
+            tveff.setTextColor(Color.parseColor("#0e910c"));
             tveff.setText("Good");
             details.setText("Keep it up!");
         } else if (avgFE > 4.5 && avgFE < 6)
@@ -176,13 +176,15 @@ DecimalFormat df = new DecimalFormat("0.00");
 
         BarData barData = new BarData(dataSet);
         fuelBC.setData(barData);
+
+
         XAxis xAxis = fuelBC.getXAxis();
         xAxis.setLabelCount(fuelData.size(), true);
         YAxis yAxis = fuelBC.getAxisLeft();
         yAxis.setAxisMinimum(0f);
         barData.setBarWidth(.45f);
-        yAxis.setTextColor(Color.WHITE);
-        xAxis.setTextColor(Color.WHITE);
+        yAxis.setTextColor(Color.BLACK);
+        xAxis.setTextColor(Color.BLACK);
         Description desc= new Description();
         desc.setText("");
         fuelBC.setDescription(desc);

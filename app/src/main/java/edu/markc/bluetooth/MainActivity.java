@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     TextView tVRPM;
     TextView tVSpeed;
     TextView tvfuel;
-    TextView uptime;
+   // TextView uptime;
     Dialog tut;
     FirebaseFirestore db;
     double dist;
@@ -107,9 +107,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     double fuelConsumed;
     Gson g = new Gson();
     int Gspeed;
-    Button btn;
-    Button btnFuel;
-    Button btnStats;
+  //  Button btn;
+   // Button btnFuel;
+  //  Button btnStats;
     Button btnEmu;
     ArrayList<String> faults = new ArrayList<>();
     ImageView speedlimitImage;
@@ -145,11 +145,11 @@ speedLimits();
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
         tvfuel = findViewById(R.id.tvfuel);
-        btnFuel = findViewById(R.id.btnFuel);
+  /*      btnFuel = findViewById(R.id.btnFuel);
       //  rG = (RadioGroup) findViewById(R.id.radioGroup);
 uptime = findViewById(R.id.uptime);
         btn = (Button) findViewById(R.id.buttonre);
-        btnStats = (Button) findViewById(R.id.btnStats);
+        btnStats = (Button) findViewById(R.id.btnStats);*/
         btnEmu = (Button) findViewById(R.id.btnEmuStopReading);
 
         btnEmu.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +158,7 @@ uptime = findViewById(R.id.uptime);
                 stop = true;
             }
         });
-        btn.setOnClickListener(new View.OnClickListener() {
+   /*     btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, JobsActivity.class);
@@ -166,8 +166,8 @@ uptime = findViewById(R.id.uptime);
                 i.putExtra("faults", faults);
                 startActivity(i);
             }
-        });
-
+        });*/
+/*
         btnFuel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +188,7 @@ uptime = findViewById(R.id.uptime);
                 Intent i = new Intent(MainActivity.this, StatsActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.readings_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -345,8 +345,8 @@ e.printStackTrace();
 
         tut = new Dialog(MainActivity.this);
 
-    tut.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+  //  tut.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+    tut.setTitle("Welcome to DrivePal");
         View modal = getLayoutInflater().inflate(R.layout.modal, null);
         vF = modal.findViewById(R.id.vFl);
 
@@ -596,7 +596,7 @@ e.printStackTrace();
 
             String timer = ("" + Minutes + ":"
                     + String.format("%02d", Seconds));
-uptime.setText(timer);
+//uptime.setText(timer);
 dist += distanceHandler();
 
 if (stop == true)
@@ -611,7 +611,7 @@ if (stop == true)
                 else
                     fuelLevel = 44;
                 EmuService.writeFuel(MainActivity.this, (int)fuelLevel);
-                tvfuel.setText(String.valueOf(fuelLevel));
+                tvfuel.setText("Fuel level: "+String.valueOf(fuelLevel) + " Litres");
                 gauge(fuelLevel / 45f);
             }
 
@@ -745,12 +745,22 @@ editor.apply();
 
     public void nextModal(View view) {
         tut.setContentView(R.layout.fuel_tut);
-
+        tut.setTitle("View reading insights");
         System.out.println("DID");
     }
 
     public void nextJobs(View view) {
         tut.setContentView(R.layout.jobs_tut);
+        tut.setTitle("Jobs screen");
 
+    }
+
+    public void closeTut(View view)
+    {
+        tut.cancel();
+    }
+
+    public void skip(View view) {
+        closeTut(view);
     }
 }

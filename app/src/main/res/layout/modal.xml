@@ -8,48 +8,67 @@
     <ViewFlipper
 
         android:id="@+id/vFl"
-        android:layout_width="411dp"
-        android:layout_height="428dp"
+        android:layout_width="407dp"
+        android:layout_height="543dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.547"
-        >
+        app:layout_constraintVertical_bias="0.547">
 
 
         <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
+            android:layout_width="377dp"
+            android:layout_height="539dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView 1"
-            android:clickable="true"
-            />
+            <ImageView
+                android:layout_width="242dp"
+                android:src="@drawable/stopemu"
+                android:layout_height="341dp"
+                />
+
+            <TextView
+
+                android:layout_width="367dp"
+                android:layout_height="135dp"
+                android:gravity="center"
+                android:clickable="true"
+                android:textColor="@color/black"
+                android:text="Welcome to DrivePal!
+\n\u2022 The Home screen will show you your live data readings.
+\n\u2022 RPM and Speed are displayed with their live value as well as fuel
+\n\u2022 Choose the STOP button to stop the readings and collect your new data." />
 
             <Button
                 android:id="@+id/nextbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="next"
                 android:onClick="nextModal"
-                />
+                android:backgroundTint="@color/design_default_color_secondary_variant"
+                android:text="next" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView 2" />
-        </LinearLayout>
     </ViewFlipper>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
+        android:onClick="skip"
+
+        android:text="skip tutorial"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.935"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.049" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
