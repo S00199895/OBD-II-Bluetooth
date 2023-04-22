@@ -133,7 +133,7 @@ public class StatsActivity extends AppCompatActivity {
                 item.getTitle().toString();
                 Intent i;
                 switch (item.getTitle().toString()) {
-                    case "home":
+                    case "HOME":
                         i = new Intent(StatsActivity.this, MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

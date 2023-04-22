@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/fuelnav"
+        android:title="fuel"
+        app:showAsAction="always"/>
+    <item android:id="@+id/statsnav"
+        android:title="stats"
+        app:showAsAction="always" />
+    <item android:id="@+id/homenav"
+
+        android:title="HOME"
+    app:showAsAction="always"/>
+    <item android:id="@+id/jobsnav"
+        android:title="@string/jobu"
+        app:showAsAction="always" />
+
+</menu>

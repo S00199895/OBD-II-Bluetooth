@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-32:/values-uz/values-uz.xml",
+            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-33:/values-uz/values-uz.xml",
             "map": [
                 {
                     "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\2f15fab632c9d76d7bc61deb7bcbae30\\transformed\\jetified-play-services-basement-18.0.0\\res\\values-uz\\values.xml",

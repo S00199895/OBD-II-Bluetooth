@@ -77,8 +77,9 @@ details = findViewById(R.id.tvDetails);
                 System.out.println(item.getTitle().toString());
                 item.getTitle().toString();
                 Intent i;
+                final String HOME = getResources().getString(R.string.homeu);
                 switch (item.getTitle().toString()) {
-                    case "home":
+                    case "HOME":
                         i = new Intent(FuelActivity.this, MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

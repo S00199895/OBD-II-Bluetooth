@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-32:/values-port/values-port.xml",
+            "outputFile": "edu.markc.bluetooth.app-mergeDebugResources-33:/values-port/values-port.xml",
             "map": [
                 {
                     "source": "C:\\Users\\noelc\\.gradle\\caches\\transforms-3\\f13565ca188c2907daa24879e71be25d\\transformed\\appcompat-1.5.1\\res\\values-port\\values-port.xml",

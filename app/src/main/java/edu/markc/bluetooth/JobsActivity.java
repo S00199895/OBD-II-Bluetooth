@@ -131,6 +131,7 @@ writeFaults(sharedPref, editor, faults);
 
         Toolbar toolbar = findViewById(R.id.navbar);
 
+
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -139,7 +140,7 @@ writeFaults(sharedPref, editor, faults);
                 item.getTitle().toString();
                 Intent i;
                 switch (item.getTitle().toString()) {
-                    case "home":
+                    case "HOME":
                         i = new Intent(JobsActivity.this, MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         i.putExtra("Gsfcs", Gsfcs);

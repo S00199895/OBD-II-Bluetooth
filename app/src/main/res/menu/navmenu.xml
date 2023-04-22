@@ -8,7 +8,8 @@
         android:title="stats"
         app:showAsAction="always" />
     <item android:id="@+id/homenav"
-    android:title="home"
+
+    android:title="@string/homeu"
     app:showAsAction="always"/>
     <item android:id="@+id/jobsnav"
         android:title="jobs"

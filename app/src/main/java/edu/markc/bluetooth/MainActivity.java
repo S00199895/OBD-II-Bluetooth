@@ -91,7 +91,7 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity implements Serializable {
     //emu var
     static boolean emu = true;
-    static boolean stop = false;
+    public static boolean stop = false;
     static float fuelLevel = -1;
 
     private final static int REQUEST_ENABLE_BT = 1;
@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         BluetoothService.checkPermissions(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         dist =0;
 
         getSupportActionBar().hide();
@@ -141,6 +143,9 @@ speedLimits();
             timer();
         }
         Toolbar toolbar = findViewById(R.id.navbar);
+
+
+
 
         tVRPM = findViewById(R.id.tVRPM);
         tVSpeed = findViewById(R.id.tVSpeed);
@@ -620,7 +625,7 @@ if (stop == true)
 
     };
 
-    private void fuelConsumptionHandler(double dist) {
+    public void fuelConsumptionHandler(double dist) {
         fuelConsumed = dist /23800;
         SFCPrefHandler(fuelConsumed);
     }

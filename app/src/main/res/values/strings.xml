@@ -7,4 +7,9 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+        <string name="homeu"><u>HOME</u></string>
+    <string name="fuelu"><u>FUEL</u></string>
+    <string name="jobu"><u>JOBS</u></string>
+    <string name="statsu"><u>STATS</u></string>
 </resources>

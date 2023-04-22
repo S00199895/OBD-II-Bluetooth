@@ -1,13 +1,20 @@
 package edu.markc.bluetooth;
 
+import android.app.Activity;
 import android.content.Context;
+import android.view.View;
+import android.widget.TextView;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.InstrumentationRegistry;
 
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
+
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 
 /**
@@ -22,5 +29,17 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("edu.markc.bluetooth", appContext.getPackageName());
+    }
+
+    @Rule
+    public ActivityTestRule<MainActivity> rule  = new  ActivityTestRule<>(MainActivity.class, false, true);
+
+    @Test
+    public void UITest()
+    {
+
+
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
     }
 }
